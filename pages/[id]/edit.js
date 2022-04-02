@@ -23,7 +23,7 @@ const EditNote = ({ note }) => {
 
     const updateNote = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/api/notes/${router.query.id}`, {
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${router.query.id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
