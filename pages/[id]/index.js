@@ -37,7 +37,7 @@ const Note = ({ note }) => {
     }
 
     return (
-        <div className="note-container">
+        <div>
             {isDeleting
                 ? <Loader active />
                 :

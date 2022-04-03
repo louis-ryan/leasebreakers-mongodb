@@ -73,7 +73,6 @@ const EditNote = ({ note }) => {
                         ? <Loader active inline='centered' />
                         : <Form onSubmit={handleSubmit}>
                             <Form.Input
-                                fluid
                                 error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
                                 label='Title'
                                 placeholder='Title'
@@ -81,8 +80,15 @@ const EditNote = ({ note }) => {
                                 value={form.title}
                                 onChange={handleChange}
                             />
+                            <Form.Input
+                                error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
+                                label='Address'
+                                placeholder='Address'
+                                name='address'
+                                value={form.address}
+                                onChange={handleChange}
+                            />
                             <Form.TextArea
-                                fluid
                                 label='Descriprtion'
                                 placeholder='Description'
                                 name='description'
