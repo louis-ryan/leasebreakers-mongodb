@@ -2,7 +2,7 @@ import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
 import { Button } from 'semantic-ui-react';
 
-const Index = ({ notes }) => {
+const Index = ({ notes, users }) => {
   return (
     <div>
       <h1>Lease Breakers Melbourne</h1>
@@ -40,7 +40,16 @@ Index.getInitialProps = async () => {
   const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/notes');
   const { data } = await res.json();
 
+  console.log("post data: ", data)
   return { notes: data }
+}
+
+Index.getInitialProps = async () => {
+  const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/users');
+  const { data } = await res.json();
+
+  console.log("user data: ", data)
+  return { users: data }
 }
 
 export default Index;
