@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 const NewNote = () => {
     const [form, setForm] = useState({ title: '', description: '' });
+    console.log("form, ", form)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
     const router = useRouter();
@@ -50,6 +51,17 @@ const NewNote = () => {
         })
     }
 
+    const handlePics = (e) => {
+        setForm({
+            ...form,
+            pics: [
+                {
+                    [e.target.name]: e.target.value
+                }
+            ]
+        })
+    }
+
     const validate = () => {
         let err = {};
 
@@ -73,10 +85,10 @@ const NewNote = () => {
                         : <Form onSubmit={handleSubmit}>
                             <Form.Input
                                 fluid
-                                error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
-                                label='Title'
-                                placeholder='Title'
-                                name='title'
+                                error={errors.address ? { content: 'Please enter an address', pointing: 'below' } : null}
+                                label='Address'
+                                placeholder='Address'
+                                name='address'
                                 onChange={handleChange}
                             />
                             <Form.TextArea
@@ -86,6 +98,14 @@ const NewNote = () => {
                                 name='description'
                                 error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
                                 onChange={handleChange}
+                            />
+                            <Form.Input
+                                fluid
+                                error={errors.address ? { content: 'Please enter an address', pointing: 'below' } : null}
+                                label='Pic 1'
+                                placeholder='Pic 1'
+                                name='url'
+                                onChange={handlePics}
                             />
                             <Button type='submit'>Create</Button>
                         </Form>
