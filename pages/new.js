@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
@@ -66,7 +65,7 @@ const NewNote = () => {
 
     return (
         <div className="form-container">
-            <h1>Create Note</h1>
+            <h1>Create Post</h1>
             <div>
                 {
                     isSubmitting
