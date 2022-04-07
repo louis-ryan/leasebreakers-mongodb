@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const NoteSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: false,
-        unique: true,
         maxlength: [40, 'Title cannot be more than 40 characters']
     },
     description: {
@@ -17,7 +15,7 @@ const NoteSchema = new mongoose.Schema({
             url: {
                 type: String,
                 required: false,
-                maxlength: [40, 'Url cannot be more than 40 characters']
+                maxlength: [200, 'Url cannot be more than 200 characters']
             }
         }
     ],

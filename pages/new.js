@@ -4,10 +4,11 @@ import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 
 const NewNote = () => {
-    const [form, setForm] = useState({ title: '', description: '' });
-    console.log("form, ", form)
+    const [form, setForm] = useState({});
+    console.log("new form, ", form)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
+
     const router = useRouter();
 
     useEffect(() => {
@@ -51,23 +52,40 @@ const NewNote = () => {
         })
     }
 
-    const handlePics = (e) => {
-        setForm({
-            ...form,
-            pics: [
-                {
-                    [e.target.name]: e.target.value
-                }
-            ]
-        })
-    }
+    const uploadPhoto = async (e) => {
+        const file = e.target.files[0];
+        console.log("file, ", file)
+        const filename = encodeURIComponent(file.name);
+        const res = await fetch(`/api/upload?file=${filename}`);
+        const { url, fields } = await res.json();
+        const formData = new FormData();
+
+        Object.entries({ ...fields, file }).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        const upload = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (upload.ok) {
+            console.log('Uploaded successfully!', upload);
+            setForm({
+                ...form, pics: [{
+                    url: upload.url + "/" + filename
+                }]
+            });
+        } else {
+            console.error('Upload failed.');
+        }
+
+    };
+
 
     const validate = () => {
         let err = {};
 
-        if (!form.title) {
-            err.title = 'Title is required';
-        }
         if (!form.description) {
             err.description = 'Description is required';
         }
@@ -84,7 +102,12 @@ const NewNote = () => {
                         ? <Loader active inline='centered' />
                         : <Form onSubmit={handleSubmit}>
                             <Form.Input
-                                fluid
+                                label='Title'
+                                placeholder='Title'
+                                name='title'
+                                onChange={handleChange}
+                            />
+                            <Form.Input
                                 error={errors.address ? { content: 'Please enter an address', pointing: 'below' } : null}
                                 label='Address'
                                 placeholder='Address'
@@ -92,20 +115,21 @@ const NewNote = () => {
                                 onChange={handleChange}
                             />
                             <Form.TextArea
-                                fluid
                                 label='Descriprtion'
                                 placeholder='Description'
                                 name='description'
                                 error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
                                 onChange={handleChange}
                             />
-                            <Form.Input
-                                fluid
-                                error={errors.address ? { content: 'Please enter an address', pointing: 'below' } : null}
-                                label='Pic 1'
-                                placeholder='Pic 1'
-                                name='url'
-                                onChange={handlePics}
+                            <input
+                                type="file"
+                                name="image"
+                                accept="image/png, image/jpeg"
+                                onChange={uploadPhoto}
+                            />
+                            <img
+                                src={form.pics && form.pics[0].url}
+                                style={{ width: "400px" }}
                             />
                             <Button type='submit'>Create</Button>
                         </Form>

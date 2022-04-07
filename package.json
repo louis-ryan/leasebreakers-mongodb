@@ -1,5 +1,5 @@
 {
-  "name": "notes-app",
+  "name": "lease-breakers-melbourne",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "aws-sdk": "^2.1108.0",
     "cors": "^2.8.5",
+    "formidable": "^2.0.1",
     "isomorphic-unfetch": "^3.0.0",
     "mongoose": "^5.9.6",
     "next": "^9.3.6",

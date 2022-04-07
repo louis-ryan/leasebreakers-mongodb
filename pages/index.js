@@ -46,8 +46,7 @@ const Index = () => {
                   <Link href={`/${note._id}`}>
                     <a>{note.address && note.address}</a>
                   </Link>
-                  {console.log("note, ", note)}
-                  <div style={{ display: "flex" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap" }}>
                     {note.pics && note.pics.map(pic => {
                       return (
                         <div key={pic._id}>
