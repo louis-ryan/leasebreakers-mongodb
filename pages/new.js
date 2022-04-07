@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 
 const NewNote = () => {
     const [form, setForm] = useState({});
-    console.log("new form, ", form)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 

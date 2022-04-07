@@ -35,7 +35,7 @@ const Index = () => {
     <div>
       <h1>Lease Breakers Melbourne</h1>
       <div>
-        {notes.map(note => {
+        {notes && notes.map(note => {
           return (
             <div
               key={note._id}
