@@ -24,6 +24,10 @@ const NoteSchema = new mongoose.Schema({
         required: true,
         maxlength: [40, 'Address cannot be more than 40 characters']
     },
+    postCode: {
+        type: Number,
+        required: true,
+    },
     numRoom: {
         type: Number,
         required: false

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
+import PicUpload from '../components/PicUpload';
 
 const NewNote = () => {
     const [form, setForm] = useState({});
@@ -20,6 +21,24 @@ const NewNote = () => {
             }
         }
     }, [errors])
+
+
+    useEffect(() => {
+        if (form.postCode > 2999) {
+            async function getLocationsByZip() {
+                const res = await fetch(`http://api.beliefmedia.com/postcodes/${form.postCode}.json`);
+                const { data } = await res.json();
+
+                console.log("location: ", data)
+                setForm({
+                    ...form,
+                    address: data.locality
+                })
+            }
+            getLocationsByZip()
+        }
+    }, [form.postCode])
+
 
     const createNote = async () => {
         try {
@@ -70,11 +89,26 @@ const NewNote = () => {
 
         if (upload.ok) {
             console.log('Uploaded successfully!', upload);
-            setForm({
-                ...form, pics: [{
+            console.log("form from image upload, ", form)
+
+            if (form.pics) {
+                var newPics = form.pics
+                newPics.push({
                     url: upload.url + "/" + filename
-                }]
-            });
+                })
+
+                setForm({
+                    ...form, newPics
+                });
+            } else {
+                setForm({
+                    ...form, pics: [{
+                        url: upload.url + "/" + filename
+                    }]
+                });
+            }
+
+
         } else {
             console.error('Upload failed.');
         }
@@ -107,12 +141,15 @@ const NewNote = () => {
                                 onChange={handleChange}
                             />
                             <Form.Input
-                                error={errors.address ? { content: 'Please enter an address', pointing: 'below' } : null}
-                                label='Address'
-                                placeholder='Address'
-                                name='address'
+                                error={errors.address ? { content: 'Please enter a post code', pointing: 'below' } : null}
+                                label='Post Code'
+                                placeholder='3000'
+                                name='postCode'
                                 onChange={handleChange}
                             />
+                            {form.address && form.postCode > 2999 &&
+                                <p>{form.address}</p>
+                            }
                             <Form.TextArea
                                 label='Descriprtion'
                                 placeholder='Description'
@@ -120,16 +157,59 @@ const NewNote = () => {
                                 error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
                                 onChange={handleChange}
                             />
-                            <input
-                                type="file"
-                                name="image"
-                                accept="image/png, image/jpeg"
-                                onChange={uploadPhoto}
-                            />
-                            <img
-                                src={form.pics && form.pics[0].url}
-                                style={{ width: "400px" }}
-                            />
+
+                            {/* <div style={{ width: "30%", overflow: "hidden" }}>
+                                {!form.pics || form.pics.length < 1 ?
+                                    <input type="file" name="image" accept="image/png, image/jpeg" onChange={uploadPhoto} />
+                                    :
+                                    <div>
+                                        <img src={form.pics && form.pics[0].url}
+                                            style={{ width: "100%" }}
+                                        />
+                                        <h3 onClick={() => {
+                                            var newForm = form
+                                            newForm.pics.splice(0, 1)
+
+                                            setForm(newForm);
+                                        }}>
+                                            DELETE
+                                        </h3>
+                                    </div>
+                                }
+                            </div>
+                            <div style={{ width: "30%", overflow: "hidden" }}>
+                                {form.pics && form.pics.length < 2 ?
+                                    <input type="file" name="image" accept="image/png, image/jpeg" onChange={uploadPhoto} />
+                                    :
+                                    <div>
+                                        <img src={form.pics && form.pics[0].url}
+                                            style={{ width: "100%" }}
+                                        />
+                                        <h3 onClick={() => {
+                                            var newForm = form
+                                            newForm.pics.splice(1, 1)
+
+                                            setForm(newForm);
+                                        }}>
+                                            DELETE
+                                        </h3>
+                                    </div>
+                                }
+                            </div> */}
+
+
+                            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
+                                <PicUpload id={0} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={1} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={2} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={3} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={4} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={5} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={6} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={7} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={8} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+
+                            </div>
                             <Button type='submit'>Create</Button>
                         </Form>
                 }
