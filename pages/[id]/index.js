@@ -8,6 +8,8 @@ const Note = ({ note }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const router = useRouter();
 
+    console.log("note from note by id, ", note)
+
     useEffect(() => {
         if (isDeleting) {
             deleteNote();
@@ -44,6 +46,9 @@ const Note = ({ note }) => {
                 <>
                     <h1>{note.title}</h1>
                     <p>{note.description}</p>
+                    {note.postCode && 
+                    <h3>{note.postCode}</h3>
+                    }
                     <Button color='red' onClick={open}>Delete</Button>
                 </>
             }

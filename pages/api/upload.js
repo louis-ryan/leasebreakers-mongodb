@@ -2,10 +2,8 @@ import aws from 'aws-sdk';
 
 export default async function handler(req, res) {
     aws.config.update({
-        accessKeyId: "AKIAR4CX3FEXNQ5JWCRO",
-        // process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: "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",
-        // process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         region: 'eu-central-1',
         signatureVersion: 'v4',
     });
