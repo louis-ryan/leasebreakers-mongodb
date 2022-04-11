@@ -1,9 +1,31 @@
+:root {
+    --dark-blue: #1E304E;
+    --grey-blue: #586781;
+    --light-yellow: #FBEED4;
+    --dark-yellow: #5D4A26;
+    --blue-white-gradient: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(7,74,167,1) 100%);
+  }
+
 body {
     overflow-x: hidden;
+    background-color: var(--dark-blue);
 }
 
 h1 {
     text-align: center;
+    color: var(--light-yellow);
+}
+
+h3 {
+    color: var(--light-yellow);
+}
+
+p {
+    color: #fff;
+}
+
+.card {
+    background-color: var(--grey-blue);
 }
 
 .wrapper {
@@ -15,7 +37,6 @@ h1 {
 .navbar {
     padding: 20px;
     margin-bottom: 20px;
-    background: #008cba;
     color: #fff;
     display: flex;
     justify-content: space-between;
