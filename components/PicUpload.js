@@ -5,7 +5,7 @@ const boxStyle = { height: "120px", width: "30%", backgroundColor: "lightgrey", 
 const UploaderBox = ({ uploadPhoto }) => {
     return (
         <div style={boxStyle}>
-                <label for="file-upload" class="file-upload" style={{padding: "40%"}}> UPLOAD </label>
+                <label htmlFor="file-upload" className="file-upload" style={{padding: "40%"}}> UPLOAD </label>
                 <input id="file-upload" type="file" name="image" accept="image/png, image/jpeg" onChange={uploadPhoto} style={{ display: "none" }} />
         </div >
     )

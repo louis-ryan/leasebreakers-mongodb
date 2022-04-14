@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 import PicUpload from '../components/PicUpload';
+import Compress from "react-image-file-resizer";
 
 const NewNote = () => {
     const [form, setForm] = useState({});
@@ -70,10 +71,10 @@ const NewNote = () => {
         })
     }
 
-    const uploadPhoto = async (e) => {
-        const file = e.target.files[0];
-        console.log("file, ", file)
-        const filename = encodeURIComponent(file.name);
+
+    const uploadCompressedPhoto = async (newBlob, fileName) => {
+        const file = newBlob;
+        const filename = encodeURIComponent(fileName);
         const res = await fetch(`/api/upload?file=${filename}`);
         const { url, fields } = await res.json();
         const formData = new FormData();
@@ -114,6 +115,35 @@ const NewNote = () => {
         }
 
     };
+
+
+    const compressFile = (e) => {
+        const file = e.target.files[0];
+
+        Compress.imageFileResizer(
+            file, // the file from input
+            480, // width
+            480, // height
+            "JPEG", // compress format WEBP, JPEG, PNG
+            70, // quality
+            0, // rotation
+            (image) => {
+                const byteString = atob(image.split(',')[1]);
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i += 1) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                const newBlob = new Blob([ab], {
+                    type: 'image/jpeg'
+                });
+
+                uploadCompressedPhoto(newBlob, file.name)
+                return newBlob;
+            },
+            "base64" // blob or base64 default base64
+        );
+    }
 
 
     const validate = () => {
@@ -199,15 +229,15 @@ const NewNote = () => {
 
 
                             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
-                                <PicUpload id={0} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={1} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={2} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={3} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={4} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={5} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={6} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={7} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
-                                <PicUpload id={8} uploadPhoto={uploadPhoto} form={form} setForm={setForm} />
+                                <PicUpload id={0} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={1} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={2} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={3} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={4} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={5} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={6} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={7} uploadPhoto={compressFile} form={form} setForm={setForm} />
+                                <PicUpload id={8} uploadPhoto={compressFile} form={form} setForm={setForm} />
 
                             </div>
                             <Button type='submit'>Create</Button>
