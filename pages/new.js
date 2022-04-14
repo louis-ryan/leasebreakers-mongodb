@@ -27,7 +27,7 @@ const NewNote = () => {
     useEffect(() => {
         if (form.postCode > 2999) {
             async function getLocationsByZip() {
-                const res = await fetch(`http://api.beliefmedia.com/postcodes/${form.postCode}.json`);
+                const res = await fetch(`https://api.beliefmedia.com/postcodes/${form.postCode}.json`);
                 const { data } = await res.json();
 
                 console.log("location: ", data)
