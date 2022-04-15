@@ -15,7 +15,7 @@ const ImageBox = ({ form, id }) => {
     return (
         <div style={boxStyle}>
             <img src={form.pics && form.pics[id] && form.pics[id].url}
-                style={{ width: "100%" }}
+                style={{ height: "100%" }}
             />
             {/* <h3 onClick={() => {
         var newForm = form
