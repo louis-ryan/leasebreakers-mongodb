@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const Navbar = () => (
-    <nav className="navbar">
+    <nav id="main_nav" className="navbar">
         <Link href="/">
             <a className="navbar-brand">leasebreakers</a>
         </Link>
