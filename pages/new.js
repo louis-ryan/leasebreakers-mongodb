@@ -78,9 +78,10 @@ const NewNote = () => {
      * @param {*} newBlob 
      * @param {*} fileName 
      */
-    const uploadCompressedPhoto = async (newBlob, fileName) => {
+    const uploadCompressedPhoto = async (newBlob, compFileName) => {
         const file = newBlob;
-        const filename = encodeURIComponent(fileName);
+        const timeStamp = Math.round(new Date().getTime() / 1000)
+        const filename = encodeURIComponent(timeStamp + "" + compFileName);
         const res = await fetch(`/api/upload?file=${filename}`);
         const { url, fields } = await res.json();
         const formData = new FormData();
@@ -143,8 +144,10 @@ const NewNote = () => {
                             Title
                             <Form.Input placeholder='Title' name='title' onChange={handleChange} />
                             Post Code
-                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} />
-                            {errors.address && errors.address}
+                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} style={{borderRadius: "8px", border: errors.address && "2px solid red"}} />
+                            {errors.address && <p style={{ background: "red", borderRadius: "8px", marginTop: "4px", padding: "8px" }}>
+                                {errors.address}
+                            </p>}
                             {form.address && form.postCode > 2999 && <p>{form.address}</p>}
                             Description
                             <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />

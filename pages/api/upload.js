@@ -18,7 +18,4 @@ export default async function handler(req, res) {
     });
 
     res.status(200).json(post);
-
-    
-    console.log("post from api, ", post)
 }
