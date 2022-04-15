@@ -1,10 +1,28 @@
 import { useEffect, useState } from 'react';
 import fetch from 'isomorphic-unfetch';
 import ListingCard from '../components/ListingCard';
+import IntroAni from '../components/IntroAni';
 
 const Index = () => {
 
+  const [introAni, setIntroAni] = useState(true)
+
   const [notes, setNotes] = useState([])
+
+
+  /**
+   * Handle Intro Animation 
+   */
+  useEffect(() => {
+
+    /**
+     * PLAY FIRST TIME BUT SET COOKIE TO BLOCK AFTER
+     */
+    if (introAni) { setTimeout(() => { setIntroAni(false); localStorage.setItem("block_ani", true); }, 6000) }
+
+    if (localStorage.getItem("block_ani")) { setIntroAni(false) }
+
+  }, [introAni])
 
 
   useEffect(() => {
@@ -28,20 +46,25 @@ const Index = () => {
 
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <div style={{ width: "calc(100% - 32px)", maxWidth: "600px", overflowX: "hidden"}}>
-        <h1>Lease Breakers Melbourne</h1>
-        <div>
-          {notes && notes.map((note, idx) => {
-            return (
-              <ListingCard
-                key={idx}
-                note={note}
-              />
-            )
-          })}
+
+      {introAni ? (
+        <IntroAni />
+      ) : (
+        <div style={{ width: "calc(100% - 32px)", maxWidth: "600px" }}>
+          <h1>available now</h1>
+          <div>
+            {notes && notes.map((note, idx) => {
+              return (
+                <ListingCard
+                  key={idx}
+                  note={note}
+                />
+              )
+            })}
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </div >
   )
 }
 
