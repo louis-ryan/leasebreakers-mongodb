@@ -9,6 +9,7 @@
 body {
     overflow-x: hidden;
     background-color: var(--dark-blue);
+    color: white
 }
 
 h1 {
@@ -54,11 +55,6 @@ p {
 
 .navbar-brand:hover, .create:hover {
     color: #fff;
-}
-
-.form-container {
-    width: 400px;
-    margin: 20px auto;
 }
 
 .note-container {

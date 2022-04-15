@@ -3,7 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 import PicUpload from '../components/PicUpload';
-import Compress from "react-image-file-resizer";
+import Compress from 'react-image-file-resizer';
 
 const NewNote = () => {
     const [form, setForm] = useState({});
@@ -12,66 +12,72 @@ const NewNote = () => {
 
     const router = useRouter();
 
-    useEffect(() => {
-        if (isSubmitting) {
-            if (Object.keys(errors).length === 0) {
-                createNote();
-            }
-            else {
-                setIsSubmitting(false);
-            }
-        }
-    }, [errors])
 
-
+    /**
+     * Search JSON for matching postcodes
+     */
     useEffect(() => {
-        if (form.postCode > 2999) {
+        const searchCondition = (form.postCode > 2999 && form.postCode < 4000) || (form.postCode > 7999 && form.postCode < 9000)
+        if (searchCondition) {
             async function getLocationsByZip() {
-                const res = await fetch(`https://api.beliefmedia.com/postcodes/${form.postCode}.json`);
-                const { data } = await res.json();
+                const res = await fetch(`./postCodes.json?`);
+                const data = await res.json()
+                var validAddresses = []
 
-                console.log("location: ", data)
-                setForm({
-                    ...form,
-                    address: data.locality
+                data.map((entry) => {
+
+                    // We have a match
+                    if (`${entry.postcode}` === form.postCode) {
+                        validAddresses.push(entry.place_name)
+                        setForm({ ...form, address: validAddresses + ";" })
+                        setErrors({ ...errors, address: null })
+                    }
+                    // Nothing matches
+                    if (validAddresses.length === 0) {
+                        setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
+                    }
                 })
             }
             getLocationsByZip()
-        }
+        } else { setForm({ ...form, address: null }) }
     }, [form.postCode])
 
 
+    /**
+     * SEND NEW DATA TO THE SERVER
+     */
     const createNote = async () => {
         try {
             const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/notes', {
                 method: 'POST',
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
+            setIsSubmitting(true)
             router.push("/");
+            console.log("SUCCESS, ", res)
         } catch (error) {
-            console.log(error);
+            console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        let errs = validate();
-        setErrors(errs);
-        setIsSubmitting(true);
-    }
+    /**
+     * CALLBACK FOR SUBMIT EVENT
+     */
+    const handleSubmit = () => { createNote() }
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        })
-    }
+    /**
+     * CALLBACK FOR CHANGE EVENT
+     * @param {*} e 
+     */
+    const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }) }
 
 
+    /**
+     * UPLOAD PHOTO TO AWS
+     * @param {*} newBlob 
+     * @param {*} fileName 
+     */
     const uploadCompressedPhoto = async (newBlob, fileName) => {
         const file = newBlob;
         const filename = encodeURIComponent(fileName);
@@ -79,44 +85,28 @@ const NewNote = () => {
         const { url, fields } = await res.json();
         const formData = new FormData();
 
-        Object.entries({ ...fields, file }).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-
-        const upload = await fetch(url, {
-            method: 'POST',
-            body: formData
-        });
+        Object.entries({ ...fields, file }).forEach(([key, value]) => { formData.append(key, value); });
+        const upload = await fetch(url, { method: 'POST', body: formData });
 
         if (upload.ok) {
-            console.log('Uploaded successfully!', upload);
-            console.log("form from image upload, ", form)
-
             if (form.pics) {
                 var newPics = form.pics
-                newPics.push({
-                    url: upload.url + "/" + filename
-                })
-
-                setForm({
-                    ...form, newPics
-                });
+                newPics.push({ url: upload.url + "/" + filename })
+                setForm({ ...form, newPics });
             } else {
-                setForm({
-                    ...form, pics: [{
-                        url: upload.url + "/" + filename
-                    }]
-                });
+                setForm({ ...form, pics: [{ url: upload.url + "/" + filename }] });
             }
 
-
         } else {
-            console.error('Upload failed.');
+            setErrors({ ...errors, pics: "It looks like you need to try a different type of image." });
         }
 
     };
 
-
+    /**
+     * COMPRESS PHOTO BEFORE UPLOAD (FOR MOBILE)
+     * @param {*} e 
+     */
     const compressFile = (e) => {
         const file = e.target.files[0];
 
@@ -131,13 +121,8 @@ const NewNote = () => {
                 const byteString = atob(image.split(',')[1]);
                 const ab = new ArrayBuffer(byteString.length);
                 const ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i += 1) {
-                    ia[i] = byteString.charCodeAt(i);
-                }
-                const newBlob = new Blob([ab], {
-                    type: 'image/jpeg'
-                });
-
+                for (let i = 0; i < byteString.length; i += 1) { ia[i] = byteString.charCodeAt(i); }
+                const newBlob = new Blob([ab], { type: 'image/jpeg' });
                 uploadCompressedPhoto(newBlob, file.name)
                 return newBlob;
             },
@@ -146,87 +131,23 @@ const NewNote = () => {
     }
 
 
-    const validate = () => {
-        let err = {};
-
-        if (!form.description) {
-            err.description = 'Description is required';
-        }
-
-        return err;
-    }
-
     return (
-        <div className="form-container">
-            <h1>Create Post</h1>
-            <div>
-                {
-                    isSubmitting
-                        ? <Loader active inline='centered' />
-                        : <Form onSubmit={handleSubmit}>
-                            <Form.Input
-                                label='Title'
-                                placeholder='Title'
-                                name='title'
-                                onChange={handleChange}
-                            />
-                            <Form.Input
-                                error={errors.address ? { content: 'Please enter a post code', pointing: 'below' } : null}
-                                label='Post Code'
-                                placeholder='3000'
-                                name='postCode'
-                                onChange={handleChange}
-                            />
-                            {form.address && form.postCode > 2999 &&
-                                <p>{form.address}</p>
-                            }
-                            <Form.TextArea
-                                label='Descriprtion'
-                                placeholder='Description'
-                                name='description'
-                                error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
-                                onChange={handleChange}
-                            />
-
-                            {/* <div style={{ width: "30%", overflow: "hidden" }}>
-                                {!form.pics || form.pics.length < 1 ?
-                                    <input type="file" name="image" accept="image/png, image/jpeg" onChange={uploadPhoto} />
-                                    :
-                                    <div>
-                                        <img src={form.pics && form.pics[0].url}
-                                            style={{ width: "100%" }}
-                                        />
-                                        <h3 onClick={() => {
-                                            var newForm = form
-                                            newForm.pics.splice(0, 1)
-
-                                            setForm(newForm);
-                                        }}>
-                                            DELETE
-                                        </h3>
-                                    </div>
-                                }
-                            </div>
-                            <div style={{ width: "30%", overflow: "hidden" }}>
-                                {form.pics && form.pics.length < 2 ?
-                                    <input type="file" name="image" accept="image/png, image/jpeg" onChange={uploadPhoto} />
-                                    :
-                                    <div>
-                                        <img src={form.pics && form.pics[0].url}
-                                            style={{ width: "100%" }}
-                                        />
-                                        <h3 onClick={() => {
-                                            var newForm = form
-                                            newForm.pics.splice(1, 1)
-
-                                            setForm(newForm);
-                                        }}>
-                                            DELETE
-                                        </h3>
-                                    </div>
-                                }
-                            </div> */}
-
+        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+                <h1>Create Post</h1>
+                <div>
+                    {isSubmitting ? (
+                        <Loader active inline='centered' />
+                    ) : (
+                        <Form onSubmit={handleSubmit}>
+                            Title
+                            <Form.Input placeholder='Title' name='title' onChange={handleChange} />
+                            Post Code
+                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} />
+                            {errors.address && errors.address}
+                            {form.address && form.postCode > 2999 && <p>{form.address}</p>}
+                            Description
+                            <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
 
                             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
                                 <PicUpload id={0} uploadPhoto={compressFile} form={form} setForm={setForm} />
@@ -238,11 +159,11 @@ const NewNote = () => {
                                 <PicUpload id={6} uploadPhoto={compressFile} form={form} setForm={setForm} />
                                 <PicUpload id={7} uploadPhoto={compressFile} form={form} setForm={setForm} />
                                 <PicUpload id={8} uploadPhoto={compressFile} form={form} setForm={setForm} />
-
                             </div>
                             <Button type='submit'>Create</Button>
                         </Form>
-                }
+                    )}
+                </div>
             </div>
         </div>
     )
