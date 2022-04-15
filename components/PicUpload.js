@@ -37,28 +37,21 @@ const InactiveBox = ({ }) => {
 
 const PicUpload = ({ id, uploadPhoto, form }) => {
 
+    /**
+     * Logic to handle the various states of the uploader boxes
+     */
     if (form.pics) {
-
         if (id === form.pics.length) {
-
             return <UploaderBox uploadPhoto={uploadPhoto} />
-
         } else if (form.pics[id] && form.pics[id].url) {
-
             return <ImageBox form={form} id={id} />
-
         } else {
-
             return <InactiveBox />
         }
     } else {
-
         if (id === 0) {
-
             return <UploaderBox uploadPhoto={uploadPhoto} />
-
         } else {
-
             return <InactiveBox />
         }
 

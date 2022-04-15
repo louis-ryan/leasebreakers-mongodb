@@ -4,9 +4,8 @@ import ListingCardLeft from './ListingCardLeft';
 const ListingCard = ({ note }) => {
     return (
         <div
-            className="card"
             key={note._id}
-            style={{ width: "100%", margin: "8px 0px", display: "flex", justifyContent: "space-between" }}
+            style={{height: "100%", margin: "8px 0px", width: "100%", overflowX: "scroll", background: "white"}}
         >
             <ListingCardLeft note={note} />
             <ListingCardRight note={note} />

@@ -27,17 +27,19 @@ const Index = () => {
 
 
   return (
-    <div id="listingsPage">
-      <h1>Lease Breakers Melbourne</h1>
-      <div>
-        {notes && notes.map((note, idx) => {
-          return (
-            <ListingCard
-              key={idx}
-              note={note}
-            />
-          )
-        })}
+    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "calc(100% - 32px)", maxWidth: "600px", overflowX: "hidden"}}>
+        <h1>Lease Breakers Melbourne</h1>
+        <div>
+          {notes && notes.map((note, idx) => {
+            return (
+              <ListingCard
+                key={idx}
+                note={note}
+              />
+            )
+          })}
+        </div>
       </div>
     </div>
   )
