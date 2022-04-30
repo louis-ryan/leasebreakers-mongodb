@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import ListingCard from '../components/ListingCard';
 import IntroAni from '../components/IntroAni';
 
 const Index = () => {
+
+  const { user, error, isLoading } = useUser()
+
+  console.log("user, ", user)
 
   const [introAni, setIntroAni] = useState(true)
 
@@ -51,7 +56,8 @@ const Index = () => {
         <IntroAni />
       ) : (
         <div style={{ width: "calc(100% - 32px)", maxWidth: "600px" }}>
-          <h1>available now</h1>
+          {user && <h3>Welcome {user.name}</h3>}
+          <h3> These Properties are Available </h3>
           <div>
             {notes && notes.map((note, idx) => {
               return (
