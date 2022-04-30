@@ -6,8 +6,6 @@ const Navbar = () => {
 
     const { user, error, isLoading } = useUser()
 
-    console.log("user from nav, ", user)
-    // console.log("local storage, ", localStorage)
 
     return (
         <nav
@@ -29,8 +27,6 @@ const Navbar = () => {
                     </Link>
                 </div>
                 :
-
-
                 <Link href="/api/auth/login">
                     <a className="create">Create listing</a>
                 </Link>

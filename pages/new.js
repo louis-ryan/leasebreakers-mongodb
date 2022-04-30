@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
@@ -6,11 +7,18 @@ import PicUpload from '../components/PicUpload';
 import Compress from 'react-image-file-resizer';
 
 const NewNote = () => {
+
+    const { user, error, isLoading } = useUser()
+    console.log("user from new, ", user)
+
     const [form, setForm] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const router = useRouter();
+
+
+    console.log("form, ", form)
 
 
     /**
@@ -51,7 +59,12 @@ const NewNote = () => {
             const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/notes', {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify(form)
+                body: JSON.stringify({
+                    ...form,
+                    breakerName: user.name,
+                    breakerId: user.sub,
+                    breakerPicture: user.picture,
+                })
             })
             setIsSubmitting(true)
             router.push("/");
@@ -64,7 +77,11 @@ const NewNote = () => {
     /**
      * CALLBACK FOR SUBMIT EVENT
      */
-    const handleSubmit = () => { createNote() }
+    const handleSubmit = () => {
+
+        createNote()
+
+    }
 
     /**
      * CALLBACK FOR CHANGE EVENT
@@ -141,14 +158,29 @@ const NewNote = () => {
                         <Loader active inline='centered' />
                     ) : (
                         <Form onSubmit={handleSubmit}>
+
                             Title
                             <Form.Input placeholder='Title' name='title' onChange={handleChange} />
+
                             Post Code
-                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} style={{borderRadius: "8px", border: errors.address && "2px solid red"}} />
+                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} style={{ borderRadius: "8px", border: errors.address && "2px solid red" }} />
                             {errors.address && <p style={{ background: "red", borderRadius: "8px", marginTop: "4px", padding: "8px" }}>
                                 {errors.address}
                             </p>}
                             {form.address && form.postCode > 2999 && <p>{form.address}</p>}
+
+                            <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
+                                <div>
+                                    Number of Rooms
+                                    <Form.Field placeholder='2' control='input' name='numRoom' type='number' onChange={handleChange} />
+                                </div>
+
+                                <div>
+                                    Number of Bathrooms
+                                    <Form.Field placeholder='1' control='input' name='numBath' type='number' onChange={handleChange} />
+                                </div>
+                            </div>
+
                             Description
                             <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
 
