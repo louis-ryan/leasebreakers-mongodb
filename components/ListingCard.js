@@ -18,7 +18,7 @@ const ListingCard = ({ note }) => {
                     background: "white",
                     borderRadius: "4px",
                     boxShadow: "0px 0px 42px 2px rgba(0,0,0,0.6)",
-                    border: user.sub === note.breakerId && "8px #5D4A26 solid"
+                    border: user && user.sub === note.breakerId && "8px #5D4A26 solid"
                 }}
                 className="note-container"
             >

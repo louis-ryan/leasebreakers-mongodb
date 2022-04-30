@@ -22,7 +22,7 @@ const ListingCardLeft = ({ note, user }) => {
             <div style={{ display: "flex", justifyContent: "right" }}>
 
                 {/* listed by you */}
-                {user.sub === note.breakerId &&
+                {user && user.sub === note.breakerId &&
                     <div className='note-tag-yours'> YOUR POST </div>
                 }
 
