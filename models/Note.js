@@ -43,7 +43,27 @@ const NoteSchema = new mongoose.Schema({
     petsAllowed: {
         type: Boolean,
         required: false
-    }
+    },
+    breakerName: {
+        type: String,
+        required: false
+    },
+    breakerId: {
+        type: String,
+        required: false
+    },
+    breakerPicture: {
+        type: String,
+        required: false
+    },
+    walkToStation: {
+        type: Boolean,
+        required: false
+    },
+    walkToSupermarket: {
+        type: Boolean,
+        required: false
+    },
 })
 
 module.exports = mongoose.models.Note || mongoose.model('Note', NoteSchema);
