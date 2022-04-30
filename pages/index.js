@@ -8,8 +8,6 @@ const Index = () => {
 
   const { user, error, isLoading } = useUser()
 
-  console.log("user, ", user)
-
   const [introAni, setIntroAni] = useState(true)
 
   const [notes, setNotes] = useState([])
@@ -37,15 +35,6 @@ const Index = () => {
       setNotes(data)
     }
     getInitialNotes()
-  }, [])
-
-
-  useEffect(() => {
-    async function getInitialUsers() {
-      const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/users');
-      const { data } = await res.json();
-    }
-    getInitialUsers()
   }, [])
 
 

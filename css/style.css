@@ -24,6 +24,10 @@ p {
     color: #fff;
 }
 
+a {
+    color: #fff;
+}
+
 .card {
     background-color: var(--grey-blue);
 }
@@ -56,9 +60,30 @@ p {
     color: #fff;
 }
 
-.note-container {
-    text-align: center;
-    margin-top: 20px;
+.note-container:hover {
+    outline: 2px white solid;
+    filter: brightness(1.2);
+    cursor: pointer;
+}
+
+.note-tag {
+    padding: 8px;
+    background: var(--blue-white-gradient);
+    outline: 1px white solid;
+    border-radius: 8px;
+    margin-right: 4px;
+    color: black;
+    font-weight: 800;
+}
+
+.note-tag-yours {
+    padding: 8px;
+    background: var(--dark-yellow);
+    outline: 1px white solid;
+    border-radius: 8px;
+    margin-right: 4px;
+    color: var(--light-yellow);
+    font-weight: 800;
 }
 
 .grid {
