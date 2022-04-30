@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 const Layout = ({ children }) => (
     <>
         <Head>
-            <title>Lease Breakers Melbourne</title>
+            <title>LBM</title>
         </Head>
         <Navbar />
         {children}

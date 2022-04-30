@@ -1,11 +1,21 @@
 // import App from 'next/app'
-import 'semantic-ui-css/semantic.min.css'
+
+import { UserProvider } from '@auth0/nextjs-auth0';
+
 import Layout from '../components/Layout';
+
+import 'semantic-ui-css/semantic.min.css'
 import '../css/style.css';
 
 function MyApp({ Component, pageProps }) {
 
-    return <Layout><Component {...pageProps} /></Layout>
+    return (
+        <UserProvider>
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
+        </UserProvider>
+    )
 }
 
 export default MyApp
