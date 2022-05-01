@@ -11,19 +11,22 @@ const ListingCard = ({ note }) => {
         <Link href={`/${note._id}`}>
             <div
                 key={note._id}
-                style={{
-                    height: "100%",
-                    margin: "8px 0px",
-                    width: "100%",
-                    background: "white",
-                    borderRadius: "4px",
-                    boxShadow: "0px 0px 42px 2px rgba(0,0,0,0.6)",
-                    border: user && user.sub === note.breakerId && "8px #5D4A26 solid"
-                }}
                 className="note-container"
+                style={{
+                    border: user && user.sub === note.breakerId && "8px #586781 solid",
+                    // outline: user && user.sub === note.breakerId && "0.5px white solid"
+                }}
             >
+
+                {/* Cointent: Tags, Details */}
                 <ListingCardLeft note={note} user={user} />
+
+                {/* Scrolling Imgs Background */}
                 <ListingCardRight note={note} />
+
+                {/* If is your listing */}
+                {user && user.sub === note.breakerId && <div className='note-mine'>🌱 🏡 Your Listing </div>}
+
             </div>
         </Link>
     )
