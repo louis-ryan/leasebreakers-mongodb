@@ -1,11 +1,10 @@
-import { useState } from "react"
+
 
 const ListingCardRight = ({ note }) => {
-    console.log(note.pics)
 
 
     return (
-        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll" }}>
+        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll", borderRadius: "4px" }}>
             {note.pics.map((pic, idx) => {
 
                 return (

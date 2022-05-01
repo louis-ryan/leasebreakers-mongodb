@@ -8,31 +8,34 @@ const Navbar = () => {
 
 
     return (
-        <nav
-            // id="main_nav"
-            className="navbar"
-        >
-            <Link href="/">
-                <a className="navbar-brand"><Logo /></a>
-            </Link>
-            {user ?
-                <div>
-                    <Link href="/api/auth/logout">
-                        <a className="navbar-brand">
-                            <img width="40px" style={{ borderRadius: "50%" }} src={user.picture} />
-                        </a>
-                    </Link>
-                    <Link href="/new">
-                        <a className="create">Create listing</a>
-                    </Link>
-                </div>
-                :
-                <Link href="/api/auth/login">
-                    <a className="create">Create listing</a>
+        <div style={{ position: "fixed", width: "100%", zIndex: "10", opacity: "0.9" }}>
+            <nav
+                // id="main_nav"
+                className="navbar"
+                style={{ display: "flex", justifyContent: "space-between" }}
+            >
+                <Link href="/">
+                    <div style={{ height: "48px" }} className="navbar-brand"><Logo /></div>
                 </Link>
+                {user ?
+                    <div style={{ display: "flex" }}>
+                        <Link href="/api/auth/logout">
+                            <a className="navbar-brand"> <img width="40px" style={{ borderRadius: "50%", marginTop: "8px" }} src={user.picture} /></a>
+                        </Link>
+                        <div style={{ width: "4px" }} />
+                        <Link href="/new">
+                            <div className="create"> + </div>
+                        </Link>
+                    </div>
+                    :
+                    <Link href="/api/auth/login">
+                        <a className="create"> + </a>
+                    </Link>
 
-            }
-        </nav>
+                }
+            </nav>
+            <div className='navbar-gradient' />
+        </div>
     )
 }
 

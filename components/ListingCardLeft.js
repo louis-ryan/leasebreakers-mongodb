@@ -1,41 +1,32 @@
 import { Button } from 'semantic-ui-react';
 
 
-const ListingCardLeft = ({ note, user }) => {
+const ListingCardLeft = ({ note }) => {
 
 
     return (
         <div style={{ position: "absolute", zIndex: "2", padding: "16px", display: "flex", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", justifyContent: "left" }}>
 
-                {/* address */}
-                <div className='note-tag'> Close to {note.address && note.address} </div>
+            {/* address */}
+            <div className='note-tag'> 📍 {note.address && note.address} </div>
 
-                {/* rooms */}
-                <div className='note-tag'> {note.numRoom && note.numRoom} rooms </div>
+            {/* rooms */}
+            <div className='note-tag'> 🛋️ {note.numRoom && note.numRoom} </div>
 
-                {/* baths */}
-                <div className='note-tag'> {note.numBath && note.numBath} baths </div>
-
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "right" }}>
-
-                {/* listed by you */}
-                {user && user.sub === note.breakerId &&
-                    <div className='note-tag-yours'> YOUR POST </div>
-                }
-
-            </div>
-
+            {/* baths */}
+            <div className='note-tag'> 🛀 {note.numBath && note.numBath} </div>
 
             {/*
                 <Link href={`/${note._id}/edit`}>
                     <Button primary>Edit</Button>
                 </Link> 
-                */}
-
+            */}
         </div>
+
+
+
+
+
     )
 }
 

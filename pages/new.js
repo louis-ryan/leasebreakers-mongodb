@@ -151,7 +151,7 @@ const NewNote = () => {
 
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", marginTop: "80px" }}>
                 <h1>Create Post</h1>
                 <div>
                     {isSubmitting ? (
