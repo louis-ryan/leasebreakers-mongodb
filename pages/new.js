@@ -8,10 +8,12 @@ import Compress from 'react-image-file-resizer';
 
 const NewNote = () => {
 
-    const { user, error, isLoading } = useUser()
-    console.log("user from new, ", user)
+    const { user, error, isLoading } = useUser();
 
     const [form, setForm] = useState({});
+    const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
+    console.log("form bool, ", formBools)
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -62,6 +64,11 @@ const NewNote = () => {
                     breakerName: user.name,
                     breakerId: user.sub,
                     breakerPicture: user.picture,
+                    petsAllowed: formBools.petsAllowed,
+                    outdoorArea: formBools.outdoorArea,
+                    parkingSpace: formBools.parkingSpace,
+                    supermarket: formBools.supermarket,
+                    trainStation: formBools.trainStation
                 })
             })
             setIsSubmitting(true)
@@ -75,11 +82,7 @@ const NewNote = () => {
     /**
      * CALLBACK FOR SUBMIT EVENT
      */
-    const handleSubmit = () => {
-
-        createNote()
-
-    }
+    const handleSubmit = () => { createNote() }
 
     /**
      * CALLBACK FOR CHANGE EVENT
@@ -164,7 +167,12 @@ const NewNote = () => {
                             <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
 
                             Post Code
-                            <Form.Input placeholder='3000' name='postCode' onChange={handleChange} style={{ borderRadius: "8px", border: errors.address && "2px solid red" }} />
+                            <Form.Input
+                                placeholder='3000'
+                                name='postCode'
+                                onChange={handleChange}
+                                style={{ borderRadius: "8px", border: errors.address && "2px solid red" }}
+                            />
                             {errors.address && <p style={{ background: "red", borderRadius: "8px", marginTop: "4px", padding: "8px" }}>
                                 {errors.address}
                             </p>}
@@ -188,17 +196,50 @@ const NewNote = () => {
 
                                 <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
 
-                                    <div className="form-bool" style={{ width: "30%" }}>
+                                    <div
+                                        className="form-bool"
+                                        style={{
+                                            width: "30%",
+                                            opacity: formBools.petsAllowed === false ? "0.8" : "1",
+                                            filter: formBools.petsAllowed === false ? "brightness(0.5)" : "brightness(1)",
+                                        }}
+                                        onClick={() => setFormBools({
+                                            ...formBools,
+                                            petsAllowed: formBools.petsAllowed === false ? true : false
+                                        })}
+                                    >
                                         <h1> 🐶 </h1>
                                         <p>Pets Allowed</p>
                                     </div>
 
-                                    <div className="form-bool" style={{ width: "30%" }}>
+                                    <div
+                                        className="form-bool"
+                                        style={{
+                                            width: "30%",
+                                            opacity: formBools.outdoorArea === false ? "0.8" : "1",
+                                            filter: formBools.outdoorArea === false ? "brightness(0.5)" : "brightness(1)",
+                                        }}
+                                        onClick={() => setFormBools({
+                                            ...formBools,
+                                            outdoorArea: formBools.outdoorArea === false ? true : false
+                                        })}
+                                    >
                                         <h1>🌲</h1>
                                         <p>Outdoor Area</p>
                                     </div>
 
-                                    <div className="form-bool" style={{ width: "30%" }}>
+                                    <div
+                                        className="form-bool"
+                                        style={{
+                                            width: "30%",
+                                            opacity: formBools.parkingSpace === false ? "0.8" : "1",
+                                            filter: formBools.parkingSpace === false ? "brightness(0.5)" : "brightness(1)",
+                                        }}
+                                        onClick={() => setFormBools({
+                                            ...formBools,
+                                            parkingSpace: formBools.parkingSpace === false ? true : false
+                                        })}
+                                    >
                                         <h1>🚗</h1>
                                         <p>Parking Space</p>
                                     </div>
@@ -209,12 +250,34 @@ const NewNote = () => {
 
                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
 
-                                    <div className="form-bool" style={{ width: "44.6%" }}>
+                                    <div
+                                        className="form-bool"
+                                        style={{
+                                            width: "44.6%",
+                                            opacity: formBools.supermarket === false ? "0.8" : "1",
+                                            filter: formBools.supermarket === false ? "brightness(0.5)" : "brightness(1)",
+                                        }}
+                                        onClick={() => setFormBools({
+                                            ...formBools,
+                                            supermarket: formBools.supermarket === false ? true : false
+                                        })}
+                                    >
                                         <h1>🛒</h1>
                                         <p>Supermarket</p>
                                     </div>
 
-                                    <div className="form-bool" style={{ width: "44.6%" }}>
+                                    <div
+                                        className="form-bool"
+                                        style={{
+                                            width: "44.6%",
+                                            opacity: formBools.trainStation === false ? "0.8" : "1",
+                                            filter: formBools.trainStation === false ? "brightness(0.5)" : "brightness(1)",
+                                        }}
+                                        onClick={() => setFormBools({
+                                            ...formBools,
+                                            trainStation: formBools.trainStation === false ? true : false
+                                        })}
+                                    >
                                         <h1>🚉</h1>
                                         <p>Trainstation</p>
                                     </div>
