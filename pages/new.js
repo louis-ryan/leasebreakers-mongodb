@@ -12,7 +12,6 @@ const NewNote = () => {
 
     const [form, setForm] = useState({});
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
-    console.log("form bool, ", formBools)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
@@ -60,7 +59,7 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...form,
-                    title: "very nice house",
+                    title: `A new house ${new Date().getTime()}`,
                     breakerName: user.name,
                     breakerId: user.sub,
                     breakerPicture: user.picture,
