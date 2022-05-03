@@ -1,0 +1,6 @@
+.form-bool {
+    background-color: var(--grey-blue);
+    text-align: center;
+    padding: 8px;
+    border-radius: 4px;
+}
