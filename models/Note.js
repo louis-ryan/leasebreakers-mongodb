@@ -41,6 +41,10 @@ const NoteSchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
+    parkingSpace: {
+        type: Boolean,
+        required: false
+    },
     breakerName: {
         type: String,
         required: false

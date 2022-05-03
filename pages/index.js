@@ -45,7 +45,7 @@ const Index = () => {
         <IntroAni />
       ) : (
         <div style={{ width: "calc(100% - 32px)", maxWidth: "600px", marginTop: "80px" }}>
-          {user && <h2>Welcome {user.name}</h2>}
+          {user && <h1>Welcome {user.name}</h1>}
           <h3> These Properties are Available </h3>
           <div>
             {notes && notes.map((note, idx) => {

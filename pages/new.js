@@ -18,9 +18,6 @@ const NewNote = () => {
     const router = useRouter();
 
 
-    console.log("form, ", form)
-
-
     /**
      * Search JSON for matching postcodes
      */
@@ -61,6 +58,7 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...form,
+                    title: "very nice house",
                     breakerName: user.name,
                     breakerId: user.sub,
                     breakerPicture: user.picture,
@@ -151,7 +149,7 @@ const NewNote = () => {
 
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", marginTop: "80px" }}>
+            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", marginTop: "80px", marginBottom: "40px" }}>
                 <h1>Create Post</h1>
                 <div>
                     {isSubmitting ? (
@@ -159,8 +157,11 @@ const NewNote = () => {
                     ) : (
                         <Form onSubmit={handleSubmit}>
 
-                            Title
-                            <Form.Input placeholder='Title' name='title' onChange={handleChange} />
+                            {/* Title
+                            <Form.Input placeholder='Title' name='title' onChange={handleChange} /> */}
+
+                            Description
+                            <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
 
                             Post Code
                             <Form.Input placeholder='3000' name='postCode' onChange={handleChange} style={{ borderRadius: "8px", border: errors.address && "2px solid red" }} />
@@ -181,8 +182,47 @@ const NewNote = () => {
                                 </div>
                             </div>
 
-                            Description
-                            <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
+                            Does it have...
+
+                            <div style={{ margin: "0 0 1em" }}>
+
+                                <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
+
+                                    <div className="form-bool" style={{ width: "30%" }}>
+                                        <h1> 🐶 </h1>
+                                        <p>Pets Allowed</p>
+                                    </div>
+
+                                    <div className="form-bool" style={{ width: "30%" }}>
+                                        <h1>🌲</h1>
+                                        <p>Outdoor Area</p>
+                                    </div>
+
+                                    <div className="form-bool" style={{ width: "30%" }}>
+                                        <h1>🚗</h1>
+                                        <p>Parking Space</p>
+                                    </div>
+
+                                </div>
+
+                                Is it less than 1km to a...
+
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+                                    <div className="form-bool" style={{ width: "44.6%" }}>
+                                        <h1>🛒</h1>
+                                        <p>Supermarket</p>
+                                    </div>
+
+                                    <div className="form-bool" style={{ width: "44.6%" }}>
+                                        <h1>🚉</h1>
+                                        <p>Trainstation</p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            Photos
 
                             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
                                 <PicUpload id={0} uploadPhoto={compressFile} form={form} setForm={setForm} />
@@ -195,7 +235,12 @@ const NewNote = () => {
                                 <PicUpload id={7} uploadPhoto={compressFile} form={form} setForm={setForm} />
                                 <PicUpload id={8} uploadPhoto={compressFile} form={form} setForm={setForm} />
                             </div>
-                            <Button type='submit'>Create</Button>
+                            <Button
+                                type='submit'
+                                style={{ width: "100%", height: "80px" }}
+                            >
+                                Create
+                            </Button>
                         </Form>
                     )}
                 </div>

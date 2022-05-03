@@ -8,7 +8,7 @@ const ListingCardLeft = ({ note }) => {
         <div style={{ position: "absolute", zIndex: "2", padding: "16px", display: "flex", justifyContent: "space-between" }}>
 
             {/* address */}
-            <div className='note-tag'> 📍 {note.address && note.address} </div>
+            <div className='note-tag' style={{ width: "200px", whiteSpace: "nowrap", overflow: "hidden", display: "flex" }}> 📍 {note.address && note.address} </div>
 
             {/* rooms */}
             <div className='note-tag'> 🛋️ {note.numRoom && note.numRoom} </div>
