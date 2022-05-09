@@ -44,7 +44,7 @@ const Index = () => {
       {introAni ? (
         <IntroAni />
       ) : (
-        <div style={{ width: "calc(100% - 32px)", maxWidth: "600px", marginTop: "80px" }}>
+        <div className='mobile-container'>
           {user && <h1>Welcome {user.name}</h1>}
           <h3> These Properties are Available </h3>
           <div>

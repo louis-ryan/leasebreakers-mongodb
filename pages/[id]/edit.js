@@ -1,13 +1,45 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
-import { Button, Form, Loader } from 'semantic-ui-react';
+import { Confirm, Button, Form, Loader } from 'semantic-ui-react';
 import { useRouter } from 'next/router';
 
 const EditNote = ({ note }) => {
     const [form, setForm] = useState({ title: note.title, description: note.description });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
+    const [confirm, setConfirm] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const router = useRouter();
+
+
+    useEffect(() => {
+        if (isDeleting) {
+            deleteNote();
+        }
+    }, [isDeleting])
+
+    const open = () => setConfirm(true);
+
+    const close = () => setConfirm(false);
+
+    const deleteNote = async () => {
+        const noteId = router.query.id;
+        try {
+            const deleted = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${noteId}`, {
+                method: "Delete"
+            });
+
+            router.push("/");
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleDelete = async () => {
+        setIsDeleting(true);
+        close();
+    }
 
     useEffect(() => {
         if (isSubmitting) {
@@ -64,40 +96,56 @@ const EditNote = ({ note }) => {
     }
 
     return (
-        <div className="form-container">
-            <h1>Update Note</h1>
-            <div>
-                {
-                    isSubmitting
-                        ? <Loader active inline='centered' />
-                        : <Form onSubmit={handleSubmit}>
-                            <Form.Input
-                                error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
-                                label='Title'
-                                placeholder='Title'
-                                name='title'
-                                value={form.title}
-                                onChange={handleChange}
-                            />
-                            <Form.Input
-                                error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
-                                label='Address'
-                                placeholder='Address'
-                                name='address'
-                                value={form.address}
-                                onChange={handleChange}
-                            />
-                            <Form.TextArea
-                                label='Descriprtion'
-                                placeholder='Description'
-                                name='description'
-                                error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
-                                value={form.description}
-                                onChange={handleChange}
-                            />
-                            <Button type='submit'>Update</Button>
-                        </Form>
-                }
+        <div className="form-container" style={{display: "flex", justifyContent: "center"}}>
+            <div className='mobile-container'>
+                <h1>Update Note</h1>
+                <div>
+                    {
+                        isSubmitting
+                            ? <Loader active inline='centered' />
+                            : <Form onSubmit={handleSubmit}>
+                                <Form.Input
+                                    error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
+                                    label='Title'
+                                    placeholder='Title'
+                                    name='title'
+                                    value={form.title}
+                                    onChange={handleChange}
+                                />
+                                <Form.Input
+                                    error={errors.title ? { content: 'Please enter a title', pointing: 'below' } : null}
+                                    label='Address'
+                                    placeholder='Address'
+                                    name='address'
+                                    value={form.address}
+                                    onChange={handleChange}
+                                />
+                                <Form.TextArea
+                                    label='Descriprtion'
+                                    placeholder='Description'
+                                    name='description'
+                                    error={errors.description ? { content: 'Please enter a description', pointing: 'below' } : null}
+                                    value={form.description}
+                                    onChange={handleChange}
+                                />
+                                <Button type='submit'>Update</Button>
+                            </Form>
+                    }
+                </div>
+                <div>
+                    {isDeleting
+                        ? <Loader active />
+                        :
+
+                        <Button color='red' onClick={open}>Delete</Button>
+
+                    }
+                    <Confirm
+                        open={confirm}
+                        onCancel={close}
+                        onConfirm={handleDelete}
+                    />
+                </div>
             </div>
         </div>
     )

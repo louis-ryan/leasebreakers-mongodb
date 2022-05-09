@@ -1,62 +1,93 @@
 import fetch from 'isomorphic-unfetch';
+import { Button, Form, Loader } from 'semantic-ui-react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Confirm, Button, Loader } from 'semantic-ui-react';
+import { useUser } from '@auth0/nextjs-auth0';
 
 const Note = ({ note }) => {
-    const [confirm, setConfirm] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const router = useRouter();
 
-    console.log("note from note by id, ", note)
+    const { user, error, isLoading } = useUser();
 
-    useEffect(() => {
-        if (isDeleting) {
-            deleteNote();
-        }
-    }, [isDeleting])
+    const [comment, setComment] = useState(null)
 
-    const open = () => setConfirm(true);
-
-    const close = () => setConfirm(false);
-
-    const deleteNote = async () => {
-        const noteId = router.query.id;
+    /**
+    * SEND NEW DATA TO THE SERVER
+    */
+    const createComment = async () => {
         try {
-            const deleted = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${noteId}`, {
-                method: "Delete"
-            });
-
-            router.push("/");
+            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/comments', {
+                method: 'POST',
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    comment: comment,
+                    noteId: note._id,
+                    breakerName: note.breakerName, 
+                    breakerId: note.breakerId,
+                    commenterName: user.name,
+                    commenterEmail: user.email,
+                    commenterPicture: user.picture,
+                })
+            })
+            console.log("SUCCESS, ", res)
         } catch (error) {
-            console.log(error)
+            console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
     }
 
-    const handleDelete = async () => {
-        setIsDeleting(true);
-        close();
-    }
+    /**
+    * CALLBACK FOR SUBMIT EVENT
+    */
+    const handleSubmit = () => { createComment() }
+
+    /**
+    * CALLBACK FOR CHANGE EVENT
+    * @param {*} e 
+    */
+    const handleChange = (e) => { setComment(e.target.value) }
 
     return (
-        <div>
-            {isDeleting
-                ? <Loader active />
-                :
-                <>
-                    <h1>{note.title}</h1>
-                    <p>{note.description}</p>
-                    {note.postCode && 
-                    <h3>{note.postCode}</h3>
-                    }
-                    <Button color='red' onClick={open}>Delete</Button>
-                </>
-            }
-            <Confirm
-                open={confirm}
-                onCancel={close}
-                onConfirm={handleDelete}
-            />
+        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+            <div className='mobile-container'>
+
+                <div>
+                    Description:
+                    <h3>{note.description}</h3>
+                </div>
+
+                <div>
+                    Location:
+                    <h3>{note.address}</h3>
+                </div>
+
+                <div>
+                    Name of Breaker:
+                    <h3>{note.breakerName}</h3>
+                </div>
+
+                <div style={{ display: "flex", width: "100%", overflowX: "scroll" }}>
+                    {note.pics.map((pic, idx) => (
+                        <div key={idx}>
+                            <img
+                                src={pic.url}
+                                style={{ transform: "translateX(-100px)", height: "200px" }}
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                Get in Touch
+                <Form onSubmit={handleSubmit}>
+
+                    <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />ƒ
+                    <Button
+                        type='submit'
+                        style={{ width: "100%", height: "80px" }}
+                    >
+                        Create
+                    </Button>
+                </Form>
+
+
+            </div>
         </div>
     )
 }
