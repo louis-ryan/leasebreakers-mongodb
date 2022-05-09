@@ -47,6 +47,12 @@ a {
     margin: auto;
 }
 
+.mobile-container {
+    width: calc(100% - 32px);
+    max-width: 600px;
+    margin-top: 80px;
+}
+
 .note-container {
     height: 100%;
     margin: 8px 0px;

@@ -8,11 +8,10 @@ const Navbar = () => {
     const { user, error, isLoading } = useUser()
 
     const [userOptions, setUserOptions] = useState(false)
-    console.log(userOptions)
 
     if (user) {
         return (
-            <div style={{ position: "fixed", width: "100%", zIndex: "10", opacity: "0.95" }}>
+            <div style={{ position: "fixed", width: "100%", zIndex: "10", opacity: "0.95", top: "0px" }}>
                 <nav
                     // id="main_nav"
                     className="navbar"
