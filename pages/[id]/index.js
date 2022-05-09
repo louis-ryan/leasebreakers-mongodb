@@ -9,6 +9,23 @@ const Note = ({ note }) => {
 
     const [comment, setComment] = useState(null)
 
+    const [sentComments, setSentComments] = useState([])
+    console.log("sent comments, ", sentComments)
+
+
+    /**
+     * GET COMMENTS
+     */
+    useEffect(() => {
+        async function getInitialComments() {
+            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/comments');
+            const { data } = await res.json();
+            setSentComments(data)
+        }
+        getInitialComments()
+    }, [])
+
+
     /**
     * SEND NEW DATA TO THE SERVER
     */
@@ -20,7 +37,7 @@ const Note = ({ note }) => {
                 body: JSON.stringify({
                     comment: comment,
                     noteId: note._id,
-                    breakerName: note.breakerName, 
+                    breakerName: note.breakerName,
                     breakerId: note.breakerId,
                     commenterName: user.name,
                     commenterEmail: user.email,
