@@ -103,12 +103,12 @@ const Note = ({ note }) => {
                 Get in Touch
                 <Form onSubmit={handleSubmit}>
 
-                    {initComments.map((comment, idx) => (
+                    {/* {initComments && initComments.map((comment, idx) => (
                         <div key={idx}>
                             {comment.comment}
                         </div>
 
-                    ))}
+                    ))} */}
 
                     <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />ƒ
                     <Button
