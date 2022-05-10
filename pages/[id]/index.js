@@ -49,7 +49,7 @@ const Note = ({ note }) => {
                 async function getComments() {
                     const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`);
                     const { data } = await res.json();
-                    setSentComments(data)
+                    setInitComments(data)
                 }
                 getComments();
                 setComment(null);
