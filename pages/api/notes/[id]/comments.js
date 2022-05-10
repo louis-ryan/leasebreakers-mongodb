@@ -1,5 +1,5 @@
 import dbConnect from '../../../../utils/dbConnect';
-import Comment from '../../../../models/Note';
+import Comment from '../../../../models/Comment';
 
 dbConnect();
 
