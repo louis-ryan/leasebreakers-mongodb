@@ -60,8 +60,9 @@ const NewNote = () => {
                 body: JSON.stringify({
                     ...form,
                     title: `A new house ${new Date().getTime()}`,
-                    breakerName: user.name,
                     breakerId: user.sub,
+                    breakerName: user.name,
+                    breakerEmail: user.email,
                     breakerPicture: user.picture,
                     petsAllowed: formBools.petsAllowed,
                     outdoorArea: formBools.outdoorArea,
