@@ -9,8 +9,8 @@ const Note = ({ note }) => {
 
     const [comment, setComment] = useState(null)
 
-    const [sentComments, setSentComments] = useState([])
-    console.log("sent comments, ", sentComments)
+    const [initComments, setInitComments] = useState([])
+    console.log("initial comments, ", initComments)
 
 
     /**
@@ -18,9 +18,9 @@ const Note = ({ note }) => {
      */
     useEffect(() => {
         async function getInitialComments() {
-            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/comments');
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`);
             const { data } = await res.json();
-            setSentComments(data)
+            setInitComments(data)
         }
         getInitialComments()
     }, [])
@@ -31,7 +31,7 @@ const Note = ({ note }) => {
     */
     const createComment = async () => {
         try {
-            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/comments', {
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`, {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -45,6 +45,15 @@ const Note = ({ note }) => {
                 })
             })
             console.log("SUCCESS, ", res)
+            if (res) {
+                async function getComments() {
+                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`);
+                    const { data } = await res.json();
+                    setSentComments(data)
+                }
+                getComments();
+                setComment(null);
+            }
         } catch (error) {
             console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
@@ -53,7 +62,7 @@ const Note = ({ note }) => {
     /**
     * CALLBACK FOR SUBMIT EVENT
     */
-    const handleSubmit = () => { createComment() }
+    const handleSubmit = () => { createComment(); }
 
     /**
     * CALLBACK FOR CHANGE EVENT
@@ -94,6 +103,13 @@ const Note = ({ note }) => {
                 Get in Touch
                 <Form onSubmit={handleSubmit}>
 
+                    {initComments.map((comment, idx) => (
+                        <div key={idx}>
+                            {comment.comment}
+                        </div>
+
+                    ))}
+
                     <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />ƒ
                     <Button
                         type='submit'
@@ -115,5 +131,13 @@ Note.getInitialProps = async ({ query: { id } }) => {
 
     return { note: data }
 }
+
+// Note.getInitialComments = async ({ query: { id } }) => {
+//     const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}/comments`);
+//     const { data } = await res.json();
+
+//     return { note: data }
+//     setInitComments(data)
+// }
 
 export default Note;
