@@ -45,13 +45,17 @@ const NoteSchema = new mongoose.Schema({
         type: Boolean,
         required: false
     },
+    breakerId: {
+        type: String,
+        required: false
+    },
     breakerName: {
         type: String,
         required: false
     },
-    breakerId: {
+    breakerEmail: {
         type: String,
-        required: false
+        required: false,
     },
     breakerPicture: {
         type: String,

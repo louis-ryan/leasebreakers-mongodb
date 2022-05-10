@@ -4,15 +4,20 @@ const CommentSchema = new mongoose.Schema({
     comment: {
         type: String,
         required: true,
-        maxlength: [200, 'Comment cannot be more than 200 characters']
     },
-    noteId: {
+    breakerId: {
         type: String,
     },
     breakerName: {
         type: String,
     },
-    breakerId: {
+    breakerEmail: {
+        type: String,
+    },
+    breakerPicture: {
+        type: String,
+    },
+    commenterId: {
         type: String,
     },
     commenterName: {
@@ -22,6 +27,12 @@ const CommentSchema = new mongoose.Schema({
         type: String,
     },
     commenterPicture: {
+        type: String,
+    },
+    noteId: {
+        type: String,
+    },
+    conversationId: {
         type: String,
     }
 })
