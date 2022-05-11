@@ -3,6 +3,8 @@ import { Button, Form, Loader } from 'semantic-ui-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 
+import NoteComments from '../../components/NoteComments';
+
 const Note = ({ note }) => {
 
     const { user, error, isLoading } = useUser();
@@ -10,7 +12,9 @@ const Note = ({ note }) => {
     const [comment, setComment] = useState(null)
 
     const [initComments, setInitComments] = useState([])
+    console.log("user, ", user)
     console.log("initial comments, ", initComments)
+    console.log("note, ", note)
 
 
     /**
@@ -36,12 +40,16 @@ const Note = ({ note }) => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     comment: comment,
-                    noteId: note._id,
-                    breakerName: note.breakerName,
                     breakerId: note.breakerId,
+                    breakerName: note.breakerName,
+                    breakerEmail: note.breakerEmail,
+                    breakerPicture: note.breakerPicture,
+                    commenterId: user.sub,
                     commenterName: user.name,
                     commenterEmail: user.email,
                     commenterPicture: user.picture,
+                    noteId: note._id,
+                    conversationId: note.breakerId + "+" + user.sub,
                 })
             })
             console.log("SUCCESS, ", res)
@@ -91,31 +99,30 @@ const Note = ({ note }) => {
 
                 <div style={{ display: "flex", width: "100%", overflowX: "scroll" }}>
                     {note.pics.map((pic, idx) => (
-                        <div key={idx}>
+                        <span key={idx}>
                             <img
                                 src={pic.url}
-                                style={{ transform: "translateX(-100px)", height: "200px" }}
+                                style={{ height: "200px" }}
                             />
-                        </div>
+                        </span>
                     ))}
                 </div>
 
                 Get in Touch
                 <Form onSubmit={handleSubmit}>
 
-                    {initComments && initComments.map((comment, idx) => (
-                        <div key={idx}>
-                            {comment.comment}
-                        </div>
+                    <NoteComments
+                        initComments={initComments}
+                        note={note}
+                        user={user}
+                    />
 
-                    ))}
-
-                    <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />ƒ
+                    <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
                     <Button
                         type='submit'
                         style={{ width: "100%", height: "80px" }}
                     >
-                        Create
+                        Comment
                     </Button>
                 </Form>
 
@@ -131,13 +138,5 @@ Note.getInitialProps = async ({ query: { id } }) => {
 
     return { note: data }
 }
-
-// Note.getInitialComments = async ({ query: { id } }) => {
-//     const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}/comments`);
-//     const { data } = await res.json();
-
-//     return { note: data }
-//     setInitComments(data)
-// }
 
 export default Note;
