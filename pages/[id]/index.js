@@ -22,7 +22,7 @@ const Note = ({ note }) => {
      */
     useEffect(() => {
         async function getInitialComments() {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`);
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
             const { data } = await res.json();
             setInitComments(data)
         }
@@ -35,27 +35,33 @@ const Note = ({ note }) => {
     */
     const createComment = async () => {
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`, {
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`, {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    comment: comment,
+                    // comment: comment,
                     breakerId: note.breakerId,
-                    breakerName: note.breakerName,
-                    breakerEmail: note.breakerEmail,
-                    breakerPicture: note.breakerPicture,
+                    // breakerName: note.breakerName,
+                    // breakerEmail: note.breakerEmail,
+                    // breakerPicture: note.breakerPicture,
                     commenterId: user.sub,
-                    commenterName: user.name,
-                    commenterEmail: user.email,
-                    commenterPicture: user.picture,
-                    noteId: note._id,
-                    conversationId: note.breakerId + "+" + user.sub,
+                    // commenterName: user.name,
+                    // commenterEmail: user.email,
+                    // commenterPicture: user.picture,
+                    // noteId: note._id,
+                    // conversationId: note.breakerId + "+" + user.sub,
+                    comments: [
+                        {
+                            comment: "helloooooooooooo",
+                            posterId: ""
+                        }
+                    ]
                 })
             })
             console.log("SUCCESS, ", res)
             if (res) {
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${note._id}/comments`);
+                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
                     const { data } = await res.json();
                     setInitComments(data)
                 }
