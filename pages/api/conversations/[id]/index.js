@@ -30,7 +30,7 @@ export default async (req, res) => {
                     runValidators: true
                 });
 
-                if (!note) {
+                if (!conversation) {
                     return res.status(400).json({ success: false });
                 }
 

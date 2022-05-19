@@ -2,6 +2,7 @@ import fetch from 'isomorphic-unfetch';
 import { Button, Form, Loader } from 'semantic-ui-react';
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/router';
 
 import NoteComments from '../../components/NoteComments';
 
@@ -11,10 +12,10 @@ const Note = ({ note }) => {
 
     const [comment, setComment] = useState(null)
 
-    const [initComments, setInitComments] = useState([])
-    console.log("user, ", user)
-    console.log("initial comments, ", initComments)
-    console.log("note, ", note)
+    const [conversation, setConversation] = useState(null)
+
+
+    const router = useRouter();
 
 
     /**
@@ -24,7 +25,15 @@ const Note = ({ note }) => {
         async function getInitialComments() {
             const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
             const { data } = await res.json();
-            setInitComments(data)
+            console.log("data, ", data)
+            if (user) {
+                data.map((i) => {
+                    if (i.breakerId === note.breakerId && i.commenterId === user.sub) {
+                        // console.log("i, ", i)
+                        setConversation(i)
+                    }
+                })
+            }
         }
         getInitialComments()
     }, [])
@@ -39,31 +48,35 @@ const Note = ({ note }) => {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    // comment: comment,
                     breakerId: note.breakerId,
-                    // breakerName: note.breakerName,
-                    // breakerEmail: note.breakerEmail,
-                    // breakerPicture: note.breakerPicture,
+                    breakerName: note.breakerName,
+                    breakerEmail: note.breakerEmail,
+                    breakerPicture: note.breakerPicture,
                     commenterId: user.sub,
-                    // commenterName: user.name,
-                    // commenterEmail: user.email,
-                    // commenterPicture: user.picture,
-                    // noteId: note._id,
-                    // conversationId: note.breakerId + "+" + user.sub,
+                    commenterName: user.name,
+                    commenterEmail: user.email,
+                    commenterPicture: user.picture,
+                    noteId: note._id,
+                    conversationId: note.breakerId + "+" + user.sub,
                     comments: [
                         {
-                            comment: "helloooooooooooo",
-                            posterId: ""
+                            comment: comment,
+                            posterId: user.sub
                         }
                     ]
                 })
             })
             console.log("SUCCESS, ", res)
             if (res) {
+                console.log("res, ", res)
                 async function getComments() {
                     const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
                     const { data } = await res.json();
-                    setInitComments(data)
+                    data.map((i) => {
+                        if (i.breakerId === note.breakerId && i.commenterId === user.sub) {
+                            setConversation(i)
+                        }
+                    })
                 }
                 getComments();
                 setComment(null);
@@ -74,9 +87,61 @@ const Note = ({ note }) => {
     }
 
     /**
+     * 
+     */
+    const updateComment = async () => {
+        if (conversation) { console.log("conversation comments, ", conversation.comments) }
+
+        const newComments = [...conversation.comments, comment]
+
+        setConversation({...conversation, comments: newComments})
+
+        try {
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversation/${router.query.id}`, {
+                method: 'PUT',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(conversation)
+            })
+            if (res) {
+                async function getComments() {
+                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${router.query.id}`);
+                    const { data } = await res.json();
+                    // data.map((i) => {
+                    //     if (i.breakerId === note.breakerId && i.commenterId === user.sub) {
+                            setConversation(data)
+                    //     }
+                    // })
+                }
+                getComments();
+                setComment(null);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    /**
     * CALLBACK FOR SUBMIT EVENT
     */
-    const handleSubmit = () => { createComment(); }
+    const handleSubmit = () => {
+        if (!conversation) {
+            createComment();
+        } else {
+            var newConversation = conversation
+            console.log("new conversation, ", newConversation)
+            newConversation.comments.push({
+                comment: comment,
+                posterId: user.sub
+            });
+            setConversation(newConversation);
+            updateComment();
+        }
+
+    }
 
     /**
     * CALLBACK FOR CHANGE EVENT
@@ -118,8 +183,7 @@ const Note = ({ note }) => {
                 <Form onSubmit={handleSubmit}>
 
                     <NoteComments
-                        initComments={initComments}
-                        note={note}
+                        conversation={conversation}
                         user={user}
                     />
 
