@@ -1,17 +1,15 @@
 
 
-const NoteComments = ({ initComments, note, user }) => {
+const NoteComments = ({ conversation, user }) => {
 
     return (
         <>
-            {initComments && initComments.map((comment, idx) => (
-
-                comment.conversationId === note.breakerId + "+" + user.sub &&
+            {conversation && conversation.comments.map((comment, idx) => (
 
                 <div key={idx}>
 
                     {// IF THIS COMMENT IS FROM THE CURRENT USER
-                        (comment.commenterId === (user && user.sub))
+                        (comment.posterId === (user && user.sub))
                             ?
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                                 {/* PROFILE */}
@@ -35,7 +33,7 @@ const NoteComments = ({ initComments, note, user }) => {
                                     {comment.comment}
                                 </div>
                             </div>
-                            
+
                             // ELSE
                             :
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
