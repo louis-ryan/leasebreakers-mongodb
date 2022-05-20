@@ -113,16 +113,16 @@ const Note = ({ note }) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    breakerId: note.breakerId,
-                    breakerName: note.breakerName,
-                    breakerEmail: note.breakerEmail,
-                    breakerPicture: note.breakerPicture,
-                    commenterId: user.sub,
-                    commenterName: user.name,
-                    commenterEmail: user.email,
-                    commenterPicture: user.picture,
-                    noteId: note._id,
-                    conversationId: note.breakerId + "+" + user.sub,
+                    breakerId: comment.breakerId,
+                    breakerName: comment.breakerName,
+                    breakerEmail: comment.breakerEmail,
+                    breakerPicture: comment.breakerPicture,
+                    commenterId: comment.commenterId,
+                    commenterName: comment.commenterName,
+                    commenterEmail: comment.commenterEmail,
+                    commenterPicture: comment.commenterPicture,
+                    noteId: comment.noteId,
+                    conversationId: comment.conversationId,
                     comments: newComments
                 })
             })
