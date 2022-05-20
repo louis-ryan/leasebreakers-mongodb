@@ -10,15 +10,20 @@ const Note = ({ note }) => {
 
     const { user, error, isLoading } = useUser();
     const [comment, setComment] = useState(null)
+    const [conversationModal, setConversationModal] = useState(false)
     const [myConversations, setMyConversations] = useState([])
-    console.log("my conversations, ", myConversations)
     const [conversation, setConversation] = useState(null)
 
     const router = useRouter();
 
+    // SEMANTICS
+    const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
+    const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
+    const breakerInConversationIsBreakerInNote = (conversation) => conversation.breakerId === note.breakerId;
+    const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
 
     /**
-     * GET CONVERSATION
+     * GET CONVERSATION WITH POSTER OR LIST OF CONVERSATIONS WITH APPLICANTS
      */
     useEffect(() => {
         async function getInitialComments() {
@@ -26,9 +31,18 @@ const Note = ({ note }) => {
             const { data } = await res.json();
             if (user) {
                 var gatherMyConversations = []
-                data.map((i) => {
-                    if (i.breakerId === note.breakerId && i.commenterId === user.sub) { setConversation(i) }
-                    if (i.commenterId === user.sub && i.noteId === note._id) { gatherMyConversations.push(i) }
+                data.map((conversation) => {
+
+                    if (noteBelongsToCurrentUser) {
+                        if (conversationBelongsToThisNote(conversation)) {
+                            gatherMyConversations.push(conversation)
+                        }
+                    } else {
+                        if (breakerInConversationIsBreakerInNote(conversation) && commenterInConversationIsUser(conversation)) {
+                            setConversation(conversation)
+                        }
+                    }
+
                 })
                 setMyConversations(gatherMyConversations)
             }
@@ -38,7 +52,7 @@ const Note = ({ note }) => {
 
 
     /**
-    * SEND NEW DATA TO THE SERVER
+    * CREATE NEW CONVERSATION ID
     */
     const createConversation = async () => {
         try {
@@ -68,9 +82,11 @@ const Note = ({ note }) => {
             if (res) {
                 console.log("res, ", res)
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`);
+                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
                     const { data } = await res.json();
-                    setConversation(data)
+                    data.map((i) => {
+                        if (i.breakerId === note.breakerId && i.commenterId === user.sub && note.breakerId !== user.sub) { setConversation(i) }
+                    })
                 }
                 getComments();
                 setComment(null);
@@ -80,8 +96,9 @@ const Note = ({ note }) => {
         }
     }
 
+
     /**
-     * 
+     * UPDATE EXISTING CONVERSATION ID WITH NEW COMMENT ARRAY
      */
     const updateConversation = async () => {
         if (conversation) { console.log("conversation comments, ", conversation.comments) }
@@ -113,11 +130,7 @@ const Note = ({ note }) => {
                 async function getComments() {
                     const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`);
                     const { data } = await res.json();
-                    // data.map((i) => {
-                    //     if (i.breakerId === note.breakerId && i.commenterId === user.sub) {
                     setConversation(data)
-                    //     }
-                    // })
                 }
                 getComments();
                 setComment(null);
@@ -176,14 +189,19 @@ const Note = ({ note }) => {
                     ))}
                 </div>
 
-                {user && note.breakerId === user.sub ? (
+                {noteBelongsToCurrentUser ? (
                     <div>
                         Your conversations for property in {note.address}
                         {myConversations.map((conversation, idx) => {
+
                             return (
                                 <div key={idx}>
-                                    <div> conversation {idx} </div>
-                                    <div> {conversation._id} with {conversation.commenterName} </div>
+                                    <div
+                                        onClick={() => { setConversationModal(true); setConversation(conversation) }}
+                                        style={{ background: "grey", padding: "8px" }}
+                                    >
+                                        {conversation._id} with {conversation.commenterName}
+                                    </div>
                                 </div>
                             )
                         })}
@@ -207,8 +225,30 @@ const Note = ({ note }) => {
                                 Comment
                             </Button>
                         </Form>
+
                     </div>
                 )}
+
+                {conversationModal &&
+                    <div style={{ position: "absolute", width: "100vw", height: "100vh", backgroundColor: "grey" }}>
+                        Your conversation history with {note.commenterName}
+                        <Form onSubmit={handleSubmit}>
+
+                            <NoteComments
+                                conversation={conversation}
+                                user={user}
+                            />
+
+                            <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
+                            <Button
+                                type='submit'
+                                style={{ width: "100%", height: "80px" }}
+                            >
+                                Comment
+                            </Button>
+                        </Form>
+                    </div>
+                }
 
 
 
