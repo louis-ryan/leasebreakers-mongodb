@@ -38,7 +38,7 @@ const NoteComments = ({ conversation, user }) => {
                             :
                             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
                                 {/* COMMENT */}
-                                <div style={{ width: "calc(100% - 56px)", backgroundColor: "#3B4657", padding: "16px", borderRadius: "8px" }}>
+                                <div style={{ width: "calc(100% - 160px)", backgroundColor: "#3B4657", padding: "16px", borderRadius: "8px" }}>
                                     {comment.comment}
                                 </div>
                                 <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px", transform: "rotate(180deg)" }}>
