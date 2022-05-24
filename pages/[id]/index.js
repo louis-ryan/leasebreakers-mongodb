@@ -27,7 +27,7 @@ const Note = ({ note }) => {
      */
     useEffect(() => {
         async function getInitialComments() {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
+            const res = await fetch(`https://leasebreakersmelbourne.com/api/conversations`);
             const { data } = await res.json();
             if (user) {
                 var gatherMyConversations = []
@@ -56,7 +56,7 @@ const Note = ({ note }) => {
     */
     const createConversation = async () => {
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`, {
+            const res = await fetch(`https://leasebreakersmelbourne.com/api/conversations`, {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -82,7 +82,7 @@ const Note = ({ note }) => {
             if (res) {
                 console.log("res, ", res)
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
+                    const res = await fetch(`https://leasebreakersmelbourne.com/api/conversations`);
                     const { data } = await res.json();
                     data.map((i) => {
                         if (i.breakerId === note.breakerId && i.commenterId === user.sub && note.breakerId !== user.sub) { setConversation(i) }
@@ -106,29 +106,19 @@ const Note = ({ note }) => {
         const newComments = [...conversation.comments, { comment: comment, posterId: user.sub }]
 
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`, {
+            const res = await fetch(`https://leasebreakersmelbourne.com/api/conversations/${conversation._id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    breakerId: comment.breakerId,
-                    breakerName: comment.breakerName,
-                    breakerEmail: comment.breakerEmail,
-                    breakerPicture: comment.breakerPicture,
-                    commenterId: comment.commenterId,
-                    commenterName: comment.commenterName,
-                    commenterEmail: comment.commenterEmail,
-                    commenterPicture: comment.commenterPicture,
-                    noteId: comment.noteId,
-                    conversationId: comment.conversationId,
                     comments: newComments
                 })
             })
             if (res) {
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`);
+                    const res = await fetch(`https://leasebreakersmelbourne.com/api/conversations/${conversation._id}`);
                     const { data } = await res.json();
                     setConversation(data)
                 }
@@ -258,7 +248,7 @@ const Note = ({ note }) => {
 }
 
 Note.getInitialProps = async ({ query: { id } }) => {
-    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}`);
+    const res = await fetch(`https://leasebreakersmelbourne.com/api/notes/${id}`);
     const { data } = await res.json();
 
     return { note: data }
