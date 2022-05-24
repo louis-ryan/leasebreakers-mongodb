@@ -26,7 +26,7 @@ const EditNote = ({ note }) => {
     const deleteNote = async () => {
         const noteId = router.query.id;
         try {
-            const deleted = await fetch(`https://leasebreakersmelbourne.com/api/notes/${noteId}`, {
+            const deleted = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${noteId}`, {
                 method: "Delete"
             });
 
@@ -54,7 +54,7 @@ const EditNote = ({ note }) => {
 
     const updateNote = async () => {
         try {
-            const res = await fetch(`https://leasebreakersmelbourne.com/api/notes/${router.query.id}`, {
+            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${router.query.id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
@@ -152,7 +152,7 @@ const EditNote = ({ note }) => {
 }
 
 EditNote.getInitialProps = async ({ query: { id } }) => {
-    const res = await fetch(`https://leasebreakersmelbourne.com/api/notes/${id}`);
+    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}`);
     const { data } = await res.json();
 
     return { note: data }
