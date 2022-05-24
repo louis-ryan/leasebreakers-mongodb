@@ -54,7 +54,7 @@ const NewNote = () => {
      */
     const createNote = async () => {
         try {
-            const res = await fetch('https://leasebreakersmelbourne.com/api/notes', {
+            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/notes', {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
