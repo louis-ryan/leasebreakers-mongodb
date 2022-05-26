@@ -19,7 +19,6 @@ const Note = ({ note }) => {
     // SEMANTICS
     const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
     const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
-    const breakerInConversationIsBreakerInNote = (conversation) => conversation.breakerId === note.breakerId;
     const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
 
     /**
@@ -38,7 +37,7 @@ const Note = ({ note }) => {
                             gatherMyConversations.push(conversation)
                         }
                     } else {
-                        if (breakerInConversationIsBreakerInNote(conversation) && commenterInConversationIsUser(conversation)) {
+                        if (conversationBelongsToThisNote(conversation) && commenterInConversationIsUser(conversation)) {
                             setConversation(conversation)
                         }
                     }
