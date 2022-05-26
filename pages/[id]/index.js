@@ -180,21 +180,34 @@ const Note = ({ note }) => {
                 </div>
 
                 {noteBelongsToCurrentUser ? (
-                    <div>
-                        Your conversations for property in {note.address}
-                        {myConversations.map((conversation, idx) => {
+                    <div style={{ margin: "16px 0px" }}>
+                        {myConversations.length > 0 ? (
+                            <>
+                                <h3>Your have recieved {myConversations.length} replies to this post:</h3>
+                                {myConversations.map((conversation, idx) => {
 
-                            return (
-                                <div key={idx}>
-                                    <div
-                                        onClick={() => { setConversationModal(true); setConversation(conversation) }}
-                                        style={{ background: "grey", padding: "8px" }}
-                                    >
-                                        {conversation._id} with {conversation.commenterName}
-                                    </div>
-                                </div>
-                            )
-                        })}
+                                    return (
+                                        <div key={idx} style={{ borderRadius: "8px", overflow: "hidden" }}>
+                                            <div
+                                                onClick={() => { setConversationModal(true); setConversation(conversation); }}
+                                                style={{ background: "grey", padding: "8px", display: "flex", justifyContent: "space-between" }}
+                                            >
+                                                <div>{conversation.commenterName}</div>
+                                                <img width="40px" height="40px" src={conversation.commenterPicture} alt="picture of commenter" />
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        ) : (
+                            <>
+                                <h3>You have no responses to this property yet</h3>
+                            </>
+                        )
+
+
+                        }
+
 
                     </div>
                 ) : (
@@ -220,28 +233,37 @@ const Note = ({ note }) => {
                 )}
 
                 {conversationModal &&
-                    <div style={{ position: "absolute", width: "100vw", height: "100vh", backgroundColor: "grey" }}>
-                        Your conversation history with {note.commenterName}
-                        <Form onSubmit={handleSubmit}>
+                    <div style={{ position: "absolute", top: "80px", left: "0px", backgroundColor: "#1E304E", display: "flex", justifyContent: "center", width: "100vw", height: "100vh", padding: "24px" }}>
+                        <div style={{ width: "600px" }}>
+                            <div
+                                style={{ position: "fixed", top: "80px", zIndex: "50" }}
+                                onClick={() => { setConversationModal(false); setConversation(null) }}
 
-                            <NoteComments
-                                conversation={conversation}
-                                user={user}
-                            />
-
-                            <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
-                            <Button
-                                type='submit'
-                                style={{ width: "100%", height: "80px" }}
                             >
-                                Comment
-                            </Button>
-                        </Form>
+                                close
+                            </div>
+                            <Form onSubmit={handleSubmit}>
+                                <div>
+                                    <NoteComments
+                                        conversation={conversation}
+                                        user={user}
+                                    />
+                                    <div style={{ height: "280px" }} />
+                                </div>
+
+                                <div style={{ position: "fixed", bottom: "16px", width: "calc(100% - 40px)", maxWidth: "600px" }}>
+                                    <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
+                                    <Button
+                                        type='submit'
+                                        style={{ width: "100%", height: "80px" }}
+                                    >
+                                        Comment
+                                    </Button>
+                                </div>
+                            </Form>
+                        </div>
                     </div>
                 }
-
-
-
             </div>
         </div >
     )
