@@ -1,6 +1,6 @@
 const Logo = () => (
 
-    <svg width="206px" height="206px" viewBox="0 0 206 206" version="1.1" style={{zoom: "0.25"}}>
+    <svg width="40px" height="40px" viewBox="0 0 206 206" version="1.1">
         <defs>
             <linearGradient x1="50%" y1="81.9114283%" x2="50%" y2="3.24056307%" id="linearGradient-1">
                 <stop stopColor="#FFFFFF" offset="0%"></stop>
