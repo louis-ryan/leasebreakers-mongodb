@@ -13,6 +13,9 @@ const ConversationSchema = new mongoose.Schema({
     breakerPicture: {
         type: String,
     },
+    breakerIsTyping: {
+        type: Bool,
+    },
     commenterId: {
         type: String,
     },
@@ -25,6 +28,12 @@ const ConversationSchema = new mongoose.Schema({
     commenterPicture: {
         type: String,
     },
+    commenterIsTyping: {
+        type: Bool,
+    },
+    conversationIsLive: {
+        type: Bool,
+    },
     noteId: {
         type: String,
     },
@@ -33,8 +42,17 @@ const ConversationSchema = new mongoose.Schema({
             comment: {
                 type: String,
             },
+            timeOfComment: {
+                type: String,
+            },
             posterId: {
                 type: String,
+            },
+            posterName: {
+                type: String,
+            },
+            seenByRecipiant: {
+                type: Bool,
             },
         }
     ]
