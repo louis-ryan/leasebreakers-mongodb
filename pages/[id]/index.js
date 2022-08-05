@@ -1,53 +1,75 @@
 import fetch from 'isomorphic-unfetch';
-import { Button, Form, Loader } from 'semantic-ui-react';
+
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
 
 import NoteComments from '../../components/NoteComments';
 
-const Note = ({ note }) => {
+const Note = () => {
 
     const { user, error, isLoading } = useUser();
+
+    const [note, setNote] = useState(null)
     const [comment, setComment] = useState(null)
     const [conversationModal, setConversationModal] = useState(false)
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
+    console.log("conversation, ", conversation)
 
     const router = useRouter();
 
-    // SEMANTICS
-    const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
-    const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
-    const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
+
+    /**
+    * GET INITIAL NOTE
+    */
+    useEffect(() => {
+        async function getInitialNote() {
+
+            if (!router.query.id) return
+
+            const res = await fetch(`api/notes/${router.query.id}`);
+            const { data } = await res.json();
+
+            setNote(data)
+        }
+        getInitialNote()
+    }, [router.query.id])
+
 
     /**
      * GET CONVERSATION WITH POSTER OR LIST OF CONVERSATIONS WITH APPLICANTS
      */
     useEffect(() => {
         async function getInitialComments() {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
+
+            if (!note) return
+
+            const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
+            const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
+            const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
+
+            const res = await fetch(`api/conversations`);
             const { data } = await res.json();
-            if (user) {
-                var gatherMyConversations = []
-                data.map((conversation) => {
+            if (!user) return
+            var gatherMyConversations = []
+            data.map((conversation) => {
 
-                    if (noteBelongsToCurrentUser) {
-                        if (conversationBelongsToThisNote(conversation)) {
-                            gatherMyConversations.push(conversation)
-                        }
-                    } else {
-                        if (conversationBelongsToThisNote(conversation) && commenterInConversationIsUser(conversation)) {
-                            setConversation(conversation)
-                        }
+                if (noteBelongsToCurrentUser) {
+                    if (conversationBelongsToThisNote(conversation)) {
+                        gatherMyConversations.push(conversation)
                     }
+                } else {
+                    if (conversationBelongsToThisNote(conversation) && commenterInConversationIsUser(conversation)) {
+                        setConversation(conversation)
+                    }
+                }
 
-                })
-                setMyConversations(gatherMyConversations)
-            }
+            })
+            setMyConversations(gatherMyConversations)
         }
         getInitialComments()
-    }, [user])
+    }, [user, note])
 
 
     /**
@@ -55,7 +77,7 @@ const Note = ({ note }) => {
     */
     const createConversation = async () => {
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`, {
+            const res = await fetch(`api/conversations`, {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -77,11 +99,9 @@ const Note = ({ note }) => {
                     ]
                 })
             })
-            console.log("SUCCESS, ", res)
             if (res) {
-                console.log("res, ", res)
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations`);
+                    const res = await fetch(`api/conversations`);
                     const { data } = await res.json();
                     data.map((i) => {
                         if (i.breakerId === note.breakerId && i.commenterId === user.sub && note.breakerId !== user.sub) { setConversation(i) }
@@ -100,12 +120,11 @@ const Note = ({ note }) => {
      * UPDATE EXISTING CONVERSATION ID WITH NEW COMMENT ARRAY
      */
     const updateConversation = async () => {
-        if (conversation) { console.log("conversation comments, ", conversation.comments) }
 
         const newComments = [...conversation.comments, { comment: comment, posterId: user.sub }]
 
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`, {
+            const res = await fetch(`api/conversations/${conversation._id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
@@ -116,8 +135,9 @@ const Note = ({ note }) => {
                 })
             })
             if (res) {
+                console.log("res, ", res)
                 async function getComments() {
-                    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/conversations/${conversation._id}`);
+                    const res = await fetch(`api/conversations/${conversation._id}`);
                     const { data } = await res.json();
                     setConversation(data)
                 }
@@ -148,7 +168,11 @@ const Note = ({ note }) => {
     */
     const handleChange = (e) => { setComment(e.target.value) }
 
+
+    if (!note) return
+
     return (
+
         <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
             <div className='mobile-container'>
 
@@ -178,7 +202,7 @@ const Note = ({ note }) => {
                     ))}
                 </div>
 
-                {noteBelongsToCurrentUser ? (
+                {user && note.breakerId === user.sub ? (
                     <div style={{ margin: "16px 0px" }}>
                         {myConversations.length > 0 ? (
                             <>
@@ -212,21 +236,21 @@ const Note = ({ note }) => {
                 ) : (
                     <div>
                         Your conversation history with {note.breakerName}
-                        <Form onSubmit={handleSubmit}>
+                        <form>
 
                             <NoteComments
                                 conversation={conversation}
                                 user={user}
                             />
 
-                            <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
-                            <Button
-                                type='submit'
+                            <input placeholder='Comment' name='comment' onChange={handleChange} />
+                            <div
+                                onClick={() => handleSubmit()}
                                 style={{ width: "100%", height: "80px" }}
                             >
                                 Comment
-                            </Button>
-                        </Form>
+                            </div>
+                        </form>
 
                     </div>
                 )}
@@ -237,11 +261,10 @@ const Note = ({ note }) => {
                             <div
                                 style={{ position: "fixed", top: "80px", zIndex: "50" }}
                                 onClick={() => { setConversationModal(false); setConversation(null) }}
-
                             >
                                 close
                             </div>
-                            <Form onSubmit={handleSubmit}>
+                            <form>
                                 <div>
                                     <NoteComments
                                         conversation={conversation}
@@ -251,28 +274,23 @@ const Note = ({ note }) => {
                                 </div>
 
                                 <div style={{ position: "fixed", bottom: "16px", width: "calc(100% - 40px)", maxWidth: "600px" }}>
-                                    <Form.TextArea placeholder='Comment' name='comment' onChange={handleChange} />
-                                    <Button
-                                        type='submit'
+                                    <textarea placeholder='Comment' name='comment' onChange={handleChange} />
+                                    <div
+                                        onClick={() => handleSubmit()}
                                         style={{ width: "100%", height: "80px" }}
                                     >
                                         Comment
-                                    </Button>
+                                    </div>
                                 </div>
-                            </Form>
+                            </form>
                         </div>
                     </div>
                 }
             </div>
         </div >
+
     )
-}
 
-Note.getInitialProps = async ({ query: { id } }) => {
-    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}`);
-    const { data } = await res.json();
-
-    return { note: data }
 }
 
 export default Note;

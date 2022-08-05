@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
-import { Button, Form, Loader } from 'semantic-ui-react';
+
 import { useRouter } from 'next/router';
 import PicUpload from '../components/PicUpload';
 import Compress from 'react-image-file-resizer';
@@ -54,7 +54,7 @@ const NewNote = () => {
      */
     const createNote = async () => {
         try {
-            const res = await fetch('https://leasebreakers-mongodb.hostman.site/api/notes', {
+            const res = await fetch('api/notes', {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -156,22 +156,22 @@ const NewNote = () => {
                 <h1>Create Post</h1>
                 <div>
                     {isSubmitting ? (
-                        <Loader active inline='centered' />
+                        <div>SUBMITTING...</div>
                     ) : (
-                        <Form onSubmit={handleSubmit}>
+                        <form>
 
                             {/* Title
                             <Form.Input placeholder='Title' name='title' onChange={handleChange} /> */}
 
                             Description
-                            <Form.TextArea placeholder='Description' name='description' onChange={handleChange} />
+                            <textarea placeholder='Description' name='description' onChange={handleChange} />
 
                             Post Code
-                            <Form.Input
+                            <input
                                 placeholder='3000'
                                 name='postCode'
                                 onChange={handleChange}
-                                style={{ borderRadius: "8px", border: errors.address && "2px solid red" }}
+                                style={{ border: errors.address && "2px solid red" }}
                             />
                             {errors.address && <p style={{ background: "red", borderRadius: "8px", marginTop: "4px", padding: "8px" }}>
                                 {errors.address}
@@ -181,12 +181,12 @@ const NewNote = () => {
                             <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
                                 <div>
                                     Number of Rooms
-                                    <Form.Field placeholder='2' control='input' name='numRoom' type='number' onChange={handleChange} />
+                                    <input placeholder='2' control='input' name='numRoom' type='number' onChange={handleChange} />
                                 </div>
 
                                 <div>
                                     Number of Bathrooms
-                                    <Form.Field placeholder='1' control='input' name='numBath' type='number' onChange={handleChange} />
+                                    <input placeholder='1' control='input' name='numBath' type='number' onChange={handleChange} />
                                 </div>
                             </div>
 
@@ -298,13 +298,13 @@ const NewNote = () => {
                                 <PicUpload id={7} uploadPhoto={compressFile} form={form} setForm={setForm} />
                                 <PicUpload id={8} uploadPhoto={compressFile} form={form} setForm={setForm} />
                             </div>
-                            <Button
-                                type='submit'
+                            <div
+                                onClick={() => handleSubmit()}
                                 style={{ width: "100%", height: "80px" }}
                             >
                                 Create
-                            </Button>
-                        </Form>
+                            </div>
+                        </form>
                     )}
                 </div>
             </div>

@@ -57,9 +57,9 @@ const Navbar = () => {
                                 onClick
                                 style={{ outline: "1px grey solid", width: "calc(100% - 32px)", padding: "16px", maxWidth: "600px", borderRadius: "8px" }}
                             >
-                                <Link href="/api/auth/logout">
+                                <a href="/api/auth/logout">
                                     Sign Out
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </div>

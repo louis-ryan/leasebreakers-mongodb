@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import fetch from 'isomorphic-unfetch';
-import { Confirm, Button, Form, Loader } from 'semantic-ui-react';
+
 import { useRouter } from 'next/router';
 
 const EditNote = ({ note }) => {
@@ -26,7 +26,7 @@ const EditNote = ({ note }) => {
     const deleteNote = async () => {
         const noteId = router.query.id;
         try {
-            const deleted = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${noteId}`, {
+            const deleted = await fetch(`api/notes/${noteId}`, {
                 method: "Delete"
             });
 
@@ -54,7 +54,7 @@ const EditNote = ({ note }) => {
 
     const updateNote = async () => {
         try {
-            const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${router.query.id}`, {
+            const res = await fetch(`api/notes/${router.query.id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
@@ -96,7 +96,7 @@ const EditNote = ({ note }) => {
     }
 
     return (
-        <div className="form-container" style={{display: "flex", justifyContent: "center"}}>
+        <div className="form-container" style={{ display: "flex", justifyContent: "center" }}>
             <div className='mobile-container'>
                 <h1>Update Note</h1>
                 <div>
@@ -152,7 +152,7 @@ const EditNote = ({ note }) => {
 }
 
 EditNote.getInitialProps = async ({ query: { id } }) => {
-    const res = await fetch(`https://leasebreakers-mongodb.hostman.site/api/notes/${id}`);
+    const res = await fetch(`api/notes/${id}`);
     const { data } = await res.json();
 
     return { note: data }
