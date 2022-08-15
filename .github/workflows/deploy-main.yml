@@ -32,4 +32,4 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
-          script: cd /var/www/leasebreakersmelbourne.com && npm install && npm run build
+          script: cd /var/www/leasebreakersmelbourne.com && npm install && npm run build && pm2 start "npm run start" --name main --watch
