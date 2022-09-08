@@ -27,12 +27,12 @@ const ListingCard = ({ note }) => {
                 key={note._id}
                 className="note-container"
                 style={{
-                    border: user && user.sub === note.breakerId && "8px #586781 solid",
+                    border: user && user.sub === note.breakerId && "8px #8596b2 solid",
                     // outline: user && user.sub === note.breakerId && "0.5px white solid"
                 }}
             >
 
-                {/* Cointent: Tags, Details */}
+                {/* Content: Tags, Details */}
                 <ListingCardLeft note={note} user={user} />
 
                 {/* Scrolling Imgs Background */}
