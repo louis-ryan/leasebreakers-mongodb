@@ -1,4 +1,7 @@
-const Logo = () => (
+import { forwardRef } from "react";
+
+
+const Logo = forwardRef(() => (
 
     <svg width="40px" height="40px" viewBox="0 0 206 206" version="1.1">
         <defs>
@@ -16,6 +19,6 @@ const Logo = () => (
         </g>
     </svg>
 
-)
+))
 
 export default Logo;

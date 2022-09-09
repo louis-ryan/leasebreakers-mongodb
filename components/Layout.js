@@ -1,15 +1,18 @@
 import Head from 'next/head';
-import Navbar from './Navbar';
+import Navbar from './Nav/Navbar';
 
-const Layout = ({ children }) => (
-    <>
-        <Navbar />
-        <Head>
-            <title>LBM</title>
-        </Head>
+const Layout = ({ children }) => {
 
-        {children}
-    </>
-)
+    return (
+        <>
+            <Navbar />
+            <Head>
+                <title>LBM</title>
+            </Head>
+
+            {children}
+        </>
+    )
+}
 
 export default Layout;

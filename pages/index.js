@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
-import ListingCard from '../components/ListingCard';
+import ListingCard from '../components/Listing/ListingCard';
 import IntroAni from '../components/IntroAni';
 
 const Index = () => {
@@ -47,7 +47,7 @@ const Index = () => {
         <div className='mobile-container'>
           {user && <h1>Welcome {user.name}</h1>}
           <h3> These Properties are Available </h3>
-          <div>
+          <div style={{display: "flex", flexWrap: "wrap"}}>
             {notes && notes.map((note, idx) => {
               return (
                 <ListingCard

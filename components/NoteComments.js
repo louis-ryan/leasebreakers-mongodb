@@ -14,7 +14,7 @@ const MyComment = ({ commentPicture, comment }) => {
     return (
         <MyCommentWrapper>
             <CommentImageContainer>
-                <img src={commentPicture} width="40px" height="40px" alt="profile image" />
+                <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
             </CommentImageContainer>
             <div style={{ width: "8px" }} />
             <ArrowLeft width="8px" height="8px" viewBox="0 0 159 146" version="1.1"> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#3B4657" points="159 0 159 146 0 73"></polygon> </g></ArrowLeft>
@@ -35,7 +35,7 @@ const TheirComment = ({ commentPicture, comment }) => {
             <ArrowRight width="8px" height="8px" viewBox="0 0 159 146" version="1.1"> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#5D4A26" points="159 0 159 146 0 73"></polygon> </g></ArrowRight>
             <div style={{ width: "8px" }} />
             <CommentImageContainer>
-                <img src={commentPicture} width="40px" height="40px" alt="profile image" />
+                <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
             </CommentImageContainer>
         </TheirCommentWrapper>
     )
@@ -69,6 +69,7 @@ const NoteComments = ({ conversation, user }) => {
         <>
             {conversation && conversation.comments.map((comment, idx) => (
                 <IndividualComment
+                    key={idx}
                     idx={idx}
                     comment={comment}
                     conversation={conversation}
