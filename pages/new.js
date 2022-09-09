@@ -12,43 +12,48 @@ const NewNote = () => {
 
     const { user, error, isLoading } = useUser();
 
+    const [part, setPart] = useState(1)
     const [form, setForm] = useState({});
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
-
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const router = useRouter();
+
+    const postCode = `${form.postCode1 + form.postCode2 + form.postCode3 + form.postCode4}`
 
 
     /**
      * Search JSON for matching postcodes
      */
     useEffect(() => {
-        const searchCondition = (form.postCode > 2999 && form.postCode < 4000) || (form.postCode > 7999 && form.postCode < 9000)
+        const searchCondition = (form.postCode1 && form.postCode2 && form.postCode3 && form.postCode4)
         if (searchCondition) {
+
             async function getLocationsByZip() {
                 const res = await fetch(`./postCodes.json?`);
                 const data = await res.json()
+
                 var validAddresses = []
 
                 data.map((entry) => {
 
                     // We have a match
-                    if (`${entry.postcode}` === form.postCode) {
+                    if (`${entry.postcode}` === postCode) {
                         validAddresses.push(entry.place_name)
-                        setForm({ ...form, address: validAddresses + ";" })
+                        setForm({ ...form, validAddresses: validAddresses })
                         setErrors({ ...errors, address: null })
                     }
                     // Nothing matches
                     if (validAddresses.length === 0) {
                         setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
+                        setForm({ ...form, validAddresses: [] })
                     }
                 })
             }
             getLocationsByZip()
         } else { setForm({ ...form, address: null }) }
-    }, [form.postCode])
+    }, [postCode])
 
 
     /**
@@ -92,6 +97,12 @@ const NewNote = () => {
      */
     const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }) }
 
+    /**
+    * CALLBACK FOR ADDRESS
+    * @param {*} e 
+    */
+    const handleAddress = (e) => { setForm({ ...form, address: e, validAddresses: [] }) }
+
 
     /**
      * UPLOAD PHOTO TO AWS
@@ -124,6 +135,7 @@ const NewNote = () => {
 
     };
 
+
     /**
      * COMPRESS PHOTO BEFORE UPLOAD (FOR MOBILE)
      * @param {*} e 
@@ -155,16 +167,41 @@ const NewNote = () => {
     return (
         <div style={{ marginTop: "80px", marginBottom: "40px" }}>
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}><h1>Create Post</h1></div>
+                <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+                    <div><h1>Create Post</h1></div>
+
+                    <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                        <div style={{ width: "16px", height: "16px", backgroundColor: "blue", borderRadius: "50%" }}></div>
+                        <div style={{ width: "16px", height: "16px", backgroundColor: part > 1 ? "blue" : "pink", borderRadius: "50%" }}></div>
+                        <div style={{ width: "16px", height: "16px", backgroundColor: part > 2 ? "blue" : "pink", borderRadius: "50%" }}></div>
+                        <div style={{ width: "16px", height: "16px", backgroundColor: "pink", borderRadius: "50%" }}></div>
+                    </div>
+
+                    <div style={{ width: "400px", height: "4px", position: "absolute", backgroundColor: "pink", marginTop: "-10px", zIndex: "-1" }} />
+                    <div style={{
+                        width: part === 1 ? "0px" : part === 2 ? "140px" : part === 3 ? "260px" : "400px",
+                        transition: "width 1s linear",
+                        height: "4px", position: "absolute", backgroundColor: "blue", marginTop: "-10px"
+                    }} />
+
+                    <div style={{ height: "24px" }} />
+                </div>
             </div>
+
+
             <PropertyInfo
                 handleChange={handleChange}
+                handleAddress={handleAddress}
                 errors={errors}
                 form={form}
                 setForm={setForm}
                 formBools={formBools}
+                setFormBools={setFormBools}
                 compressFile={compressFile}
                 handleSubmit={handleSubmit}
+                part={part}
+                setPart={setPart}
+                postCode={postCode}
             />
         </div>
 

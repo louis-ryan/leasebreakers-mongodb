@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
-import ListingCard from '../components/ListingCard';
+import ListingCard from '../components/Listing/ListingCard';
 import IntroAni from '../components/IntroAni';
 
 const Index = () => {

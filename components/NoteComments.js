@@ -69,6 +69,7 @@ const NoteComments = ({ conversation, user }) => {
         <>
             {conversation && conversation.comments.map((comment, idx) => (
                 <IndividualComment
+                    key={idx}
                     idx={idx}
                     comment={comment}
                     conversation={conversation}
