@@ -4,11 +4,6 @@ import Link from 'next/link';
 import Logo from '../Logo';
 import NavbarUserOptions from './NavbarUserOptions';
 import NavbarDropdown from './NavbarDropdown'
-import styled from 'styled-components';
-
-
-const NavbarContainer = styled.div`position: fixed; width: 100%; z-index: 10; opacity: 0.95; top: 0px;`;
-const NavbarBlock = styled.div.attrs({ className: "navbar" })`display: flex; justify-content: space-between;`;
 
 
 const Navbar = () => {
