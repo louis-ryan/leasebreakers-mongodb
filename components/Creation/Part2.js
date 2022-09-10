@@ -1,5 +1,3 @@
-import styled from 'styled-components';
-import PicUpload from './PicUpload';
 
 
 const Part2 = (props) => {

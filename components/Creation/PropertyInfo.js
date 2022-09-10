@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import PicUpload from './PicUpload';
 import Part1 from './Part1';
 import Part2 from './Part2'
 
