@@ -1,43 +1,35 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components'
 
-const MyCommentWrapper = styled.div`display: flex; justify-content: left; margin-bottom: 8px;`;
-const TheirCommentWrapper = styled.div`display: flex; justify-content: right; margin-bottom: 8px;`;
-const CommentImageContainer = styled.div`width: 40px; height: 40px; border-radius: 50%; overflow: hidden;`;
-const ArrowLeft = styled.svg`margin-top: 16px`;
-const ArrowRight = styled.svg`margin-top: 16px; transform: rotate(180deg)`;
-const MyCommentContainer = styled.div`background-color: #3B4657; padding: 16px; border-radius: 8px; max-width: calc(100% - 56px)`;
-const TheirCommentContainer = styled.div`background-color: #5D4A26; padding: 16px; border-radius: 8px; max-width: calc(100% - 56px)`;
 
 const MyComment = ({ commentPicture, comment }) => {
 
     return (
-        <MyCommentWrapper>
-            <CommentImageContainer>
+        <div style={{ display: "flex", justifyContent: "left", marginBottom: "8px" }}>
+            <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>
                 <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
-            </CommentImageContainer>
+            </div>
             <div style={{ width: "8px" }} />
-            <ArrowLeft width="8px" height="8px" viewBox="0 0 159 146" version="1.1"> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#3B4657" points="159 0 159 146 0 73"></polygon> </g></ArrowLeft>
-            <MyCommentContainer>
+            <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#3B4657" points="159 0 159 146 0 73"></polygon> </g></svg>
+            <div style={{ backgroundColor: "#3B4657", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)" }}>
                 {comment}
-            </MyCommentContainer>
-        </MyCommentWrapper>
+            </div>
+        </div>
     )
 }
 
 const TheirComment = ({ commentPicture, comment }) => {
 
     return (
-        <TheirCommentWrapper>
-            <TheirCommentContainer>
+        <div style={{ display: "flex", justifyContent: "right", marginBottom: "8px" }}>
+            <div style={{ backgroundColor: "#5D4A26", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)" }}>
                 {comment}
-            </TheirCommentContainer>
-            <ArrowRight width="8px" height="8px" viewBox="0 0 159 146" version="1.1"> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#5D4A26" points="159 0 159 146 0 73"></polygon> </g></ArrowRight>
+            </div>
+            <div width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px", transform: "rotate(180deg)" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#5D4A26" points="159 0 159 146 0 73"></polygon> </g></div>
             <div style={{ width: "8px" }} />
-            <CommentImageContainer>
+            <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>
                 <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
-            </CommentImageContainer>
-        </TheirCommentWrapper>
+            </div>
+        </div>
     )
 }
 
