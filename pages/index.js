@@ -8,6 +8,7 @@ const Index = () => {
 
   const { user, error, isLoading } = useUser()
 
+  console.log("user: ", user)
   const [introAni, setIntroAni] = useState(true)
 
   const [notes, setNotes] = useState([])
@@ -45,9 +46,15 @@ const Index = () => {
         <IntroAni />
       ) : (
         <div className='mobile-container'>
-          {user && <h1>Welcome {user.name}</h1>}
+          {user && (
+            <>
+              <h2>Welcome,</h2>
+              <h2>{user.given_name}</h2>
+            </>
+
+          )}
           <h3> These Properties are Available </h3>
-          <div style={{display: "flex", flexWrap: "wrap"}}>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
             {notes && notes.map((note, idx) => {
               return (
                 <ListingCard

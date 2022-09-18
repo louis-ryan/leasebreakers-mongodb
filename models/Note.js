@@ -33,6 +33,10 @@ const NoteSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
+    contractEnds: {
+        type: Date,
+        required: true
+    },
     outdoorArea: {
         type: Boolean,
         required: false
