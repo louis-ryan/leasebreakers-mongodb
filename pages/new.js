@@ -6,6 +6,12 @@ import { useRouter } from 'next/router';
 import Compress from 'react-image-file-resizer';
 
 import PropertyInfo from '../components/Creation/PropertyInfo';
+import styled from 'styled-components';
+
+const StepperWrap = styled.div`width: 100%; display: flex; justify-content: space-between;`;
+const StepperStep = styled.div`width: 16px; height: 16px; border-radius: 50%;
+background-color: ${(props) => props.part > props.id ? "#1E304E" : "#8596b2"}`;
+const StepperLine = styled.div`transition: width 1s linear; height: 2px; position: absolute; background-color: #1E304E; margin-top: -9px; z-index: -1;`;
 
 
 const NewNote = () => {
@@ -14,40 +20,43 @@ const NewNote = () => {
 
     const [part, setPart] = useState(1)
     const [form, setForm] = useState({});
+    console.log("form: ", form)
+    const [post, setPost] = useState({})
+    const [validAddresses, setValidAddresses] = useState([])
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const router = useRouter();
 
-    const postCode = `${form.postCode1 + form.postCode2 + form.postCode3 + form.postCode4}`
+    const postCode = `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
 
 
     /**
      * Search JSON for matching postcodes
      */
     useEffect(() => {
-        const searchCondition = (form.postCode1 && form.postCode2 && form.postCode3 && form.postCode4)
+        const searchCondition = (post.postCode1 && post.postCode2 && post.postCode3 && post.postCode4)
         if (searchCondition) {
 
             async function getLocationsByZip() {
                 const res = await fetch(`./postCodes.json?`);
                 const data = await res.json()
 
-                var validAddresses = []
+                var validAddressesArr = []
 
                 data.map((entry) => {
 
                     // We have a match
                     if (`${entry.postcode}` === postCode) {
-                        validAddresses.push(entry.place_name)
-                        setForm({ ...form, validAddresses: validAddresses })
+                        validAddressesArr.push(entry.place_name)
+                        setValidAddresses(validAddressesArr)
                         setErrors({ ...errors, address: null })
                     }
                     // Nothing matches
-                    if (validAddresses.length === 0) {
+                    if (validAddressesArr.length === 0) {
                         setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
-                        setForm({ ...form, validAddresses: [] })
+                        setValidAddresses([])
                     }
                 })
             }
@@ -98,10 +107,16 @@ const NewNote = () => {
     const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }) }
 
     /**
+     * CALLBACK FOR CHANGE POST CODE
+     * @param {*} e 
+     */
+    const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
+
+    /**
     * CALLBACK FOR ADDRESS
     * @param {*} e 
     */
-    const handleAddress = (e) => { setForm({ ...form, address: e, validAddresses: [] }) }
+    const handleAddress = (e) => { setForm({ ...form, address: e }); setValidAddresses([]) }
 
 
     /**
@@ -170,27 +185,21 @@ const NewNote = () => {
                 <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                     <div><h1>Create Post</h1></div>
 
-                    <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
-                        <div style={{ width: "16px", height: "16px", backgroundColor: "blue", borderRadius: "50%" }}></div>
-                        <div style={{ width: "16px", height: "16px", backgroundColor: part > 1 ? "blue" : "pink", borderRadius: "50%" }}></div>
-                        <div style={{ width: "16px", height: "16px", backgroundColor: part > 2 ? "blue" : "pink", borderRadius: "50%" }}></div>
-                        <div style={{ width: "16px", height: "16px", backgroundColor: "pink", borderRadius: "50%" }}></div>
-                    </div>
+                    <StepperWrap>
+                        {[0, 1, 2, 3].map((id) => {
+                            return (<StepperStep key={id} id={id} part={part} />)
+                        })}
+                    </StepperWrap >
 
-                    <div style={{ width: "400px", height: "4px", position: "absolute", backgroundColor: "pink", marginTop: "-10px", zIndex: "-1" }} />
-                    <div style={{
-                        width: part === 1 ? "0px" : part === 2 ? "140px" : part === 3 ? "260px" : "400px",
-                        transition: "width 1s linear",
-                        height: "4px", position: "absolute", backgroundColor: "blue", marginTop: "-10px"
-                    }} />
+                    <StepperLine style={{ width: part === 1 ? "0%" : part === 2 ? "30%" : part === 3 ? "60%" : "calc(100% - 32px)" }} />
 
                     <div style={{ height: "24px" }} />
                 </div>
             </div>
 
-
             <PropertyInfo
                 handleChange={handleChange}
+                handlePost={handlePost}
                 handleAddress={handleAddress}
                 errors={errors}
                 form={form}
@@ -202,8 +211,9 @@ const NewNote = () => {
                 part={part}
                 setPart={setPart}
                 postCode={postCode}
+                validAddresses={validAddresses}
             />
-        </div>
+        </div >
 
     )
 }

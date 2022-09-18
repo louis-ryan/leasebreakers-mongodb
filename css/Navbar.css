@@ -1,7 +1,6 @@
 .navbar {
     color: #fff;
     padding: 0px 8px 8px 8px;
-    background-color: white;
     display: flex; 
     justify-content: space-between;
 }
@@ -26,10 +25,4 @@
 
 .navbar-brand:hover, .navbar-create:hover {
     filter: brightness(1.2);
-}
-
-.navbar-gradient {
-    background: linear-gradient(180deg, rgb(255, 255, 255) 0%, rgba(0,212,255,0) 100%);
-    height: 8px;
-    width: 100%;
 }
