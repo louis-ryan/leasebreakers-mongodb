@@ -1,6 +1,6 @@
-import styled from "styled-components";
 
-const DateInput = styled.input`width: 10%; height: 80px; text-align: center; font-size: 24px; caret-color: transparent;`;
+
+const DateInput = `width: 10%; height: 80px; text-align: center; font-size: 24px; caret-color: transparent;`;
 
 const Part2 = (props) => {
 
@@ -9,20 +9,20 @@ const Part2 = (props) => {
             Current Contract Ends:
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <DateInput placeholder='D' maxLength={1} name='postCode1' />
-                <DateInput placeholder='D' maxLength={1} name='postCode2' />
+                <div placeholder='D' maxLength={1} name='postCode1' />
+                <div placeholder='D' maxLength={1} name='postCode2' />
 
                 <div style={{ width: "2%" }} />
 
-                <DateInput placeholder='M' maxLength={1} name='postCode1' />
-                <DateInput placeholder='M' maxLength={1} name='postCode2' />
+                <div placeholder='M' maxLength={1} name='postCode1' />
+                <div placeholder='M' maxLength={1} name='postCode2' />
 
                 <div style={{ width: "2%" }} />
 
-                <DateInput placeholder='Y' maxLength={1} name='postCode1' />
-                <DateInput placeholder='Y' maxLength={1} name='postCode2' />
-                <DateInput placeholder='Y' maxLength={1} name='postCode2' />
-                <DateInput placeholder='Y' maxLength={1} name='postCode2' />
+                <div placeholder='Y' maxLength={1} name='postCode1' />
+                <div placeholder='Y' maxLength={1} name='postCode2' />
+                <div placeholder='Y' maxLength={1} name='postCode2' />
+                <div placeholder='Y' maxLength={1} name='postCode2' />
             </div>
 
             <div

@@ -1,9 +1,7 @@
 import PicUpload from "./PicUpload";
 
-import styled from "styled-components";
 
-
-const PicsWrapper = styled.div`display: flex; flex-wrap: wrap; justify-content: space-between;`;
+const PicsWrapper = `display: flex; flex-wrap: wrap; justify-content: space-between;`;
 
 
 const Part4 = (props) => {
@@ -12,7 +10,7 @@ const Part4 = (props) => {
         <>
             Photos
 
-            <PicsWrapper>
+            <div>
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => {
                     return (
                         <PicUpload
@@ -24,7 +22,7 @@ const Part4 = (props) => {
                         />
                     )
                 })}
-            </PicsWrapper>
+            </div>
 
             <div
                 onClick={() => props.handleSubmit()}

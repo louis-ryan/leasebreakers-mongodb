@@ -1,9 +1,6 @@
 import PicUpload from './PicUpload';
 
 
-const CreationCard = styled.div`background-color: #8596b2; width: 100%; display: flex; justify-content: center;`;
-
-
 const PropertyInfo = ({
     handleChange, errors, form, setForm, formBools, compressFile, handleSubmit
 }) => {

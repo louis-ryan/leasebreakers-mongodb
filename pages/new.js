@@ -6,12 +6,11 @@ import { useRouter } from 'next/router';
 import Compress from 'react-image-file-resizer';
 
 import PropertyInfo from '../components/Creation/PropertyInfo';
-import styled from 'styled-components';
 
-const StepperWrap = styled.div`width: 100%; display: flex; justify-content: space-between;`;
-const StepperStep = styled.div`width: 16px; height: 16px; border-radius: 50%;
+const StepperWrap = `width: 100%; display: flex; justify-content: space-between;`;
+const StepperStep = `width: 16px; height: 16px; border-radius: 50%;
 background-color: ${(props) => props.part > props.id ? "#1E304E" : "#8596b2"}`;
-const StepperLine = styled.div`transition: width 1s linear; height: 2px; position: absolute; background-color: #1E304E; margin-top: -9px; z-index: -1;`;
+const StepperLine = `transition: width 1s linear; height: 2px; position: absolute; background-color: #1E304E; margin-top: -9px; z-index: -1;`;
 
 
 const NewNote = () => {
@@ -185,13 +184,13 @@ const NewNote = () => {
                 <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                     <div><h1>Create Post</h1></div>
 
-                    <StepperWrap>
+                    <div>
                         {[0, 1, 2, 3].map((id) => {
-                            return (<StepperStep key={id} id={id} part={part} />)
+                            return (<div key={id} id={id} part={part} />)
                         })}
-                    </StepperWrap >
+                    </div >
 
-                    <StepperLine style={{ width: part === 1 ? "0%" : part === 2 ? "30%" : part === 3 ? "60%" : "calc(100% - 32px)" }} />
+                    <div style={{ width: part === 1 ? "0%" : part === 2 ? "30%" : part === 3 ? "60%" : "calc(100% - 32px)" }} />
 
                     <div style={{ height: "24px" }} />
                 </div>
