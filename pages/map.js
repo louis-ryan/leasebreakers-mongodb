@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import mapArr from "./mapArr.js"
+import mapArr from "../components/mapArr.js"
 
 const Map = () => {
 
