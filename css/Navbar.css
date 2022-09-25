@@ -1,8 +1,8 @@
 .navbar {
     color: #fff;
     padding: 0px 8px 8px 8px;
-    width: 100%;
-    background-color: var(--dark-blue);
+    display: flex; 
+    justify-content: space-between;
 }
 
 .navbar-create {
@@ -12,7 +12,6 @@
     width: 40px;
     height: 40px;
     text-align: center;
-    padding-top: 8px;
     color: #fff;
     font-size: 2rem;
     border-radius: 40px;
@@ -24,12 +23,10 @@
     font-size: 2rem;
 }
 
-.navbar-brand:hover, .navbar-create:hover {
+.navbar-brand:hover {
     filter: brightness(1.2);
 }
 
-.navbar-gradient {
-    background: linear-gradient(180deg, rgba(30,48,78,1) 0%, rgba(0,212,255,0) 100%);
-    height: 8px;
-    width: 100%;
+.navbar-create:hover {
+    filter: brightness(1.2);
 }

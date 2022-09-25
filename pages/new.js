@@ -3,50 +3,80 @@ import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 
 import { useRouter } from 'next/router';
-import PicUpload from '../components/PicUpload';
 import Compress from 'react-image-file-resizer';
+
+import PropertyInfo from '../components/Creation/PropertyInfo';
+
 
 const NewNote = () => {
 
     const { user, error, isLoading } = useUser();
 
+    const [part, setPart] = useState(0);
     const [form, setForm] = useState({});
+    const [post, setPost] = useState({});
+    const [date, setDate] = useState({});
+    const [validAddresses, setValidAddresses] = useState([]);
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
-
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const router = useRouter();
+
+    const postCode = `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
+
+
+    useEffect(() => {
+        if (!user) return
+
+        setForm({
+            ...form,
+            title: `A new house ${new Date().getTime()}`,
+            breakerId: user.sub,
+            breakerName: user.name,
+            breakerEmail: user.email,
+            breakerPicture: user.picture,
+            petsAllowed: formBools.petsAllowed,
+            outdoorArea: formBools.outdoorArea,
+            parkingSpace: formBools.parkingSpace,
+            postCode: postCode,
+            supermarket: formBools.supermarket,
+            trainStation: formBools.trainStation
+        })
+    }, [user, postCode, formBools])
 
 
     /**
      * Search JSON for matching postcodes
      */
     useEffect(() => {
-        const searchCondition = (form.postCode > 2999 && form.postCode < 4000) || (form.postCode > 7999 && form.postCode < 9000)
+        const searchCondition = (post.postCode1 && post.postCode2 && post.postCode3 && post.postCode4)
         if (searchCondition) {
+
             async function getLocationsByZip() {
                 const res = await fetch(`./postCodes.json?`);
                 const data = await res.json()
-                var validAddresses = []
+
+                var validAddressesArr = []
 
                 data.map((entry) => {
 
                     // We have a match
-                    if (`${entry.postcode}` === form.postCode) {
-                        validAddresses.push(entry.place_name)
-                        setForm({ ...form, address: validAddresses + ";" })
+                    if (`${entry.postcode}` === postCode) {
+                        validAddressesArr.push(entry.place_name)
+                        setValidAddresses(validAddressesArr)
                         setErrors({ ...errors, address: null })
                     }
                     // Nothing matches
-                    if (validAddresses.length === 0) {
+                    if (validAddressesArr.length === 0) {
                         setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
+                        setValidAddresses([])
                     }
                 })
             }
             getLocationsByZip()
         } else { setForm({ ...form, address: null }) }
-    }, [form.postCode])
+    }, [postCode])
 
 
     /**
@@ -57,19 +87,7 @@ const NewNote = () => {
             const res = await fetch('api/notes', {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...form,
-                    title: `A new house ${new Date().getTime()}`,
-                    breakerId: user.sub,
-                    breakerName: user.name,
-                    breakerEmail: user.email,
-                    breakerPicture: user.picture,
-                    petsAllowed: formBools.petsAllowed,
-                    outdoorArea: formBools.outdoorArea,
-                    parkingSpace: formBools.parkingSpace,
-                    supermarket: formBools.supermarket,
-                    trainStation: formBools.trainStation
-                })
+                body: JSON.stringify(form)
             })
             setIsSubmitting(true)
             router.push("/");
@@ -89,6 +107,24 @@ const NewNote = () => {
      * @param {*} e 
      */
     const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }) }
+
+    /**
+     * CALLBACK FOR CHANGE POST CODE
+     * @param {*} e 
+     */
+    const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
+
+    /**
+    * CALLBACK FOR CHANGE POST CODE
+     * @param {*} e 
+    */
+    const handleDate = (e) => { setDate({ ...date, [e.target.name]: e.target.value }) }
+
+    /**
+    * CALLBACK FOR ADDRESS
+    * @param {*} e 
+    */
+    const handleAddress = (e) => { setForm({ ...form, address: e }); setValidAddresses(null) }
 
 
     /**
@@ -122,6 +158,7 @@ const NewNote = () => {
 
     };
 
+
     /**
      * COMPRESS PHOTO BEFORE UPLOAD (FOR MOBILE)
      * @param {*} e 
@@ -151,164 +188,44 @@ const NewNote = () => {
 
 
     return (
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", marginTop: "80px", marginBottom: "40px" }}>
-                <h1>Create Post</h1>
-                <div>
-                    {isSubmitting ? (
-                        <div>SUBMITTING...</div>
-                    ) : (
-                        <form>
+        <div style={{ marginTop: "80px", marginBottom: "40px" }}>
+            <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+                    <div><h1>Create Post</h1></div>
 
-                            {/* Title
-                            <Form.Input placeholder='Title' name='title' onChange={handleChange} /> */}
+                    {/* <div style={{ width: "100", display: "flex", justifyContent: "space-between" }}>
+                        {[0, 1, 2, 3].map((id) => {
+                            return (
+                                <div key={id} part={part} style={{ width: "16px", height: "16px", borderRadius: "50%", backgroundColor: part > id ? "#1E304E" : "#8596b2" }} />
+                            )
+                        })}
+                    </div > */}
 
-                            Description
-                            <textarea placeholder='Description' name='description' onChange={handleChange} />
+                    <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
 
-                            Post Code
-                            <input
-                                placeholder='3000'
-                                name='postCode'
-                                onChange={handleChange}
-                                style={{ border: errors.address && "2px solid red" }}
-                            />
-                            {errors.address && <p style={{ background: "red", borderRadius: "8px", marginTop: "4px", padding: "8px" }}>
-                                {errors.address}
-                            </p>}
-                            {form.address && form.postCode > 2999 && <p>{form.address}</p>}
-
-                            <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
-                                <div>
-                                    Number of Rooms
-                                    <input placeholder='2' control='input' name='numRoom' type='number' onChange={handleChange} />
-                                </div>
-
-                                <div>
-                                    Number of Bathrooms
-                                    <input placeholder='1' control='input' name='numBath' type='number' onChange={handleChange} />
-                                </div>
-                            </div>
-
-                            Does it have...
-
-                            <div style={{ margin: "0 0 1em" }}>
-
-                                <div style={{ display: "flex", justifyContent: "space-between", margin: "0 0 1em" }}>
-
-                                    <div
-                                        className="form-bool"
-                                        style={{
-                                            width: "30%",
-                                            opacity: formBools.petsAllowed === false ? "0.8" : "1",
-                                            filter: formBools.petsAllowed === false ? "brightness(0.5)" : "brightness(1)",
-                                        }}
-                                        onClick={() => setFormBools({
-                                            ...formBools,
-                                            petsAllowed: formBools.petsAllowed === false ? true : false
-                                        })}
-                                    >
-                                        <h1> 🐶 </h1>
-                                        <p>Pets Allowed</p>
-                                    </div>
-
-                                    <div
-                                        className="form-bool"
-                                        style={{
-                                            width: "30%",
-                                            opacity: formBools.outdoorArea === false ? "0.8" : "1",
-                                            filter: formBools.outdoorArea === false ? "brightness(0.5)" : "brightness(1)",
-                                        }}
-                                        onClick={() => setFormBools({
-                                            ...formBools,
-                                            outdoorArea: formBools.outdoorArea === false ? true : false
-                                        })}
-                                    >
-                                        <h1>🌲</h1>
-                                        <p>Outdoor Area</p>
-                                    </div>
-
-                                    <div
-                                        className="form-bool"
-                                        style={{
-                                            width: "30%",
-                                            opacity: formBools.parkingSpace === false ? "0.8" : "1",
-                                            filter: formBools.parkingSpace === false ? "brightness(0.5)" : "brightness(1)",
-                                        }}
-                                        onClick={() => setFormBools({
-                                            ...formBools,
-                                            parkingSpace: formBools.parkingSpace === false ? true : false
-                                        })}
-                                    >
-                                        <h1>🚗</h1>
-                                        <p>Parking Space</p>
-                                    </div>
-
-                                </div>
-
-                                Is it less than 1km to a...
-
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-
-                                    <div
-                                        className="form-bool"
-                                        style={{
-                                            width: "44.6%",
-                                            opacity: formBools.supermarket === false ? "0.8" : "1",
-                                            filter: formBools.supermarket === false ? "brightness(0.5)" : "brightness(1)",
-                                        }}
-                                        onClick={() => setFormBools({
-                                            ...formBools,
-                                            supermarket: formBools.supermarket === false ? true : false
-                                        })}
-                                    >
-                                        <h1>🛒</h1>
-                                        <p>Supermarket</p>
-                                    </div>
-
-                                    <div
-                                        className="form-bool"
-                                        style={{
-                                            width: "44.6%",
-                                            opacity: formBools.trainStation === false ? "0.8" : "1",
-                                            filter: formBools.trainStation === false ? "brightness(0.5)" : "brightness(1)",
-                                        }}
-                                        onClick={() => setFormBools({
-                                            ...formBools,
-                                            trainStation: formBools.trainStation === false ? true : false
-                                        })}
-                                    >
-                                        <h1>🚉</h1>
-                                        <p>Trainstation</p>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            Photos
-
-                            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
-                                <PicUpload id={0} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={1} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={2} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={3} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={4} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={5} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={6} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={7} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                                <PicUpload id={8} uploadPhoto={compressFile} form={form} setForm={setForm} />
-                            </div>
-                            <div
-                                onClick={() => handleSubmit()}
-                                style={{ width: "100%", height: "80px" }}
-                            >
-                                Create
-                            </div>
-                        </form>
-                    )}
+                    <div style={{ height: "24px" }} />
                 </div>
             </div>
-        </div>
+
+            <PropertyInfo
+                handleChange={handleChange}
+                handlePost={handlePost}
+                handleDate={handleDate}
+                handleAddress={handleAddress}
+                errors={errors}
+                form={form}
+                setForm={setForm}
+                formBools={formBools}
+                setFormBools={setFormBools}
+                compressFile={compressFile}
+                handleSubmit={handleSubmit}
+                part={part}
+                setPart={setPart}
+                postCode={postCode}
+                validAddresses={validAddresses}
+            />
+        </div >
+
     )
 }
 

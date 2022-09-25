@@ -15,7 +15,6 @@ const Note = () => {
     const [conversationModal, setConversationModal] = useState(false)
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
-    console.log("conversation, ", conversation)
 
     const router = useRouter();
 
