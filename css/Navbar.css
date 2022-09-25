@@ -23,6 +23,10 @@
     font-size: 2rem;
 }
 
-.navbar-brand:hover, .navbar-create:hover {
+.navbar-brand:hover {
+    filter: brightness(1.2);
+}
+
+.navbar-create:hover {
     filter: brightness(1.2);
 }
