@@ -1,0 +1,23 @@
+.button {
+    height: 60px;
+    text-align: center;
+    align-items: center;
+    padding-top: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.primary {
+    background-color: #1E304E;
+    color: white;
+}
+
+.primary:hover {
+    filter: brightness(1.2);
+}
+
+
+.primary:active {
+    background-color: white;
+    color: #1E304E;
+}
