@@ -8,7 +8,6 @@ const Index = () => {
 
   const { user, error, isLoading } = useUser()
 
-  console.log("user: ", user)
   const [introAni, setIntroAni] = useState(true)
 
   const [notes, setNotes] = useState([])

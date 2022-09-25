@@ -4,7 +4,7 @@ const Part3 = (props) => {
 
     return (
         <>
-            Does it have...
+            <h2>Does it have...</h2>
 
             <div style={{ margin: "0 0 1em" }}>
 

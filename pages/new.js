@@ -7,21 +7,16 @@ import Compress from 'react-image-file-resizer';
 
 import PropertyInfo from '../components/Creation/PropertyInfo';
 
-const StepperWrap = `width: 100%; display: flex; justify-content: space-between;`;
-const StepperStep = `width: 16px; height: 16px; border-radius: 50%;
-background-color: ${(props) => props.part > props.id ? "#1E304E" : "#8596b2"}`;
-const StepperLine = `transition: width 1s linear; height: 2px; position: absolute; background-color: #1E304E; margin-top: -9px; z-index: -1;`;
-
 
 const NewNote = () => {
 
     const { user, error, isLoading } = useUser();
 
-    const [part, setPart] = useState(1)
+    const [part, setPart] = useState(0);
     const [form, setForm] = useState({});
-    console.log("form: ", form)
-    const [post, setPost] = useState({})
-    const [validAddresses, setValidAddresses] = useState([])
+    const [post, setPost] = useState({});
+    const [date, setDate] = useState({});
+    const [validAddresses, setValidAddresses] = useState([]);
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
@@ -29,6 +24,26 @@ const NewNote = () => {
     const router = useRouter();
 
     const postCode = `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
+
+
+    useEffect(() => {
+        if (!user) return
+
+        setForm({
+            ...form,
+            title: `A new house ${new Date().getTime()}`,
+            breakerId: user.sub,
+            breakerName: user.name,
+            breakerEmail: user.email,
+            breakerPicture: user.picture,
+            petsAllowed: formBools.petsAllowed,
+            outdoorArea: formBools.outdoorArea,
+            parkingSpace: formBools.parkingSpace,
+            postCode: postCode,
+            supermarket: formBools.supermarket,
+            trainStation: formBools.trainStation
+        })
+    }, [user, postCode, formBools])
 
 
     /**
@@ -72,19 +87,7 @@ const NewNote = () => {
             const res = await fetch('api/notes', {
                 method: 'POST',
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...form,
-                    title: `A new house ${new Date().getTime()}`,
-                    breakerId: user.sub,
-                    breakerName: user.name,
-                    breakerEmail: user.email,
-                    breakerPicture: user.picture,
-                    petsAllowed: formBools.petsAllowed,
-                    outdoorArea: formBools.outdoorArea,
-                    parkingSpace: formBools.parkingSpace,
-                    supermarket: formBools.supermarket,
-                    trainStation: formBools.trainStation
-                })
+                body: JSON.stringify(form)
             })
             setIsSubmitting(true)
             router.push("/");
@@ -112,10 +115,16 @@ const NewNote = () => {
     const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
 
     /**
+    * CALLBACK FOR CHANGE POST CODE
+     * @param {*} e 
+    */
+    const handleDate = (e) => { setDate({ ...date, [e.target.name]: e.target.value }) }
+
+    /**
     * CALLBACK FOR ADDRESS
     * @param {*} e 
     */
-    const handleAddress = (e) => { setForm({ ...form, address: e }); setValidAddresses([]) }
+    const handleAddress = (e) => { setForm({ ...form, address: e }); setValidAddresses(null) }
 
 
     /**
@@ -184,13 +193,15 @@ const NewNote = () => {
                 <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                     <div><h1>Create Post</h1></div>
 
-                    <div>
+                    {/* <div style={{ width: "100", display: "flex", justifyContent: "space-between" }}>
                         {[0, 1, 2, 3].map((id) => {
-                            return (<div key={id} id={id} part={part} />)
+                            return (
+                                <div key={id} part={part} style={{ width: "16px", height: "16px", borderRadius: "50%", backgroundColor: part > id ? "#1E304E" : "#8596b2" }} />
+                            )
                         })}
-                    </div >
+                    </div > */}
 
-                    <div style={{ width: part === 1 ? "0%" : part === 2 ? "30%" : part === 3 ? "60%" : "calc(100% - 32px)" }} />
+                    <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
 
                     <div style={{ height: "24px" }} />
                 </div>
@@ -199,6 +210,7 @@ const NewNote = () => {
             <PropertyInfo
                 handleChange={handleChange}
                 handlePost={handlePost}
+                handleDate={handleDate}
                 handleAddress={handleAddress}
                 errors={errors}
                 form={form}
