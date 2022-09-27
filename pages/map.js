@@ -204,13 +204,13 @@ const Map = () => {
                                 let key = `${selIdx} - ${mapIdx}`
                                 if (map.name === selection) {
                                     return (
-                                        <>
-                                            <h4 key={key}>{map.name}</h4>
+                                        <div key={key}>
+                                            <h4>{map.name}</h4>
                                             <div>long starts: {map.longStarts}</div>
                                             <div>long ends: {map.longEnds}</div>
                                             <div>lat starts: {map.latStarts}</div>
                                             <div>lat ends: {map.latEnds}</div>
-                                        </>
+                                        </div>
                                     )
                                 }
                             })}
