@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import ListingCard from '../components/Listing/ListingCard';
-import IntroAni from '../components/IntroAni';
+// import IntroAni from '../components/IntroAni';
 
 const Index = () => {
 
@@ -41,9 +41,9 @@ const Index = () => {
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-      {introAni ? (
+      {/* {introAni ? (
         <IntroAni />
-      ) : (
+      ) : ( */}
         <div className='mobile-container'>
           {user && (
             <>
@@ -64,7 +64,7 @@ const Index = () => {
             })}
           </div>
         </div>
-      )}
+      {/* )} */}
     </div >
   )
 }
