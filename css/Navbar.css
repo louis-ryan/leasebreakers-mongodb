@@ -5,18 +5,6 @@
     justify-content: space-between;
 }
 
-.navbar-create {
-    cursor: pointer;
-    background-color: var(--grey-blue);
-    margin-top: 8px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    color: #fff;
-    font-size: 2rem;
-    border-radius: 40px;
-}
-
 .navbar-brand {
     cursor: pointer;
     color: #fff;

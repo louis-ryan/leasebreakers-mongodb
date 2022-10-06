@@ -11,7 +11,7 @@ const Navbar = () => {
 
     return (
         <div style={{position: "fixed", width: "100%", zIndex: "10", opacity: "0.95", top: "0px"}}>
-            <div className='navbar' style={{display: "flex", justifyContent: "space-between"}}>
+            <div style={{ width: "100%", borderRadius: "1px solid grey", display: "flex", justifyContent: "space-between"}}>
                 <div></div>
                 <NavbarUserOptions
                     userOptions={userOptions}
