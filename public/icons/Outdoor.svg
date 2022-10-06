@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Outdoor</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Outdoor" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M29.5,31.5 L10.5,31.5 L10.5,7.15679952 C11.8325195,5.32443495 15.0498054,4.5 20,4.5 C24.9501946,4.5 28.1674805,5.32443495 29.5,7.15679952 L29.5,31.5 Z" id="Rectangle" stroke="#979797"></path>
+        <rect id="Rectangle" stroke="#979797" x="6.5" y="18.5" width="28" height="19" rx="2"></rect>
+        <line x1="13" y1="19.09375" x2="13" y2="36.90625" id="Line-2-Copy" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="27" y1="19.09375" x2="27" y2="36.90625" id="Line-2-Copy-2" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="20" y1="19.09375" x2="20" y2="36.90625" id="Line-2" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="10.5" y1="31.5" x2="7.5" y2="36.5" id="Line-3" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="29.5" y1="31.5" x2="33.5" y2="36.5" id="Line" stroke="#979797" stroke-linecap="square"></line>
+        <line x1="10.5" y1="11.5" x2="29.5" y2="11.5" id="Line-4" stroke="#979797" stroke-linecap="square"></line>
+    </g>
+</svg>
