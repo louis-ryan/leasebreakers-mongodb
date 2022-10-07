@@ -19,6 +19,9 @@ const Parts = ((props) => {
                     handleAddress={props.props.handleAddress}
                     postCode={props.props.postCode}
                     validAddresses={props.props.validAddresses}
+                    latInPx={props.props.latInPx}
+                    longInPx={props.props.longInPx}
+                    handleClearPost={props.props.handleClearPost}
                 />
             )
         case 1:
@@ -65,7 +68,7 @@ const PropertyInfo = (props) => {
 
 
     return (
-        <div style={{ border: "1px solid grey", backgroundColor: "white", boxShadow: "0px 0px 160px 20px rgba(0,0,0,0.10)", width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px", borderRadius: "8px" }}>
+        <div className='effect-fullscreen' style={{ width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px" }}>
             <form style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
 
                 <div style={{ height: "40px" }} />

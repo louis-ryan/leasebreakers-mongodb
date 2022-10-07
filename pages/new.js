@@ -9,6 +9,12 @@ import PropertyInfo from '../components/Creation/PropertyInfo';
 
 const NewNote = () => {
 
+    const latInit = -37.1989648128
+    const longInit = 144.340643773
+
+    const onePixLat = 0.00097731799
+    const onePixLong = 0.0012070086
+
     const { user, error, isLoading } = useUser();
 
     const [part, setPart] = useState(0);
@@ -16,6 +22,7 @@ const NewNote = () => {
     const [post, setPost] = useState({});
     const [date, setDate] = useState({});
     const [validAddresses, setValidAddresses] = useState([]);
+    const [mapCoords, setMapCoords] = useState({})
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
@@ -23,6 +30,11 @@ const NewNote = () => {
     const router = useRouter();
 
     const postCode = `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
+
+    var latInPx = (latInit - mapCoords.lat) / onePixLat
+    var longInPx = (mapCoords.long - longInit) / onePixLong
+
+
 
 
     useEffect(() => {
@@ -46,7 +58,7 @@ const NewNote = () => {
 
 
     /**
-     * Search JSON for matching postcodes
+     * SEARCH JSON FOR MATCHING POSTCODES'
      */
     useEffect(() => {
         const searchCondition = (post.postCode1 && post.postCode2 && post.postCode3 && post.postCode4)
@@ -62,6 +74,7 @@ const NewNote = () => {
 
                     // We have a match
                     if (`${entry.postcode}` === postCode) {
+                        setMapCoords({ lat: entry.latitude, long: entry.longitude })
                         validAddressesArr.push(entry.place_name)
                         setValidAddresses(validAddressesArr)
                         setErrors({ ...errors, address: null })
@@ -69,6 +82,11 @@ const NewNote = () => {
                     // Nothing matches
                     if (validAddressesArr.length === 0) {
                         setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
+                        setValidAddresses([])
+                    }
+                    // Not In Melbourne
+                    if (mapCoords.lat > 1600 || mapCoords.lat < 0 || mapCoords.long > 1600 || mapCoords.long < 0) {
+                        setErrors({ ...errors, address: "it appears that the selected postcode is outside the Melbourne region. We cannot include this in our database." })
                         setValidAddresses([])
                     }
                 })
@@ -123,7 +141,18 @@ const NewNote = () => {
     * CALLBACK FOR ADDRESS
     * @param {*} e 
     */
-    const handleAddress = (e) => { setForm({ ...form, address: e }); setValidAddresses(null) }
+    const handleAddress = (e) => { setForm({ ...form, address: e }) }
+
+    /**
+     * CALLBACK TO CLEAR POST
+     */
+    const handleClearPost = () => {
+        setPost({ postCode1: null, postCode2: null, postCode3: null, postCode4: null });
+        [1, 2, 3, 4].map((id) => document.getElementsByName(`postCode${id}`)[0].value = null);
+        setValidAddresses([]);
+        setMapCoords({});
+        setErrors({ ...errors, address: null })
+    }
 
 
     /**
@@ -188,6 +217,16 @@ const NewNote = () => {
 
     return (
         <div style={{ marginTop: "80px", marginBottom: "40px" }}>
+
+            <div style={{ width: "100vw", height: "100vh", position: "fixed", zIndex: "-1" }}>
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Shepard_Fairey_Hosier_Melbourne.jpg/600px-Shepard_Fairey_Hosier_Melbourne.jpg"
+                    style={{ opacity: "0.2", filter: "blur(32px)", height: "100%", transform: "translateX(-50%)" }}
+                >
+
+                </img>
+            </div>
+
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                 <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                     <div><h1>Create Post</h1></div>
@@ -216,6 +255,9 @@ const NewNote = () => {
                 setPart={setPart}
                 postCode={postCode}
                 validAddresses={validAddresses}
+                latInPx={latInPx}
+                longInPx={longInPx}
+                handleClearPost={handleClearPost}
             />
         </div >
 

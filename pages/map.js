@@ -67,7 +67,7 @@ const Map = () => {
                 {mapArr.map((map, idx) => {
                     return (
                         <div key={idx}>
-                            <svg width="1600px" height="1600px" style={{ position: "absolute", zoom: "0.25" }}>
+                            <svg width="1600px" height="1600px" style={{ position: "absolute", zoom: "0.2345" }}>
                                 <g id={map.name} stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ cursor: "pointer" }}>
                                     <path d={map.path} id="Rectangle" stroke="#979797" strokeWidth="4" fill={selectionArr.indexOf(map.name) === -1 ? "white" : "pink"}></path>
                                 </g>

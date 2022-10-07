@@ -4,7 +4,7 @@ const ListingCardRight = ({ note }) => {
 
 
     return (
-        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll", borderRadius: "4px" }}>
+        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll" }}>
             {note.pics.map((pic, idx) => {
 
                 return (

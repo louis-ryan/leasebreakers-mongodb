@@ -4,8 +4,8 @@
     background-color: white;
     padding: 4px 8px;
     border-radius: 48px;
-    border: 1px solid #9C9C9C;
-    box-shadow: -8px 8px 0px 4px rgb(209, 194, 206);
+    border: rgba(173, 55, 112, 0.378) 2px solid;
+    box-shadow: -8px 8px 0px 2px rgb(209, 194, 206);
 }
 
 .navbar {

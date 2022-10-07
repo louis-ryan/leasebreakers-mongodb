@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import ListingCard from '../components/Listing/ListingCard';
-// import IntroAni from '../components/IntroAni';
 
 const Index = () => {
 
@@ -54,7 +54,7 @@ const Index = () => {
 
         <div style={{ height: "80px" }} />
 
-        <div style={{ marginLeft: "8px", backgroundColor: "white", width: "calc(100% - 16px)", padding: "8px", boxShadow: "-8px 8px 0px 4px rgb(209, 194, 206)", border: "1px solid #9C9C9C" }}>
+        <div style={{ marginLeft: "16px", backgroundColor: "white", width: "calc(100% - 24px)", padding: "16px", boxShadow: "-8px 8px 0px 4px rgb(209, 194, 206)", border: "rgba(173, 55, 112, 0.378) 2px solid" }}>
           {user && (
             <h2 style={{ overflow: "hidden", width: "calc(100% - 8px)" }}>
               Welcome {" "}
@@ -65,6 +65,14 @@ const Index = () => {
           )}
           <h3> These Properties are Available </h3>
         </div>
+
+        <div style={{ height: "40px" }} />
+
+        <Link href="/map">
+          <div className="button secondary">
+            FILTER SEARCH
+          </div>
+        </Link>
 
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
