@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 import '../css/style.css';
 import '../css/intro.css';
 import '../css/new.css';
-import '../css/navbar.css';
+import '../css/nav.css';
 import '../css/buttons.css';
 import '../css/inputs.css';
 
