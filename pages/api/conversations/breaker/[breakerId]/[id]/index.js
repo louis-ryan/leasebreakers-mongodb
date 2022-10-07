@@ -1,5 +1,5 @@
-import dbConnect from '../../../../utils/dbConnect';
-import Conversation from '../../../../models/Conversation';
+import dbConnect from '../../../../../../utils/dbConnect';
+import Conversation from '../../../../../../models/Conversation';
 
 dbConnect();
 
