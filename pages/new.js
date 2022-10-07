@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
-
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Compress from 'react-image-file-resizer';
-
 import PropertyInfo from '../components/Creation/PropertyInfo';
 
 
@@ -193,13 +192,7 @@ const NewNote = () => {
                 <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                     <div><h1>Create Post</h1></div>
 
-                    {/* <div style={{ width: "100", display: "flex", justifyContent: "space-between" }}>
-                        {[0, 1, 2, 3].map((id) => {
-                            return (
-                                <div key={id} part={part} style={{ width: "16px", height: "16px", borderRadius: "50%", backgroundColor: part > id ? "#1E304E" : "#8596b2" }} />
-                            )
-                        })}
-                    </div > */}
+                    <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
                     <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
 

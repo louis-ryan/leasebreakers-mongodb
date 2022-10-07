@@ -64,7 +64,6 @@ const Map = () => {
     return (
         <>
             <div style={{ height: "400px" }}>
-
                 {mapArr.map((map, idx) => {
                     return (
                         <div key={idx}>
