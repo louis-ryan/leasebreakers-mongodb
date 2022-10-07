@@ -54,7 +54,10 @@ const Index = () => {
 
         <div style={{ height: "80px" }} />
 
-        <div style={{ marginLeft: "16px", backgroundColor: "white", width: "calc(100% - 24px)", padding: "16px", boxShadow: "-8px 8px 0px 4px rgb(209, 194, 206)", border: "rgba(173, 55, 112, 0.378) 2px solid" }}>
+        <div
+          className='effect-regular'
+          style={{ marginLeft: "16px", width: "calc(100% - 24px)", padding: "16px" }}
+        >
           {user && (
             <h2 style={{ overflow: "hidden", width: "calc(100% - 8px)" }}>
               Welcome {" "}
