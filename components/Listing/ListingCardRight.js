@@ -12,7 +12,7 @@ const ListingCardRight = ({ note }) => {
                         <img
                             alt="note image"
                             src={pic.url}
-                            style={{ height: "240px" }}
+                            style={{ height: "320px" }}
                         />
                     </span>
                 )

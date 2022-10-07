@@ -65,7 +65,7 @@ const PropertyInfo = (props) => {
 
 
     return (
-        <div style={{ border: "1px solid #8596b2", backgroundColor: "rgb(196 204 217)", boxShadow: "0px 1px 31px 13px rgba(0,0,0,0.38)", width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px", borderRadius: "8px" }}>
+        <div style={{ border: "1px solid grey", backgroundColor: "white", boxShadow: "0px 0px 160px 20px rgba(0,0,0,0.10)", width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px", borderRadius: "8px" }}>
             <form style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
 
                 <div style={{ height: "40px" }} />
