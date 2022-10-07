@@ -8,6 +8,7 @@ import '../css/new.css';
 import '../css/nav.css';
 import '../css/buttons.css';
 import '../css/inputs.css';
+import '../css/effect.css';
 
 function MyApp({ Component, pageProps }) {
 

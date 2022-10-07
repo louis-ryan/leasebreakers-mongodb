@@ -5,11 +5,14 @@
     padding-top: 18px;
     border-radius: 4px;
     cursor: pointer;
+    letter-spacing: 4px;
+    
 }
 
 .primary {
-    background-color: #22414b;
+    background-color: #487B60;
     color: white;
+    font-weight: 100;
 }
 
 .primary:hover {
@@ -18,6 +21,23 @@
 
 
 .primary:active {
+    background-color: white;
+    color: #0d6561;
+}
+
+.secondary {
+    background-color: white;
+    border: 1px solid #487B60;
+    color: #487B60;
+    font-weight: 600;
+}
+
+.secondary:hover {
+    filter: brightness(1.2);
+}
+
+
+.secondary:active {
     background-color: white;
     color: #1E304E;
 }
