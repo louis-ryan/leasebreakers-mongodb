@@ -26,9 +26,9 @@ const NavbarUserOptions = ({ userOptions, setUserOptions }) => {
                 <div style={{ width: "4px" }} />
                 <Link href="/new">
                     <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1">
-                        <g id="New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <circle id="Oval" fill="#487B60" cx="20" cy="20" r="20"></circle>
-                            <path d="M20,7.56521739 L20,32.4347826 M7,19.9999824 L33,20.0000176" id="Combined-Shape" stroke="#FFFFFF" stroke-linecap="round"></path>
+                        <g id="New" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                            <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
+                            <path d="M20,7.56521739 L20,32.4347826 M7,19.9999824 L33,20.0000176" id="Combined-Shape" stroke="#FFFFFF" strokeLinecap="round"></path>
                         </g>
                     </svg>
                 </Link>
@@ -38,9 +38,9 @@ const NavbarUserOptions = ({ userOptions, setUserOptions }) => {
         return (
             <Link href="/api/auth/login">
                 <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1">
-                    <g id="New" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <circle id="Oval" fill="#487B60" cx="20" cy="20" r="20"></circle>
-                        <path d="M20,7.56521739 L20,32.4347826 M7,19.9999824 L33,20.0000176" id="Combined-Shape" stroke="#FFFFFF" stroke-linecap="round"></path>
+                    <g id="New" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                        <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
+                        <path d="M20,7.56521739 L20,32.4347826 M7,19.9999824 L33,20.0000176" id="Combined-Shape" stroke="#FFFFFF" strokeLinecap="round"></path>
                     </g>
                 </svg>
             </Link>

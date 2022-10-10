@@ -61,7 +61,7 @@ const Index = () => {
           {user && (
             <h2 style={{ overflow: "hidden", width: "calc(100% - 8px)" }}>
               Welcome {" "}
-              <span style={{ fontFamily: "cursive", textDecoration: "underline", textDecorationColor: "grey", textDecorationStyle: "dotted", fontWeight: "800", fontSize: "32px", color: "#487B60", letterSpacing: "4px" }}>
+              <span style={{ fontFamily: "cursive", textDecoration: "underline", textDecorationColor: "grey", textDecorationStyle: "dotted", fontWeight: "800", fontSize: "32px", color: "black", letterSpacing: "4px" }}>
                 {user.given_name}
               </span>
             </h2>
@@ -71,7 +71,7 @@ const Index = () => {
 
         <div style={{ height: "40px" }} />
 
-        <Link href="/map">
+        <Link href="/filter">
           <div className="button secondary">
             FILTER SEARCH
           </div>

@@ -8,9 +8,20 @@ const Part4 = (props) => {
 
     return (
         <>
-            Photos
 
-            <div>
+            <h4 onClick={() => props.setPart(3)}>
+                {'< Back to Description'}
+            </h4>
+
+            <div style={{ height: "16px" }} />
+
+            <h2>Photos</h2>
+
+            Upload some photos
+
+            <div style={{ height: "4px" }} />
+
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
                 {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((id) => {
                     return (
                         <PicUpload

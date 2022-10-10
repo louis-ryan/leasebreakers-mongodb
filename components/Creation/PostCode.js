@@ -8,12 +8,21 @@ const PostCode = (props) => {
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {[1, 2, 3, 4].map((id) => {
+
+                    switch (id) {
+                        case 1: var inputVal = props.post.postCode1; break;
+                        case 2: var inputVal = props.post.postCode2; break;
+                        case 3: var inputVal = props.post.postCode3; break;
+                        case 4: var inputVal = props.post.postCode4; break;
+                    }
+
                     return (
                         <input
                             key={id}
                             placeholder={id > 1 ? "0" : "3"}
                             maxLength={1}
                             name={`postCode${id}`}
+                            value={inputVal}
                             onChange={(e) => {
                                 props.errors.address = ""
                                 props.handlePost(e);

@@ -29,6 +29,7 @@ const Part1 = (props) => {
             <PostCode
                 handlePost={props.handlePost}
                 errors={props.errors}
+                post={props.post}
             />
 
             <div style={{ height: "8px" }} />
@@ -66,12 +67,12 @@ const Part1 = (props) => {
 
                     Address
 
-                    <div style={{ borderRadius: "4px", overflow: "hidden", marginTop: "4px", border: "#1E304E 1px solid" }}>
+                    <div style={{ borderRadius: "4px", overflow: "hidden", marginTop: "4px", border: "grey 1px solid" }}>
                         {props.validAddresses.map((address) => {
                             return (
                                 <div
                                     key={address}
-                                    style={{ width: "100%", height: "40px", backgroundColor: props.form.address === address ? "#487B60" : "white", paddingLeft: "16px", paddingTop: "8px", color: props.form.address === address && "white" }}
+                                    style={{ width: "100%", height: "40px", backgroundColor: props.form.address === address ? "black" : "white", paddingLeft: "16px", paddingTop: "8px", color: props.form.address === address && "white" }}
                                     onClick={() => props.handleAddress(address)}>
                                     {address}
                                 </div>
