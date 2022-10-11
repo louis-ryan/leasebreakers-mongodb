@@ -5,11 +5,11 @@ const NoteSchema = new mongoose.Schema({
         type: String
     },
     date: {
-        type: String,
+        type: Date,
         required: false
     },
     contractEnds: {
-        type: String,
+        type: Date,
         required: false
     },
     description: {

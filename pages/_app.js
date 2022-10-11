@@ -3,7 +3,6 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import Layout from '../components/Layout';
 
 import '../css/style.css';
-import '../css/intro.css';
 import '../css/new.css';
 import '../css/nav.css';
 import '../css/buttons.css';

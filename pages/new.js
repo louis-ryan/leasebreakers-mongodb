@@ -19,7 +19,6 @@ const NewNote = () => {
 
     const [part, setPart] = useState(0);
     const [form, setForm] = useState({});
-    console.log("form: ", form)
     const [post, setPost] = useState({});
     const [endDate, setEndDate] = useState({});
     const [validAddresses, setValidAddresses] = useState([]);
@@ -48,10 +47,8 @@ const NewNote = () => {
             breakerName: user.name,
             breakerEmail: user.email,
             breakerPicture: user.picture,
-            // contractEnds: Math.floor(new Date(`${endDate.endDate1 + endDate.endDate2 + "." + endDate.endDate3 + endDate.endDate4 + "." + endDate.endDate5 + endDate.endDate6 + endDate.endDate7 + endDate.endDate8}`).getTime() / 1000),
-            contractEnds: "ends",
-            // date: Date.now(),
-            date: "date",
+            contractEnds: Math.floor(new Date(`${endDate.endDate1 + endDate.endDate2 + "." + endDate.endDate3 + endDate.endDate4 + "." + endDate.endDate5 + endDate.endDate6 + endDate.endDate7 + endDate.endDate8}`).getTime() / 1000),
+            date: Date.now(),
             petsAllowed: formBools.petsAllowed,
             outdoorArea: formBools.outdoorArea,
             parkingSpace: formBools.parkingSpace,

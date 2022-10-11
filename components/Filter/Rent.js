@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import mapArr from '../MapArr';
+import mapArr from './MapArr';
 
 
 const MapFilter = (props) => {
