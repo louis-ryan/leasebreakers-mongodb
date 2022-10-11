@@ -9,8 +9,8 @@ const MyComment = ({ commentPicture, comment }) => {
                 <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
             </div>
             <div style={{ width: "8px" }} />
-            <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#3B4657" points="159 0 159 146 0 73"></polygon> </g></svg>
-            <div style={{ backgroundColor: "#3B4657", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)" }}>
+            <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="black" points="159 0 159 146 0 73"></polygon> </g></svg>
+            <div style={{ backgroundColor: "black", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)", color: "white" }}>
                 {comment}
             </div>
         </div>
@@ -58,7 +58,8 @@ const IndividualComment = ({ idx, comment, conversation, user }) => {
 const NoteComments = ({ conversation, user }) => {
 
     return (
-        <>
+        <div id="scroll-page">
+
             {conversation && conversation.comments.map((comment, idx) => (
                 <IndividualComment
                     key={idx}
@@ -68,7 +69,9 @@ const NoteComments = ({ conversation, user }) => {
                     user={user}
                 />
             ))}
-        </>
+
+            <div style={{ height: "72px" }} />
+        </div>
     )
 }
 

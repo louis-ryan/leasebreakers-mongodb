@@ -22,6 +22,7 @@ const Parts = ((props) => {
                     latInPx={props.props.latInPx}
                     longInPx={props.props.longInPx}
                     handleClearPost={props.props.handleClearPost}
+                    post={props.props.post}
                 />
             )
         case 1:
@@ -31,29 +32,35 @@ const Parts = ((props) => {
                     form={props.props.form}
                     setPart={props.props.setPart}
                     handleChange={props.props.handleChange}
+                    formBools={props.props.formBools}
+                    setFormBools={props.props.setFormBools}
                 />
             )
         case 2:
             return (
                 <Part2
                     errors={props.props.errors}
-                    formBools={props.props.formBools}
-                    setFormBools={props.props.setFormBools}
                     setPart={props.props.setPart}
-                    handleDate={props.props.handleDate}
+                    form={props.props.form}
+                    handleContractEnds={props.props.handleContractEnds}
+                    handleClearEndDate={props.props.handleClearEndDate}
+                    handleRent={props.props.handleRent}
+                    endDate={props.props.endDate}
                 />
             )
         case 3:
             return (
                 <Part3
-                    formBools={props.props.formBools}
-                    setFormBools={props.props.setFormBools}
+                    errors={props.props.errors}
                     setPart={props.props.setPart}
+                    handleChange={props.props.handleChange}
                 />
             )
         case 4:
             return (
                 <Part4
+                    errors={props.props.errors}
+                    setPart={props.props.setPart}
                     form={props.props.form}
                     setForm={props.props.setForm}
                     compressFile={props.props.compressFile}

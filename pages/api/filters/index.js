@@ -1,5 +1,5 @@
 import dbConnect from '../../../utils/dbConnect';
-import Note from '../../../models/Note';
+import Filter from '../../../models/Filter';
 
 dbConnect();
 
@@ -9,26 +9,25 @@ export default async (req, res) => {
     switch (method) {
         case 'GET':
             try {
-                const notes = await Note.find({});
+                const filter = await Filter.find({});
 
-                res.status(200).json({ success: true, data: notes })
+                if (!filter) {
+                    return res.status(400).json({ success: false });
+                }
+
+                res.status(200).json({ success: true, data: filter });
             } catch (error) {
                 res.status(400).json({ success: false });
             }
             break;
         case 'POST':
             try {
-                const note = await Note.create(req.body);
+                const filter = await Filter.create(req.body);
 
-                console.log("note, ", note)
-
-                res.status(201).json({ success: true, data: note })
+                res.status(201).json({ success: true, data: filter })
             } catch (error) {
                 res.status(400).json({ success: false });
             }
-            break;
-        default:
-            res.status(400).json({ success: false });
             break;
     }
 }
