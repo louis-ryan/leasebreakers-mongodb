@@ -17,7 +17,7 @@ const Part1 = (props) => {
             <h2>Property</h2>
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div>
+                <div style={{ width: "48%" }}>
                     <div>Living/Bedrooms</div>
                     <input
                         control='input'
@@ -25,13 +25,13 @@ const Part1 = (props) => {
                         type='number'
                         onChange={props.handleChange}
                         value={props.form.numRoom}
-                        style={{ textAlign: "center", fontSize: "24px", width: "180px", height: "60px" }}
+                        style={{ textAlign: "center", fontSize: "24px", width: "100%", height: "60px" }}
                     />
                 </div>
 
                 <div style={{ width: "16px" }} />
 
-                <div>
+                <div style={{ width: "48%" }}>
                     <div>Bathrooms</div>
                     <input
                         control='input'
@@ -39,7 +39,7 @@ const Part1 = (props) => {
                         type='number'
                         onChange={props.handleChange}
                         value={props.form.numBath}
-                        style={{ textAlign: "center", fontSize: "24px", width: "180px", height: "60px" }}
+                        style={{ textAlign: "center", fontSize: "24px", width: "100%", height: "60px" }}
                     />
                 </div>
             </div>
@@ -108,7 +108,7 @@ const Part1 = (props) => {
 
                 <div
                     className="form-bool"
-                    style={{ width: "44.6%", backgroundColor: props.formBools.supermarket && "pink" }}
+                    style={{ width: "46%", backgroundColor: props.formBools.supermarket && "pink" }}
                     onClick={() => props.setFormBools({ ...props.formBools, supermarket: props.formBools.supermarket === false ? true : false })}
                 >
                     <svg width="40px" height="40px" viewBox="0 0 40 40" style={{ marginTop: "16px" }}>
@@ -129,7 +129,7 @@ const Part1 = (props) => {
 
                 <div
                     className="form-bool"
-                    style={{ width: "44.6%", backgroundColor: props.formBools.trainStation && "pink" }}
+                    style={{ width: "46%", backgroundColor: props.formBools.trainStation && "pink" }}
                     onClick={() => props.setFormBools({ ...props.formBools, trainStation: props.formBools.trainStation === false ? true : false })}
                 >
                     <svg width="40px" height="40px" viewBox="0 0 40 40" style={{ marginTop: "16px" }}>

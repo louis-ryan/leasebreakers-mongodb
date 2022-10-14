@@ -34,7 +34,7 @@ const ConversationSchema = new mongoose.Schema({
                 type: String,
             },
             timeOfComment: {
-                type: String,
+                type: Date,
             },
             posterId: {
                 type: String,
@@ -42,6 +42,9 @@ const ConversationSchema = new mongoose.Schema({
             posterName: {
                 type: String,
             },
+            commentIsNew: {
+                type: Boolean
+            }
         }
     ]
 })

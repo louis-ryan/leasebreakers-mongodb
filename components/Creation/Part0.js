@@ -44,7 +44,7 @@ const Part1 = (props) => {
 
             <div style={{ height: "24px" }} />
 
-            <div style={{ zoom: "0.2345" }}>
+            <div style={{ zoom: "0.22" }}>
 
                 <svg width="1600px" height="1600px">
                     <g id="Artboard-Copy-8" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" opacity="0.607136805">
