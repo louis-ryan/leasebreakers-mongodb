@@ -26,10 +26,6 @@ const ListingCard = ({ note }) => {
             <div
                 key={note._id}
                 className="note-container"
-                style={{
-                    border: user && user.sub === note.breakerId && "8px #8596b2 solid",
-                    // outline: user && user.sub === note.breakerId && "0.5px white solid"
-                }}
             >
 
                 {/* Content: Tags, Details */}

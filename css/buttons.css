@@ -5,11 +5,14 @@
     padding-top: 18px;
     border-radius: 4px;
     cursor: pointer;
+    letter-spacing: 4px;
+    
 }
 
 .primary {
-    background-color: #1E304E;
+    background-color: black;
     color: white;
+    font-weight: 100;
 }
 
 .primary:hover {
@@ -19,5 +22,22 @@
 
 .primary:active {
     background-color: white;
-    color: #1E304E;
+    color: black;
+}
+
+.secondary {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    font-weight: 600;
+}
+
+.secondary:hover {
+    filter: brightness(1.2);
+}
+
+
+.secondary:active {
+    background-color: white;
+    color: black;
 }

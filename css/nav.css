@@ -1,20 +1,18 @@
+.navbar-container {
+    display: flex;
+    margin: 8px;
+    background-color: white;
+    padding: 4px 8px;
+    border-radius: 48px;
+    border: rgba(173, 55, 112, 0.378) 2px solid;
+    box-shadow: -8px 8px 0px 2px rgb(209, 194, 206);
+}
+
 .navbar {
     color: #fff;
     padding: 0px 8px 8px 8px;
-    display: flex; 
+    display: flex;
     justify-content: space-between;
-}
-
-.navbar-create {
-    cursor: pointer;
-    background-color: var(--grey-blue);
-    margin-top: 8px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    color: #fff;
-    font-size: 2rem;
-    border-radius: 40px;
 }
 
 .navbar-brand {

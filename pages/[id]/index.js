@@ -4,11 +4,18 @@ import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
 
-import NoteComments from '../../components/NoteComments';
+import NoteComments from '../../components/Note/NoteComments';
+import ViewSelector from '../../components/Note/ViewSelectors';
+import Details from '../../components/Note/Details';
+import Photos from '../../components/Note/Photos';
+import MyInbox from '../../components/Note/MyInbox';
+import Comments from '../../components/Note/Comments';
 
 const Note = () => {
 
     const { user, error, isLoading } = useUser();
+
+    const [view, setView] = useState("Details")
 
     const [note, setNote] = useState(null)
     const [comment, setComment] = useState(null)
@@ -20,7 +27,17 @@ const Note = () => {
 
 
     /**
-    * GET INITIAL NOTE
+     * Inititalise conversation at bottom of scroll
+     */
+    useEffect(() => {
+        if (view === "Conversation" && document.getElementById('scroll-page')) {
+            document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
+        }
+    }, [view])
+
+
+    /**
+    * Get note
     */
     useEffect(() => {
         async function getInitialNote() {
@@ -37,7 +54,7 @@ const Note = () => {
 
 
     /**
-     * GET CONVERSATION WITH POSTER OR LIST OF CONVERSATIONS WITH APPLICANTS
+     * Get conversation with poster or list with applicants
      */
     useEffect(() => {
         async function getInitialComments() {
@@ -48,7 +65,7 @@ const Note = () => {
             const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
             const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
 
-            const res = await fetch(`api/conversations`);
+            const res = await fetch(`api/conversations/${router.query.id}`);
             const { data } = await res.json();
             if (!user) return
             var gatherMyConversations = []
@@ -72,7 +89,7 @@ const Note = () => {
 
 
     /**
-    * CREATE NEW CONVERSATION ID
+    * Create new conversation
     */
     const createConversation = async () => {
         try {
@@ -93,7 +110,10 @@ const Note = () => {
                     comments: [
                         {
                             comment: comment,
-                            posterId: user.sub
+                            timeOfComment: Date.now(),
+                            posterId: user.sub,
+                            posterName: user.nickname,
+                            commentIsNew: true,
                         }
                     ]
                 })
@@ -119,11 +139,17 @@ const Note = () => {
      * UPDATE EXISTING CONVERSATION ID WITH NEW COMMENT ARRAY
      */
     const updateConversation = async () => {
-
-        const newComments = [...conversation.comments, { comment: comment, posterId: user.sub }]
-
+        const newComments = [
+            ...conversation.comments, {
+                comment: comment,
+                timeOfComment: Date.now(),
+                posterId: user.sub,
+                posterName: user.nickname,
+                commentIsNew: true,
+            }
+        ]
         try {
-            const res = await fetch(`api/conversations/${conversation._id}`, {
+            const res = await fetch(`api/conversations/${router.query.id}/${conversation._id}`, {
                 method: 'PUT',
                 headers: {
                     "Accept": "application/json",
@@ -134,16 +160,10 @@ const Note = () => {
                 })
             })
             if (res) {
-                console.log("res, ", res)
-                async function getComments() {
-                    const res = await fetch(`api/conversations/${conversation._id}`);
-                    const { data } = await res.json();
-                    setConversation(data)
-                }
-                getComments();
+                const resJSON = await res.json()
+                setConversation(resJSON.data)
                 setComment(null);
             }
-
         } catch (error) {
             console.log(error);
         }
@@ -153,12 +173,12 @@ const Note = () => {
     * CALLBACK FOR SUBMIT EVENT
     */
     const handleSubmit = () => {
+        setComment(null)
         if (!conversation) {
             createConversation();
         } else {
             updateConversation();
         }
-
     }
 
     /**
@@ -172,120 +192,67 @@ const Note = () => {
 
     return (
 
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-            <div className='mobile-container'>
-
-                <div>
-                    Description:
-                    <h3>{note.description}</h3>
-                </div>
-
-                <div>
-                    Location:
-                    <h3>{note.address}</h3>
-                </div>
-
-                <div>
-                    Name of Breaker:
-                    <h3>{note.breakerName}</h3>
-                </div>
-
-                <div style={{ display: "flex", width: "100%", overflowX: "scroll" }}>
-                    {note.pics.map((pic, idx) => (
-                        <span key={idx}>
-                            <img
-                                src={pic.url}
-                                style={{ height: "200px" }}
-                            />
-                        </span>
-                    ))}
-                </div>
-
-                {user && note.breakerId === user.sub ? (
-                    <div style={{ margin: "16px 0px" }}>
-                        {myConversations.length > 0 ? (
-                            <>
-                                <h3>Your have recieved {myConversations.length} replies to this post:</h3>
-                                {myConversations.map((conversation, idx) => {
-
-                                    return (
-                                        <div key={idx} style={{ borderRadius: "8px", overflow: "hidden" }}>
-                                            <div
-                                                onClick={() => { setConversationModal(true); setConversation(conversation); }}
-                                                style={{ background: "grey", padding: "8px", display: "flex", justifyContent: "space-between" }}
-                                            >
-                                                <div>{conversation.commenterName}</div>
-                                                <img width="40px" height="40px" src={conversation.commenterPicture} alt="picture of commenter" />
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </>
-                        ) : (
-                            <>
-                                <h3>You have no responses to this property yet</h3>
-                            </>
-                        )
+        <div style={{ width: "100%" }}>
 
 
-                        }
+            <div style={{ height: "100px" }} />
 
+            <ViewSelector view={view} setView={setView} />
 
-                    </div>
+            <div style={{ height: "24px" }} />
+
+            {view === "Details" && (<Details note={note} />)}
+
+            {view === "Photos" && (<Photos pics={note.pics} />)}
+
+            {view === "Conversation" && (
+                user && note.breakerId === user.sub ? (
+                    <MyInbox
+                        myConversations={myConversations}
+                        setConversation={setConversation}
+                        setConversationModal={setConversationModal}
+                    />
                 ) : (
-                    <div>
-                        Your conversation history with {note.breakerName}
-                        <form>
+                    <Comments
+                        conversation={conversation}
+                        user={user}
+                        comment={comment}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                    />
+                )
+            )}
 
+
+
+            {conversationModal &&
+                <div>
+                    <div
+                        style={{ position: "fixed", top: "80px", zIndex: "50" }}
+                        onClick={() => { setConversationModal(false); setConversation(null) }}
+                    >
+                        close
+                    </div>
+                    <form>
+                        <div id="scroll-window">
                             <NoteComments
                                 conversation={conversation}
                                 user={user}
                             />
+                        </div>
 
-                            <input placeholder='Comment' name='comment' onChange={handleChange} />
+                        <div>
+                            <textarea placeholder='Comment' name='comment' onChange={handleChange} />
                             <div
                                 onClick={() => handleSubmit()}
                                 style={{ width: "100%", height: "80px" }}
                             >
                                 Comment
                             </div>
-                        </form>
-
-                    </div>
-                )}
-
-                {conversationModal &&
-                    <div style={{ position: "absolute", top: "80px", left: "0px", backgroundColor: "#1E304E", display: "flex", justifyContent: "center", width: "100vw", height: "100vh", padding: "24px" }}>
-                        <div style={{ width: "600px" }}>
-                            <div
-                                style={{ position: "fixed", top: "80px", zIndex: "50" }}
-                                onClick={() => { setConversationModal(false); setConversation(null) }}
-                            >
-                                close
-                            </div>
-                            <form>
-                                <div>
-                                    <NoteComments
-                                        conversation={conversation}
-                                        user={user}
-                                    />
-                                    <div style={{ height: "280px" }} />
-                                </div>
-
-                                <div style={{ position: "fixed", bottom: "16px", width: "calc(100% - 40px)", maxWidth: "600px" }}>
-                                    <textarea placeholder='Comment' name='comment' onChange={handleChange} />
-                                    <div
-                                        onClick={() => handleSubmit()}
-                                        style={{ width: "100%", height: "80px" }}
-                                    >
-                                        Comment
-                                    </div>
-                                </div>
-                            </form>
                         </div>
-                    </div>
-                }
-            </div>
+                    </form>
+                </div>
+            }
         </div >
 
     )

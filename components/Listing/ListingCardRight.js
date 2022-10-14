@@ -4,7 +4,7 @@ const ListingCardRight = ({ note }) => {
 
 
     return (
-        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll", borderRadius: "4px" }}>
+        <div style={{ display: "flex", flexWrap: "nowrap", overflowX: "scroll" }}>
             {note.pics.map((pic, idx) => {
 
                 return (
@@ -12,7 +12,7 @@ const ListingCardRight = ({ note }) => {
                         <img
                             alt="note image"
                             src={pic.url}
-                            style={{ height: "240px" }}
+                            style={{ height: "320px" }}
                         />
                     </span>
                 )

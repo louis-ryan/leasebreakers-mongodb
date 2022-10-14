@@ -2,7 +2,15 @@ const mongoose = require('mongoose');
 
 const NoteSchema = new mongoose.Schema({
     title: {
-        type: String,
+        type: String
+    },
+    date: {
+        type: Date,
+        required: false
+    },
+    contractEnds: {
+        type: Date,
+        required: false
     },
     description: {
         type: String,
@@ -19,11 +27,11 @@ const NoteSchema = new mongoose.Schema({
     ],
     address: {
         type: String,
-        required: true,
+        required: true
     },
     postCode: {
         type: Number,
-        required: true,
+        required: true
     },
     numRoom: {
         type: Number,
@@ -55,10 +63,14 @@ const NoteSchema = new mongoose.Schema({
     },
     breakerEmail: {
         type: String,
-        required: false,
+        required: false
     },
     breakerPicture: {
         type: String,
+        required: false
+    },
+    rent: {
+        type: Number,
         required: false
     },
     walkToStation: {
@@ -68,7 +80,7 @@ const NoteSchema = new mongoose.Schema({
     walkToSupermarket: {
         type: Boolean,
         required: false
-    },
+    }
 })
 
 module.exports = mongoose.models.Note || mongoose.model('Note', NoteSchema);
