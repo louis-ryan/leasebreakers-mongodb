@@ -107,10 +107,9 @@ const NewNote = () => {
 
 
     /**
-     * SEND NEW DATA TO THE SERVER
+     * Send new note to server
      */
     const createNote = async () => {
-        console.log("form from req: ", form)
         try {
             const res = await fetch('api/notes', {
                 method: 'POST',

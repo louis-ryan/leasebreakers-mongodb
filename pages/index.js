@@ -3,54 +3,53 @@ import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import ListingCard from '../components/Listing/ListingCard';
+import FilterComp from '../components/Filter/FilterComp';
 
 const Index = () => {
 
   const { user, error, isLoading } = useUser()
 
-  const [introAni, setIntroAni] = useState(true)
-
+  const [filter, setFilter] = useState({})
   const [notes, setNotes] = useState([])
 
 
   /**
-   * Handle Intro Animation 
+  * Set Filter
+  */
+  useEffect(() => {
+    if (!user) return
+    async function getFilter() {
+      const res = await fetch(`api/filters/${user.sub}`);
+      const { data } = await res.json();
+      setFilter(data[data.length - 1])
+    }
+    getFilter()
+  }, [user])
+
+
+  /**
+   * Set Notes
    */
   useEffect(() => {
+    if (!filter.addresses) return;
 
-    /**
-     * PLAY FIRST TIME BUT SET COOKIE TO BLOCK AFTER
-     */
-    if (introAni) { setTimeout(() => { setIntroAni(false); localStorage.setItem("block_ani", true); }, 6000) }
-
-    if (localStorage.getItem("block_ani")) { setIntroAni(false) }
-
-  }, [introAni])
-
-
-  useEffect(() => {
     async function getInitialNotes() {
-      const res = await fetch('api/notes');
+      const res = await fetch(`api/notes/filter/address=${filter.addresses.join()}`);
       const { data } = await res.json();
       setNotes(data)
     }
     getInitialNotes()
-  }, [])
+  }, [filter])
 
 
   return (
     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-      <div style={{ width: "100%" }}>
+      <FilterComp />
 
-        <div style={{ width: "100vw", height: "100vh", position: "fixed", zIndex: "-1" }}>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Shepard_Fairey_Hosier_Melbourne.jpg/600px-Shepard_Fairey_Hosier_Melbourne.jpg"
-            style={{ opacity: "0.2", filter: "blur(32px)", height: "100%", transform: "translateX(-50%)" }}
-          >
+      <div style={{width: "24px"}}/>
 
-          </img>
-        </div>
+      <div style={{ width: "100%", maxWidth: "800px" }}>
 
         <div style={{ height: "80px" }} />
 
@@ -71,12 +70,29 @@ const Index = () => {
 
         <div style={{ height: "40px" }} />
 
-        <Link href="/filter">
-          <div className="button secondary">
-            FILTER SEARCH
-          </div>
-        </Link>
+        {filter ? (
+          <div style={{ background: "white", padding: "16px" }}>
+            <div>You are filtering by:</div>
 
+            {filter.addresses && (
+              <div>{filter.addresses.length} addresses</div>
+            )}
+
+            <div style={{ height: "8px" }} />
+            <Link href="/filter">
+              <div className="button secondary">
+                EDIT FILTERS
+              </div>
+            </Link>
+          </div>
+        ) : (
+
+          <Link href="/filter">
+            <div className="button secondary">
+              FILTER SEARCH
+            </div>
+          </Link>
+        )}
 
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {notes && notes.map((note, idx) => {

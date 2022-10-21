@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="101px" height="75px" viewBox="0 0 101 75" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Rectangle</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.640535242">
+        <g id="Artboard-Copy-6" transform="translate(-622.000000, -607.000000)" fill="#D8D8D8" stroke="#979797" stroke-width="4">
+            <path d="M706.815995,679.84885 L624.323458,670.256694 L634.533803,609.922834 L648.200787,616.30076 L658.35325,609.194036 L700,621.688061 L700,617.236068 L707.801408,621.136772 L714.694236,619.167393 L721,623.108495 L721,654.87018 C720.380508,659.573206 719.140265,663.629272 717.251685,667.028714 C716.623728,668.159037 714.870481,669.921009 713.138502,671.718177 C711.774099,673.133933 710.404879,674.559333 709.446985,675.739783 C708.497662,676.909672 707.618815,678.278184 706.815995,679.84885 Z" id="Rectangle"></path>
+        </g>
+    </g>
+</svg>

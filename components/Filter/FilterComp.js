@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@auth0/nextjs-auth0';
 import Link from 'next/link';
-import Location from '../components/Filter/Location'
-import Rent from '../components/Filter/Rent'
+import Location from './Location'
+import Rent from './Rent'
 
 
-const Map = () => {
+const FilterComp = () => {
 
     const { user, error, isLoading } = useUser();
 
@@ -42,16 +42,8 @@ const Map = () => {
     }
 
     return (
-        <>
+        <div style={{ width: "360px" }}>
             <div style={{ height: "40px" }} />
-
-            <div style={{ padding: "16px" }}>
-                <h1>Filter</h1>
-
-                <Link href="/">
-                    <h4>{'< Back to listings'}</h4>
-                </Link>
-            </div>
 
             <Location filter={filter} setFilter={setFilter} />
             <Rent filter={filter} setFilter={setFilter} />
@@ -59,8 +51,8 @@ const Map = () => {
             <div onClick={() => { updateFilter() }}>
                 UPDATE YOUR FILTER
             </div>
-        </>
+        </div>
     )
 }
 
-export default Map;
+export default FilterComp;

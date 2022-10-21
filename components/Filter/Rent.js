@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import mapArr from './MapArr';
 
 
 const MapFilter = (props) => {
@@ -26,9 +25,9 @@ const MapFilter = (props) => {
                     <h3>Rent</h3>
                     <div style={{ marginTop: "8px" }}>
                         <svg width="40px" height="40px">
-                            <g id="Tick" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Tick" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                 <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
-                                <polyline id="Line-11" stroke="#FFFFFF" stroke-linecap="round" points="30.5 11 17.5 29 10 23"></polyline>
+                                <polyline id="Line-11" stroke="#FFFFFF" strokeLinecap="round" points="30.5 11 17.5 29 10 23"></polyline>
                             </g>
                         </svg>
                     </div>
