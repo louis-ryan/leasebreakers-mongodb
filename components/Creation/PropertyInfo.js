@@ -75,14 +75,28 @@ const PropertyInfo = (props) => {
 
 
     return (
-        <div className='effect-fullscreen' style={{ width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px" }}>
-            <form style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+                className='effect-fullscreen'
+                style={{
+                    width:props.device === "DESKTOP" ? "600px" : "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingBottom: "40px"
+                }}
+            >
+                <form style={{
+                    width: "calc(100% - 32px)",
+                    maxWidth: "400px",
+                    zoom: props.device === "DESKTOP" && "0.8"
+                }}>
 
-                <div style={{ height: "40px" }} />
+                    <div style={{ height: "40px" }} />
 
-                <Parts props={props} />
+                    <Parts props={props} />
 
-            </form>
+                </form>
+            </div>
         </div>
     )
 }

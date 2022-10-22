@@ -68,21 +68,6 @@ a {
     margin: auto;
 }
 
-.note-container {
-    height: 100%;
-    margin: 24px 0px;
-    width: 100%;
-    background: white;
-    border-top: rgba(173, 55, 112, 0.378) 2px solid;
-    border-bottom: rgba(173, 55, 112, 0.378) 2px solid;
-    box-shadow: 0px 16px 0px 4px rgb(209, 194, 206);
-}
-
-.note-container:hover {
-    filter: brightness(1.2);
-    cursor: pointer;
-}
-
 .note-mine {
     background-color: white;
     padding-top: 8px;

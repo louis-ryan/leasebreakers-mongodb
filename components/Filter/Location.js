@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import mapArr from './MapArr';
+import FilterHeader from "./FilterHeader";
 
 
-const Location = (props) => {
+const Location = ({ filter, setFilter }) => {
 
     const [reveal, setReveal] = useState(false)
     const [view, setView] = useState("AREA")
@@ -18,7 +19,7 @@ const Location = (props) => {
      * Set filter
      */
     useEffect(() => {
-        props.setFilter({ ...props.filter, addresses: addressesArr })
+        setFilter && setFilter({ ...filter, addresses: addressesArr })
     }, [addressesArr])
 
 
@@ -126,102 +127,145 @@ const Location = (props) => {
     }, [postCodes])
 
 
-    return (
-        <>
-            <div
-                onClick={() => reveal ? setReveal(false) : setReveal(true)}
-                style={{ border: addressesArr.length > 0 ? "1px solid pink" : "1px solid grey", backgroundColor: "white" }}
-            >
+    if (filter && filter.addresses) {
+        return (
+            <>
+                <div
+                    onClick={() => reveal ? setReveal(false) : setReveal(true)}
+                    style={{
+                        border: filter.addresses.length && filter.addresses.length > 0 ? "1px solid pink" : "1px solid grey",
+                        backgroundColor: "white",
+                        borderRadius: "8px",
+                    }}
+                >
 
-                <div style={{ margin: "16px", display: "flex", justifyContent: "space-between" }}>
-                    <div>
-                        <h3 style={{ marginBottom: "4px", color: addressesArr.length > 0 && "black" }}>Location</h3>
-                        <div style={{ fontSize: "12px" }}>{addressesArr.length} addresses in your filter</div>
-                    </div>
-                    <div style={{ marginTop: "12px", opacity: !addressesArr.length > 0 && "0" }}>
-                        <svg width="40px" height="40px">
-                            <g id="Tick" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
-                                <polyline id="Line-11" stroke="#FFFFFF" strokeLinecap="round" points="30.5 11 17.5 29 10 23"></polyline>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
+                    <FilterHeader
+                        headerTitle={'Location'}
+                        headerSubTitle={`${filter.addresses.length} addresses in your filter`}
+                        activeCondition={filter.addresses.length && filter.addresses.length > 0}
 
-                {reveal &&
-                    <>
+                    />
 
-                        <div style={{ padding: "16px" }}>
-                            <div style={{ height: "8px" }} />
-                            <div
-                                onClick={(e) => { e.stopPropagation(); view === "AREA" ? setView("ADDRESS") : setView("AREA") }}
-                                style={{ width: "100%", textAlign: "center", border: "1px solid grey", display: "flex", borderRadius: "8px", overflow: "hidden" }}
-                            >
-                                <div style={{
-                                    width: "50%",
-                                    height: "100%",
-                                    backgroundColor: view === "AREA" && "black",
-                                    padding: "16px",
-                                    color: view === "AREA" && "white",
-                                }}>
-                                    AREA
-                                </div>
+                    {reveal &&
+                        <>
 
-                                <div style={{
-                                    width: "50%",
-                                    height: "100%",
-                                    backgroundColor: view === "ADDRESS" && "black",
-                                    padding: "16px",
-                                    color: view === "ADDRESS" && "white",
-                                }}>
-                                    ADDRESSES
+                            <div style={{ padding: "16px" }}>
+                                <div style={{ height: "8px" }} />
+                                <div
+                                    onClick={(e) => { e.stopPropagation(); view === "AREA" ? setView("ADDRESS") : setView("AREA") }}
+                                    style={{ width: "100%", textAlign: "center", border: "1px solid grey", display: "flex", borderRadius: "8px", overflow: "hidden" }}
+                                >
+                                    <div style={{
+                                        width: "50%",
+                                        height: "100%",
+                                        backgroundColor: view === "AREA" && "black",
+                                        padding: "16px",
+                                        color: view === "AREA" && "white",
+                                    }}>
+                                        AREA
+                                    </div>
+
+                                    <div style={{
+                                        width: "50%",
+                                        height: "100%",
+                                        backgroundColor: view === "ADDRESS" && "black",
+                                        padding: "16px",
+                                        color: view === "ADDRESS" && "white",
+                                    }}>
+                                        ADDRESSES
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {view === "AREA" && (
-                            <>
-                                <div style={{ padding: "16px" }}>
-                                    <h4>Area Map</h4>
-                                </div>
-
-
-                                <div style={{ height: "280px", margin: "-40px 0px 0px 16px" }}>
-                                    {mapArr.map((map, idx) => {
-                                        return (
-                                            <div key={idx}>
-                                                <svg width="1600px" height="1600px" style={{ position: "absolute", zoom: "0.2" }}>
-                                                    <g id={map.name} stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ cursor: "pointer" }}>
-                                                        <path d={map.path} id="Rectangle" stroke="#979797" strokeWidth="4" fill={selectionArr.indexOf(map.name) === -1 ? "white" : "pink"}></path>
-                                                    </g>
-                                                </svg>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
+                            {view === "AREA" && (
+                                <>
+                                    <div style={{ padding: "16px" }}>
+                                        <h4>Area Map</h4>
+                                    </div>
 
 
-                                <div style={{ padding: "16px" }}>
+                                    <div style={{ height: "280px", margin: "-40px 0px 0px 4px" }}>
+                                        {mapArr.map((map, idx) => {
+                                            return (
+                                                <div key={idx}>
+                                                    <svg width="1600px" height="1600px" style={{ position: "absolute", zoom: "0.2" }}>
+                                                        <g id={map.name} stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ cursor: "pointer" }}>
+                                                            <path d={map.path} id="Rectangle" stroke="#979797" strokeWidth="4" fill={selectionArr.indexOf(map.name) === -1 ? "white" : "pink"}></path>
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
 
-                                    <h4>Select Areas</h4>
 
-                                    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
-                                        {areasArr.map((area) => {
+                                    <div style={{ padding: "16px" }}>
+
+                                        <h4>Select Areas</h4>
+
+                                        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
+                                            {areasArr.map((area) => {
+                                                return (
+                                                    <div
+                                                        key={area}
+                                                        onClick={(e) => { e.stopPropagation(); handleAreaSelection(area) }}
+                                                        style={{
+                                                            backgroundColor: areaSelectedArr.indexOf(area) === -1 ? "white" : "pink",
+                                                            width: "49%",
+                                                            padding: "8px",
+                                                            border: "1px solid grey",
+                                                            textAlign: "center",
+                                                            marginTop: "6px",
+                                                            borderRadius: "4px",
+                                                        }}
+                                                    >
+                                                        <div>{area}</div>
+                                                    </div>
+                                                )
+                                            })}
+                                        </div>
+
+                                        <div style={{ height: "40px" }} />
+
+                                    </div>
+                                </>
+                            )}
+
+                            {view === "ADDRESS" && (
+                                <div style={{ padding: "8px" }}>
+
+                                    <h4>Addresses in your filter</h4>
+
+                                    {addressesArr.length === 0 ? (
+                                        <div>Select from the map to add addresses</div>
+                                    ) : (
+                                        <div>Remove addresses in your filter by tapping them.</div>
+                                    )}
+
+
+                                    <div style={{ height: "24px" }} />
+
+                                    <div style={{ display: "flex", flexWrap: "wrap", height: "400px", overflow: "scroll" }}>
+                                        {addressesArr.map((address, idx) => {
                                             return (
                                                 <div
-                                                    key={area}
-                                                    onClick={(e) => { e.stopPropagation(); handleAreaSelection(area) }}
+                                                    key={address}
                                                     style={{
-                                                        backgroundColor: areaSelectedArr.indexOf(area) === -1 ? "white" : "pink",
-                                                        width: "49%",
-                                                        padding: "8px",
-                                                        border: "1px solid grey",
-                                                        textAlign: "center",
-                                                        marginTop: "6px",
-                                                        borderRadius: "4px",
+                                                        padding: "8px 16px",
+                                                        backgroundColor: "black",
+                                                        color: "white",
+                                                        margin: "8px 8px 0px 0px",
+                                                        fontSize: "12px",
+                                                        borderRadius: "8px"
+                                                    }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        var newAddressList = [...addressesArr]
+                                                        newAddressList.splice(idx, 1)
+                                                        setAddressesArr(newAddressList)
                                                     }}
                                                 >
-                                                    <div>{area}</div>
+                                                    {address}
                                                 </div>
                                             )
                                         })}
@@ -230,58 +274,13 @@ const Location = (props) => {
                                     <div style={{ height: "40px" }} />
 
                                 </div>
-                            </>
-                        )}
-
-                        {view === "ADDRESS" && (
-                            <div style={{ padding: "8px" }}>
-
-                                <h4>Addresses in your filter</h4>
-
-                                {addressesArr.length === 0 ? (
-                                    <div>Select from the map to add addresses</div>
-                                ) : (
-                                    <div>Remove addresses in your filter by tapping them.</div>
-                                )}
-
-
-                                <div style={{ height: "24px" }} />
-
-                                <div style={{ display: "flex", flexWrap: "wrap", height: "400px", overflow: "scroll" }}>
-                                    {addressesArr.map((address, idx) => {
-                                        return (
-                                            <div
-                                                key={address}
-                                                style={{
-                                                    padding: "8px 16px",
-                                                    backgroundColor: "black",
-                                                    color: "white",
-                                                    margin: "8px 8px 0px 0px",
-                                                    fontSize: "12px",
-                                                    borderRadius: "8px"
-                                                }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    var newAddressList = [...addressesArr]
-                                                    newAddressList.splice(idx, 1)
-                                                    setAddressesArr(newAddressList)
-                                                }}
-                                            >
-                                                {address}
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-
-                                <div style={{ height: "40px" }} />
-
-                            </div>
-                        )}
-                    </>
-                }
-            </div>
-        </>
-    )
+                            )}
+                        </>
+                    }
+                </div>
+            </>
+        )
+    }
 }
 
 export default Location;

@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
-import ListingCard from '../components/Listing/ListingCard';
 import FilterComp from '../components/Filter/FilterComp';
+import ListingComp from '../components/Listing/ListingComp';
+import WelcomeComp from '../components/WelcomeComp';
 
-const Index = () => {
+
+const Index = (props) => {
+
+  const [windowWidth, setWindowWidth] = useState(null)
 
   const { user, error, isLoading } = useUser()
 
@@ -14,7 +18,25 @@ const Index = () => {
 
 
   /**
-  * Set Filter
+   * Init window width
+   */
+  useEffect(() => {
+    setWindowWidth(typeof window !== "undefined" && window.innerWidth)
+  }, [])
+
+
+  /**
+   * Listen for window width
+   */
+  useEffect(() => {
+    window.addEventListener('resize', function (event) {
+      setWindowWidth(event.currentTarget.innerWidth)
+    }, true);
+  })
+
+
+  /**
+  * Set filter object on page render
   */
   useEffect(() => {
     if (!user) return
@@ -28,7 +50,7 @@ const Index = () => {
 
 
   /**
-   * Set Notes
+   * Set Filtered and Limited Notes
    */
   useEffect(() => {
     if (!filter.addresses) return;
@@ -42,71 +64,44 @@ const Index = () => {
   }, [filter])
 
 
-  return (
-    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+  if (windowWidth > 1200) {
+    return (
+      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-      <FilterComp />
+        <div style={{ marginTop: "72px", width: "1200px", zoom: "0.8" }}>
 
-      <div style={{width: "24px"}}/>
+          <WelcomeComp user={user} filter={filter} deviceSize={"DESKTOP"} />
 
-      <div style={{ width: "100%", maxWidth: "800px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
 
-        <div style={{ height: "80px" }} />
-
-        <div
-          className='effect-regular'
-          style={{ marginLeft: "16px", width: "calc(100% - 24px)", padding: "16px" }}
-        >
-          {user && (
-            <h2 style={{ overflow: "hidden", width: "calc(100% - 8px)" }}>
-              Welcome {" "}
-              <span style={{ fontFamily: "monospace", textDecoration: "underline", textDecorationColor: "grey", textDecorationStyle: "dotted", fontWeight: "800", fontSize: "32px", color: "black", letterSpacing: "4px" }}>
-                {user.given_name}
-              </span>
-            </h2>
-          )}
-          <h3> These Properties are Available </h3>
-        </div>
-
-        <div style={{ height: "40px" }} />
-
-        {filter ? (
-          <div style={{ background: "white", padding: "16px" }}>
-            <div>You are filtering by:</div>
-
-            {filter.addresses && (
-              <div>{filter.addresses.length} addresses</div>
-            )}
-
-            <div style={{ height: "8px" }} />
-            <Link href="/filter">
-              <div className="button secondary">
-                EDIT FILTERS
-              </div>
-            </Link>
-          </div>
-        ) : (
-
-          <Link href="/filter">
-            <div className="button secondary">
-              FILTER SEARCH
+            <div style={{ width: "29%" }}>
+              <FilterComp filter={filter} setFilter={setFilter} />
             </div>
-          </Link>
-        )}
 
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          {notes && notes.map((note, idx) => {
-            return (
-              <ListingCard
-                key={idx}
-                note={note}
-              />
-            )
-          })}
+            <div style={{ width: "69%" }}>
+              <ListingComp notes={notes} />
+            </div>
+
+          </div>
         </div>
-      </div>
-    </div >
-  )
+      </div >
+    )
+  } else {
+    return (
+      <div style={{ width: "100%" }}>
+
+        <WelcomeComp user={user} filter={filter} deviceSize={"MOBILE"} />
+
+        <FilterComp filter={filter} setFilter={setFilter} />
+
+        <div style={{ width: "24px" }} />
+
+        <ListingComp notes={notes} />
+
+      </div >
+    )
+  }
+
 }
 
 export default Index;

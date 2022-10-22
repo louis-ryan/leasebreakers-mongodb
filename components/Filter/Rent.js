@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-const MapFilter = (props) => {
+const MapFilter = ({ filter, setFilter }) => {
 
     const [reveal, setReveal] = useState(false)
 
@@ -10,7 +10,7 @@ const MapFilter = (props) => {
      * Set filter
      */
     useEffect(() => {
-        props.setFilter({ ...props.filter })
+        setFilter && setFilter({ ...filter })
     }, [])
 
 

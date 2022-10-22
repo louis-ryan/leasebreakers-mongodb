@@ -9,6 +9,8 @@ import PropertyInfo from '../components/Creation/PropertyInfo';
 
 const NewNote = () => {
 
+    const [windowWidth, setWindowWidth] = useState(null)
+
     const latInit = -37.1989648128
     const longInit = 144.340643773
 
@@ -31,6 +33,24 @@ const NewNote = () => {
 
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
+
+
+    /**
+    * Init window width
+    */
+    useEffect(() => {
+        setWindowWidth(typeof window !== "undefined" && window.innerWidth)
+    }, [])
+
+
+    /**
+     * Listen for window width
+     */
+    useEffect(() => {
+        window.addEventListener('resize', function (event) {
+            setWindowWidth(event.currentTarget.innerWidth)
+        }, true);
+    })
 
 
 
@@ -240,48 +260,96 @@ const NewNote = () => {
     }
 
 
-    return (
-        <div style={{ marginTop: "80px", marginBottom: "40px" }}>
+    if (windowWidth > 1200) {
+        return (
+            <div style={{ marginBottom: "40px" }}>
 
-            <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
-                    <div><h1>Create Post</h1></div>
+                <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                    <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", zoom: "0.8" }}>
+                        <div><h1>Create Post</h1></div>
 
-                    <Link href="/"><h4>{'< Back to listings'}</h4></Link>
+                        <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                    <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
+                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
 
-                    <div style={{ height: "24px" }} />
+                        <div style={{ height: "24px" }} />
+                    </div>
                 </div>
-            </div>
 
-            <PropertyInfo
-                handleChange={handleChange}
-                handlePost={handlePost}
-                handleContractEnds={handleContractEnds}
-                handleAddress={handleAddress}
-                errors={errors}
-                form={form}
-                setForm={setForm}
-                formBools={formBools}
-                setFormBools={setFormBools}
-                compressFile={compressFile}
-                handleSubmit={handleSubmit}
-                part={part}
-                setPart={setPart}
-                postCode={form.postCode}
-                validAddresses={validAddresses}
-                latInPx={latInPx}
-                longInPx={longInPx}
-                handleClearPost={handleClearPost}
-                handleClearEndDate={handleClearEndDate}
-                endDate={endDate}
-                post={post}
-                handleRent={handleRent}
-            />
-        </div >
+                <PropertyInfo
+                    handleChange={handleChange}
+                    handlePost={handlePost}
+                    handleContractEnds={handleContractEnds}
+                    handleAddress={handleAddress}
+                    errors={errors}
+                    form={form}
+                    setForm={setForm}
+                    formBools={formBools}
+                    setFormBools={setFormBools}
+                    compressFile={compressFile}
+                    handleSubmit={handleSubmit}
+                    part={part}
+                    setPart={setPart}
+                    postCode={form.postCode}
+                    validAddresses={validAddresses}
+                    latInPx={latInPx}
+                    longInPx={longInPx}
+                    handleClearPost={handleClearPost}
+                    handleClearEndDate={handleClearEndDate}
+                    endDate={endDate}
+                    post={post}
+                    handleRent={handleRent}
+                    device={"DESKTOP"}
+                />
+            </div >
 
-    )
+        )
+    } else {
+        return (
+            <div style={{ marginBottom: "40px" }}>
+
+                <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                    <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+                        <div><h1>Create Post</h1></div>
+
+                        <Link href="/"><h4>{'< Back to listings'}</h4></Link>
+
+                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
+
+                        <div style={{ height: "24px" }} />
+                    </div>
+                </div>
+
+                <PropertyInfo
+                    handleChange={handleChange}
+                    handlePost={handlePost}
+                    handleContractEnds={handleContractEnds}
+                    handleAddress={handleAddress}
+                    errors={errors}
+                    form={form}
+                    setForm={setForm}
+                    formBools={formBools}
+                    setFormBools={setFormBools}
+                    compressFile={compressFile}
+                    handleSubmit={handleSubmit}
+                    part={part}
+                    setPart={setPart}
+                    postCode={form.postCode}
+                    validAddresses={validAddresses}
+                    latInPx={latInPx}
+                    longInPx={longInPx}
+                    handleClearPost={handleClearPost}
+                    handleClearEndDate={handleClearEndDate}
+                    endDate={endDate}
+                    post={post}
+                    handleRent={handleRent}
+                    device={"MOBILE"}
+                />
+            </div >
+
+        )
+    }
+
 }
 
 export default NewNote;
