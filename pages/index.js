@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
@@ -40,13 +39,14 @@ const Index = (props) => {
   */
   useEffect(() => {
     if (!user) return
+
     async function getFilter() {
       const res = await fetch(`api/filters/${user.sub}`);
       const { data } = await res.json();
       setFilter(data[data.length - 1])
     }
     getFilter()
-  }, [user])
+  }, [user, windowWidth])
 
 
   /**
@@ -55,13 +55,17 @@ const Index = (props) => {
   useEffect(() => {
     if (!filter.addresses) return;
 
+    const filterString = (
+      `address=${filter.addresses.join()}`
+    )
+
     async function getInitialNotes() {
-      const res = await fetch(`api/notes/filter/address=${filter.addresses.join()}`);
+      const res = await fetch(`api/notes/filter/${filterString}`);
       const { data } = await res.json();
       setNotes(data)
     }
     getInitialNotes()
-  }, [filter])
+  }, [filter, windowWidth])
 
 
   if (windowWidth > 1200) {

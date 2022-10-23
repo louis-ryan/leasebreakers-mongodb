@@ -8,24 +8,33 @@ const Location = ({ filter, setFilter }) => {
     const [reveal, setReveal] = useState(false)
     const [view, setView] = useState("AREA")
 
+    const [fullPostCodeData, setFullPostCodeData] = useState([])
     const [areaSelectedArr, setAreaSelectedArr] = useState([])
     const [selectionArr, setSelectionArr] = useState([])
     const [postCodes, setPostCodes] = useState([])
-    const [addressesArr, setAddressesArr] = useState([])
     const [areasArr, setAreasArr] = useState([])
 
 
     /**
-     * Set filter
+     * Build array of areas
      */
     useEffect(() => {
-        setFilter && setFilter({ ...filter, addresses: addressesArr })
-    }, [addressesArr])
+        var listOfAreas = []
+
+        mapArr.map((map) => {
+            if (!listOfAreas.includes(map.area)) {
+                listOfAreas.push(map.area)
+            }
+        })
+
+        setAreasArr(listOfAreas)
+
+    }, [mapArr])
 
 
     /**
-     * Select regions from area selection
-     */
+    * Select regions from area selection
+    */
     const handleAreaSelection = (selection) => {
 
         var newAreaSelectedArr = [...areaSelectedArr]
@@ -39,24 +48,6 @@ const Location = ({ filter, setFilter }) => {
 
         setAreaSelectedArr(newAreaSelectedArr)
     }
-
-
-    /**
-     * Build array of areas
-     */
-    useEffect(() => {
-
-        var listOfAreas = []
-
-        mapArr.map((map) => {
-            if (!listOfAreas.includes(map.area)) {
-                listOfAreas.push(map.area)
-            }
-        })
-
-        setAreasArr(listOfAreas)
-
-    }, [mapArr])
 
 
     /**
@@ -77,43 +68,74 @@ const Location = ({ filter, setFilter }) => {
     }, [areaSelectedArr, mapArr])
 
 
+    /**
+     * Find Post Codes that sit within selected Regions
+     * Push post codes to new arr
+     */
+    const findRelevantPostCodes = (postCodeArr, data) => {
+        selectionArr.map((selection) => {
+            mapArr.map((map) => {
+                if (map.name === selection) {
+                    const latitudeRange = (lat) => (lat < map.latStarts && lat > map.latEnds)
+                    const longitudeRange = (long) => (long > map.longStarts && long < map.longEnds)
+                    data.map((postCode) => {
+                        if (
+                            latitudeRange(postCode.latitude) &&
+                            longitudeRange(postCode.longitude)
+                        ) {
+                            postCodeArr.push(postCode)
+                        }
+                    })
+
+                }
+            })
+        })
+    }
+
 
     /**
-     * Get postcodes from selected regions
+     * Get and set postcode data from json
      */
     useEffect(() => {
         async function getPostCodes() {
             const res = await fetch(`./postCodes.json?`);
             const data = await res.json()
-
-            let postCodeArr = []
-
-            {
-                selectionArr.map((selection) => {
-                    mapArr.map((map) => {
-                        if (map.name === selection) {
-
-                            const latitudeRange = (lat) => (lat < map.latStarts && lat > map.latEnds)
-                            const longitudeRange = (long) => (long > map.longStarts && long < map.longEnds)
-
-                            data.map((postCode) => {
-                                if (latitudeRange(postCode.latitude) && longitudeRange(postCode.longitude)) {
-                                    postCodeArr.push(postCode)
-                                }
-                            })
-
-                        }
-                    })
-                })
-            }
-            setPostCodes(postCodeArr)
+            setFullPostCodeData(data)
         }
         getPostCodes()
+    }, [])
+
+
+    /**
+     * Get postcodes from selected regions
+     */
+    useEffect(() => {
+        let postCodeArr = []
+        findRelevantPostCodes(postCodeArr, fullPostCodeData)
+        setPostCodes(postCodeArr)
     }, [mapArr, selectionArr])
 
 
     /**
-     * Get list of selected addresses without duplication
+     * Set areas by addresses
+     */
+    useEffect(() => {
+        if (!filter.addresses) return
+        var selectedPostCodes = []
+        console.log("need to filter regions by lat and long... ",  selectedPostCodes)
+        filter.addresses.map((address) => {
+            fullPostCodeData.map((postCode) => {
+                if (postCode.place_name === address) {
+                    selectedPostCodes.push(postCode)
+                }
+            })
+        })
+    }, [filter.addresses, fullPostCodeData])
+
+
+    /**
+     * Populate addresses based on Post Codes
+     * Populate without duplications
      */
     useEffect(() => {
         var singleAddressesArr = []
@@ -123,8 +145,19 @@ const Location = ({ filter, setFilter }) => {
             singleAddressesArr.push(code.place_name)
         })
 
-        setAddressesArr(singleAddressesArr)
+        setFilter({ ...filter, addresses: singleAddressesArr })
     }, [postCodes])
+
+
+    /**
+     * Depopulate addresses as addresses are clicked by user
+     */
+    const handleAddressRemove = (e, idx) => {
+        e.stopPropagation()
+        var newAddressList = [...filter.addresses]
+        newAddressList.splice(idx, 1)
+        setFilter({ ...filter, addresses: newAddressList })
+    }
 
 
     if (filter && filter.addresses) {
@@ -236,7 +269,7 @@ const Location = ({ filter, setFilter }) => {
 
                                     <h4>Addresses in your filter</h4>
 
-                                    {addressesArr.length === 0 ? (
+                                    {filter.addresses.length === 0 ? (
                                         <div>Select from the map to add addresses</div>
                                     ) : (
                                         <div>Remove addresses in your filter by tapping them.</div>
@@ -246,7 +279,7 @@ const Location = ({ filter, setFilter }) => {
                                     <div style={{ height: "24px" }} />
 
                                     <div style={{ display: "flex", flexWrap: "wrap", height: "400px", overflow: "scroll" }}>
-                                        {addressesArr.map((address, idx) => {
+                                        {filter.addresses.map((address, idx) => {
                                             return (
                                                 <div
                                                     key={address}
@@ -258,12 +291,7 @@ const Location = ({ filter, setFilter }) => {
                                                         fontSize: "12px",
                                                         borderRadius: "8px"
                                                     }}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation()
-                                                        var newAddressList = [...addressesArr]
-                                                        newAddressList.splice(idx, 1)
-                                                        setAddressesArr(newAddressList)
-                                                    }}
+                                                    onClick={(e) => handleAddressRemove(e, idx)}
                                                 >
                                                     {address}
                                                 </div>

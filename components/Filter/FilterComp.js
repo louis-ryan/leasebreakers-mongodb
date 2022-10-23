@@ -18,6 +18,7 @@ const FilterComp = ({ filter, setFilter }) => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     addresses: filter.addresses,
+                    areas: filter.areas,
                     userId: filter.userId
                 })
             })
@@ -36,7 +37,12 @@ const FilterComp = ({ filter, setFilter }) => {
 
             <Rent filter={filter} setFilter={setFilter} />
 
-            <div onClick={() => { updateFilter() }}>
+            <div style={{ height: "8px" }} />
+
+            <div
+                onClick={() => { updateFilter() }}
+                style={{ width: "100%", padding: "16px", textAlign: "center", border: "4px solid grey", borderRadius: "8px" }}
+            >
                 UPDATE YOUR FILTER
             </div>
         </div>
