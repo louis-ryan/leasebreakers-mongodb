@@ -9,14 +9,37 @@ export default async (req, res) => {
         method
     } = req;
 
-    const filtersWithoutKey = filter.split("=")[1]
-    const arrayOfPlaceNames = filtersWithoutKey.split(",")
+    var filterObject = {}
+
+    const listOfFilters = filter.split(";")
+
+    listOfFilters.map((singleFilter) => {
+        const [key, value] = singleFilter.split("=")
+
+        switch (key) {
+
+            case "address":
+                const arrayOfPlaceNames = value.split(",")
+                if (arrayOfPlaceNames[0] === '') return
+                filterObject = { ...filterObject, address: arrayOfPlaceNames }
+                break
+
+            case "rent":
+                const arrayOfRentValues = value.split(",")
+                if (arrayOfRentValues[0] === '') return
+                filterObject = { ...filterObject, rent: arrayOfRentValues }
+                break
+
+        }
+    })
+
+    console.log("filter object: ", filterObject)
 
 
     switch (method) {
         case 'GET':
             try {
-                const notes = await Note.find({address: arrayOfPlaceNames}).limit(10);
+                const notes = await Note.find(filterObject);
 
                 if (!notes) {
                     return res.status(400).json({ success: false });

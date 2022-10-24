@@ -1,41 +1,65 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import FilterHeader from "./FilterHeader";
 
 
-const MapFilter = ({ filter, setFilter }) => {
+const MapFilter = ({ filter, setFilter, notes }) => {
 
     const [reveal, setReveal] = useState(false)
 
+    const [minVal, setMinVal] = useState(null)
+    const [maxVal, setMaxVal] = useState(null)
+    const [selectedVal, setSelectedVal] = useState(minVal)
+
+    console.log(minVal, "< >", maxVal, "(", selectedVal, ")")
 
     /**
-     * Set filter
+     * Map notes and assign Min and Max to range
      */
     useEffect(() => {
-        setFilter && setFilter({ ...filter })
-    }, [])
+        var rentArr = []
+        notes.map((note) => {
+            if (!note.rent) return
+            rentArr.push(note.rent)
+        })
+        var sortedRentArr = rentArr.sort((a, b) => { return a - b })
+        setMinVal(sortedRentArr[0])
+        setMaxVal(sortedRentArr[sortedRentArr.length - 1])
+    })
+
+
 
 
     return (
         <>
             <div
                 onClick={() => reveal ? setReveal(false) : setReveal(true)}
-                style={{ border: "1px solid grey", backgroundColor: "white" }}
+                style={{
+                    border: "" ? "1px solid pink" : "1px solid grey",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                }}
             >
 
-                <div style={{ margin: "16px", display: "flex", justifyContent: "space-between" }}>
-                    <h3>Rent</h3>
-                    <div style={{ marginTop: "8px" }}>
-                        <svg width="40px" height="40px">
-                            <g id="Tick" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                                <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
-                                <polyline id="Line-11" stroke="#FFFFFF" strokeLinecap="round" points="30.5 11 17.5 29 10 23"></polyline>
-                            </g>
-                        </svg>
-                    </div>
-                </div>
+                <FilterHeader
+                    headerTitle={'Rent'}
+                    headerSubTitle={`Range of values`}
+                    activeCondition={""}
+
+                />
 
                 {reveal &&
                     <>
+                        <div style={{ padding: "16px" }}>
 
+                            <input
+                                type="range"
+                                min={minVal}
+                                max={maxVal}
+                                step="1"
+                                style={{ width: "100%" }}
+                                onChange={(e) => setSelectedVal(e.target.valueAsNumber)}
+                            />
+                        </div>
                     </>
                 }
             </div>

@@ -56,7 +56,8 @@ const Index = (props) => {
     if (!filter.addresses) return;
 
     const filterString = (
-      `address=${filter.addresses.join()}`
+      `address=${filter.addresses.join()};` +
+      `rent=`
     )
 
     async function getInitialNotes() {
@@ -79,7 +80,7 @@ const Index = (props) => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
 
             <div style={{ width: "29%" }}>
-              <FilterComp filter={filter} setFilter={setFilter} />
+              <FilterComp filter={filter} setFilter={setFilter} notes={notes} />
             </div>
 
             <div style={{ width: "69%" }}>
@@ -96,7 +97,7 @@ const Index = (props) => {
 
         <WelcomeComp user={user} filter={filter} deviceSize={"MOBILE"} />
 
-        <FilterComp filter={filter} setFilter={setFilter} />
+        <FilterComp filter={filter} setFilter={setFilter} notes={notes} />
 
         <div style={{ width: "24px" }} />
 

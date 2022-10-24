@@ -3,7 +3,7 @@ import Location from './Location'
 import Rent from './Rent'
 
 
-const FilterComp = ({ filter, setFilter }) => {
+const FilterComp = ({ filter, setFilter, notes }) => {
 
     const { user, error, isLoading } = useUser();
 
@@ -35,7 +35,7 @@ const FilterComp = ({ filter, setFilter }) => {
 
             <div style={{ height: "8px" }} />
 
-            <Rent filter={filter} setFilter={setFilter} />
+            <Rent filter={filter} setFilter={setFilter} notes={notes} />
 
             <div style={{ height: "8px" }} />
 
