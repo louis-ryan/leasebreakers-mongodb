@@ -7,6 +7,8 @@ import '../css/nav.css';
 import '../css/buttons.css';
 import '../css/inputs.css';
 import '../css/effect.css';
+import '../css/datepicker.css';
+import '../css/filter.css';
 
 function MyApp({ Component, pageProps }) {
 

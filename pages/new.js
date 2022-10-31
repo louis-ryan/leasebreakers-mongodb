@@ -21,8 +21,8 @@ const NewNote = () => {
 
     const [part, setPart] = useState(0);
     const [form, setForm] = useState({});
+    console.log("form: ", form)
     const [post, setPost] = useState({});
-    const [endDate, setEndDate] = useState({});
     const [validAddresses, setValidAddresses] = useState([]);
     const [mapCoords, setMapCoords] = useState({})
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
@@ -67,7 +67,6 @@ const NewNote = () => {
             breakerName: user.name,
             breakerEmail: user.email,
             breakerPicture: user.picture,
-            contractEnds: Math.floor(new Date(`${endDate.endDate1 + endDate.endDate2 + "." + endDate.endDate3 + endDate.endDate4 + "." + endDate.endDate5 + endDate.endDate6 + endDate.endDate7 + endDate.endDate8}`).getTime() / 1000),
             date: Date.now(),
             petsAllowed: formBools.petsAllowed,
             outdoorArea: formBools.outdoorArea,
@@ -76,7 +75,7 @@ const NewNote = () => {
             supermarket: formBools.supermarket,
             trainStation: formBools.trainStation
         })
-    }, [user, endDate, post, formBools])
+    }, [user, post, formBools])
 
 
     /**
@@ -138,7 +137,6 @@ const NewNote = () => {
             })
             setIsSubmitting(true)
             router.push("/");
-            console.log("res, ", res)
         } catch (error) {
             console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
@@ -171,7 +169,7 @@ const NewNote = () => {
     * Change End of Contract
      * @param {*} e 
     */
-    const handleContractEnds = (e) => { setEndDate({ ...endDate, [e.target.name]: e.target.value }) }
+    const handleContractEnds = (val) => { setForm({ ...form, contractEnds: val }) }
 
     /**
     * Address
@@ -296,7 +294,6 @@ const NewNote = () => {
                     longInPx={longInPx}
                     handleClearPost={handleClearPost}
                     handleClearEndDate={handleClearEndDate}
-                    endDate={endDate}
                     post={post}
                     handleRent={handleRent}
                     device={"DESKTOP"}
@@ -340,7 +337,6 @@ const NewNote = () => {
                     longInPx={longInPx}
                     handleClearPost={handleClearPost}
                     handleClearEndDate={handleClearEndDate}
-                    endDate={endDate}
                     post={post}
                     handleRent={handleRent}
                     device={"MOBILE"}

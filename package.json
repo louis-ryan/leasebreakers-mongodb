@@ -18,9 +18,11 @@
     "next": "^12.1.5",
     "react": "^18.1.0",
     "react-csv": "^2.2.2",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.1.0",
     "react-image-file-resizer": "^0.4.7",
     "react-papaparse": "^4.0.2",
+    "react-slider": "^2.0.4",
     "util": "^0.12.4"
   },
   "devDependencies": {

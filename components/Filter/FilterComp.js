@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import Location from './Location'
 import Rent from './Rent'
 
 
-const FilterComp = ({ filter, setFilter, notes }) => {
+const FilterComp = ({ filter, setFilter, getNotes, notes, deviceSize }) => {
 
-    const { user, error, isLoading } = useUser();
+    const { user } = useUser();
+
+    const [reveal, setReveal] = useState("NONE")
 
 
     /**
@@ -18,11 +21,15 @@ const FilterComp = ({ filter, setFilter, notes }) => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     addresses: filter.addresses,
-                    areas: filter.areas,
-                    userId: filter.userId
+                    rent: filter.rent,
+                    minRentVal: filter.minRentVal,
+                    maxRentVal: filter.maxRentVal,
+                    selectedRentVal: filter.selectedRentVal,
+                    userId: user.sub
                 })
             })
-            console.log("res, ", res)
+            const { data } = await res.json();
+            console.log(data)
         } catch (error) {
             console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
@@ -31,17 +38,17 @@ const FilterComp = ({ filter, setFilter, notes }) => {
     return (
         <div style={{ marginTop: "24px", borderRadius: "8px", }}>
 
-            <Location filter={filter} setFilter={setFilter} />
+            <Location reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} getNotes={getNotes} />
 
             <div style={{ height: "8px" }} />
 
-            <Rent filter={filter} setFilter={setFilter} notes={notes} />
+            <Rent reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} notes={notes} />
 
             <div style={{ height: "8px" }} />
 
             <div
                 onClick={() => { updateFilter() }}
-                style={{ width: "100%", padding: "16px", textAlign: "center", border: "4px solid grey", borderRadius: "8px" }}
+                style={{ margin: "16px 8px", width: "calc(100% - 16px)", padding: "24px", textAlign: "center", backgroundColor: "black", color: "white", cursor: "pointer" }}
             >
                 UPDATE YOUR FILTER
             </div>

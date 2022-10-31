@@ -1,21 +1,31 @@
 
-const FilterHeader = ({ headerTitle, headerSubTitle, activeCondition }) => {
+const FilterHeader = ({ headerTitle, headerSubTitle, activeCondition, onClick, icon }) => {
 
     return (
-        <div style={{ margin: "16px", display: "flex", justifyContent: "space-between" }}>
-            <div>
-                <h3 style={{
-                    marginBottom: "4px",
-                    color: activeCondition && "black"
-                }}>
-                    {headerTitle}
-                </h3>
-                <div style={{ fontSize: "12px" }}>
-                    {headerSubTitle}
+        <div
+            className="filter-header"
+            onClick={() => onClick()}
+        >
+            <div style={{ display: "flex" }}>
+                <div style={{ marginRight: "8px" }}>
+                    <svg width="40px" height="40px" viewBox="0 0 40 40" style={{ marginTop: "20px", filter: activeCondition && "brightness(0)" }}>
+                        {icon}
+                    </svg>
+                </div>
+                <div>
+                    <h3 style={{
+                        color: activeCondition ? "black" : "grey",
+                        marginBottom: "8px"
+                    }}>
+                        {headerTitle}
+                    </h3>
+                    <div style={{ fontSize: "12px" }}>
+                        {headerSubTitle}
+                    </div>
                 </div>
             </div>
             <div style={{
-                marginTop: "12px",
+                marginTop: "18px",
                 opacity: activeCondition ? "1" : "0"
             }}>
                 <svg width="40px" height="40px">

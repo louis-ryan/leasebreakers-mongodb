@@ -1,11 +1,20 @@
-import ContractEnds from "./ContractEnds"
+import { useState } from "react";
+import DatePicker from "react-datepicker";
 
 const Part2 = (props) => {
+
+    const [calendarDate, setCalendarDate] = useState(new Date())
 
     const handleNextButton = {
         opacity: props.form.contractEnds && props.form.rent ? "1" : "0.5",
         pointerEvents: props.form.contractEnds && props.form.rent ? "inherit" : "none",
     }
+
+    const handleCalendar = (e) => {
+        setCalendarDate(e)
+        props.handleContractEnds(Math.floor(e / 1000))
+    }
+
 
     return (
         <>
@@ -17,38 +26,43 @@ const Part2 = (props) => {
 
             <h2>Contract</h2>
 
-            <ContractEnds
-                handleContractEnds={props.handleContractEnds}
-                errors={props.errors}
-                endDate={props.endDate}
+
+            <div>End of contract</div>
+            <DatePicker
+                id="date_picker"
+                selected={calendarDate}
+                onChange={(e) => handleCalendar(e) }
+                startOpen={true}
+                shouldCloseOnSelect
+                fixedHeight
+                autofocus
+                open
             />
 
-            <div style={{ height: "8px" }} />
 
-            <div
-                className="button secondary"
-                onClick={() => props.handleClearEndDate()}
-            >
-                CLEAR
-            </div>
-
-            <div style={{ height: "40px" }} />
+            <div style={{ height: "320px" }} />
 
 
             <div>Rent Calculated Weekly</div>
-            <input
-                value={props.form.rent}
-                placeholder='0.00'
-                control='input'
-                name='rent'
-                type='number'
-                onChange={props.handleRent}
-                style={{ width: "100%", fontSize: "32px", height: "80px", paddingLeft: "40px", }}
-            />
+            <div className="rent-input">
+                <div style={{ fontSize: "32px", margin: "24px 8px 0px 0px" }}>$</div>
+                <input
+                    className="rent-field"
+                    value={props.form.rent}
+                    placeholder='0'
+                    control='input'
+                    name='rent'
+                    type='number'
+                    onChange={props.handleRent}
+                    style={{ width: "100%", fontSize: "32px", height: "80px", border: "none" }}
+                />
+                <div style={{ fontSize: "32px", margin: "24px 0px 0px 8px" }}>AUD</div>
+            </div>
 
-            <div style={{ left: "32px", position: "absolute", fontSize: "32px", marginTop: "-60px" }}>$</div>
 
-            <div style={{ left: "300px", position: "absolute", fontSize: "32px", marginTop: "-60px" }}>AUD</div>
+
+
+
 
             <div style={{ height: "40px" }} />
 

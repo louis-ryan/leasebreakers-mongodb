@@ -20,8 +20,6 @@ export default async (req, res) => {
             try {
                 const note = await Note.create(req.body);
 
-                console.log("note, ", note)
-
                 res.status(201).json({ success: true, data: note })
             } catch (error) {
                 res.status(400).json({ success: false });

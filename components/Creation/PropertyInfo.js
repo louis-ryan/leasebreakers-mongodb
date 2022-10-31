@@ -43,9 +43,7 @@ const Parts = ((props) => {
                     setPart={props.props.setPart}
                     form={props.props.form}
                     handleContractEnds={props.props.handleContractEnds}
-                    handleClearEndDate={props.props.handleClearEndDate}
                     handleRent={props.props.handleRent}
-                    endDate={props.props.endDate}
                 />
             )
         case 3:
@@ -88,7 +86,7 @@ const PropertyInfo = (props) => {
                 <form style={{
                     width: "calc(100% - 32px)",
                     maxWidth: "400px",
-                    zoom: props.device === "DESKTOP" && "0.8"
+                    zoom: props.device === "DESKTOP" ? "0.8" : "1"
                 }}>
 
                     <div style={{ height: "40px" }} />

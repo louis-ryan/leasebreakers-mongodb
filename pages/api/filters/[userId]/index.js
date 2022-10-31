@@ -18,7 +18,7 @@ export default async (req, res) => {
                     return res.status(400).json({ success: false });
                 }
 
-                res.status(200).json({ success: true, data: filter });
+                res.status(200).json({ success: true, data: filter[filter.length - 1] });
             } catch (error) {
                 res.status(400).json({ success: false });
             }
