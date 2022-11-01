@@ -25,7 +25,7 @@ const ListingCard = ({ note }) => {
         <Link href={handleCardRoute()}>
             <div
                 key={note._id}
-                className="note-container"
+                style={{ height: "100%", width: "100%", backgroundColor: "white", marginTop: "24px", borderRadius: "8px", border: "1px solid grey", overflow: "hidden" }}
             >
 
                 {/* Content: Tags, Details */}
