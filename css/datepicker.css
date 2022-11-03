@@ -24,7 +24,7 @@
 }
 
 .react-datepicker__day-names {
-    width: 400px;
+    width: calc(100% - 8px);
     margin: 8px 0px;
     display: flex;
     justify-content: space-between;
@@ -37,7 +37,7 @@
 }
 
 .react-datepicker__week {
-    width: 400px;
+    width: calc(100% - 8px);
     display: flex;
     justify-content: space-between;
 }
