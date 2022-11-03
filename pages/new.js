@@ -21,7 +21,6 @@ const NewNote = () => {
 
     const [part, setPart] = useState(0);
     const [form, setForm] = useState({});
-    console.log("form: ", form)
     const [post, setPost] = useState({});
     const [validAddresses, setValidAddresses] = useState([]);
     const [mapCoords, setMapCoords] = useState({})

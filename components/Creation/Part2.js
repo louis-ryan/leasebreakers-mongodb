@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 
 const Part2 = (props) => {
@@ -16,6 +16,17 @@ const Part2 = (props) => {
     }
 
 
+    useEffect(() => {
+
+        var element = document.getElementsByClassName('react-datepicker-popper')[0]
+
+        if (!element.style) return
+        console.log(element.style)
+        element.removeAttribute('style')
+
+    })
+
+
     return (
         <>
             <h4 onClick={() => props.setPart(1)}>
@@ -31,10 +42,9 @@ const Part2 = (props) => {
             <DatePicker
                 id="date_picker"
                 selected={calendarDate}
-                onChange={(e) => handleCalendar(e) }
-                startOpen={true}
+                onChange={(e) => handleCalendar(e)}
+                startOpen
                 shouldCloseOnSelect
-                fixedHeight
                 autofocus
                 open
             />
