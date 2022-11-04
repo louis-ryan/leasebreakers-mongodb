@@ -23,8 +23,6 @@ const Index = () => {
     userId: null
   })
 
-  console.log("filter: ", filter)
-
 
   async function getFilter() {
     const res = await fetch(`api/filters/${user.sub}`);

@@ -7,9 +7,13 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
 
     const [view, setView] = useState("AREA")
 
+    // const [selectedRegions, setSelectedRegions] = useState([])
+
     const [areaSelectedArr, setAreaSelectedArr] = useState([])
     const [selectionArr, setSelectionArr] = useState([])
     const [areasArr, setAreasArr] = useState([])
+
+    var newSelectedRegions = []
 
 
     const handleFilterAdd = (postCodes) => {
@@ -102,7 +106,7 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                     searchedArr.push({ name: q[i], freq: search(arr, q[i]) })
                 }
                 searchedArr.map((obj) => {
-                    if (obj.freq < 10) return
+                    if (obj.freq < 21) return
                     filteredSelectionArr.push(obj.name)
                 })
             }
@@ -126,27 +130,7 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
     }
 
 
-    async function getPostCodes(address, selectedRegions) {
-        const res = await fetch(`./postCodes.json?`);
-        const data = await res.json()
 
-        data.map((postCode) => {
-            if (postCode.place_name === address) {
-                mapArr.map((map) => {
-                    if (
-                        postCode.latitude < map.latStarts &&
-                        postCode.latitude > map.latEnds &&
-                        postCode.longitude > map.longStarts &&
-                        postCode.longitude < map.longEnds
-                    ) {
-
-                        selectedRegions.push(map.name)
-
-                    }
-                })
-            }
-        })
-    }
 
 
     /**
@@ -170,14 +154,31 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
      * Set areas by addresses
      */
     useEffect(() => {
-        if (!filter.addresses) return
         var selectedRegions = []
-        filter.addresses.map((address) => {
-            getPostCodes(address, selectedRegions)
-        })
-        findFrequencyOfRegionsInAddressSearch(selectedRegions)
+        async function getPostCodes() {
+            const res = await fetch(`./postCodes.json?`);
+            const data = await res.json()
+            data.map((postCode) => {
+                filter.addresses.map((address) => {
+                    if (postCode.place_name === address) {
+                        mapArr.map((map) => {
+                            if (
+                                postCode.latitude < map.latStarts &&
+                                postCode.latitude > map.latEnds &&
+                                postCode.longitude > map.longStarts &&
+                                postCode.longitude < map.longEnds
+                            ) {
+                                selectedRegions.push(map.name)
+                            }
+                        })
+                    }
+                })
+            })
+        }
+        getPostCodes()
 
-    }, [])
+        findFrequencyOfRegionsInAddressSearch(selectedRegions)
+    }, [filter])
 
 
     return (
@@ -199,9 +200,9 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                     onClick={() => reveal === "LOCATION" ? setReveal("NONE") : setReveal("LOCATION")}
                     icon={
                         <g id="Location" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                        <path d="M8.5,14 C8.5,10.8243627 9.78718134,7.94936269 11.868272,5.86827202 C13.9493627,3.78718134 16.8243627,2.5 20,2.5 C23.1756373,2.5 26.0506373,3.78718134 28.131728,5.86827202 C30.2128187,7.94936269 31.5,10.8243627 31.5,14 C31.5,18.2947181 27.6325211,25.9965025 19.9995546,37.1176651 C12.3669984,25.9955456 8.5,18.2944513 8.5,14 Z" id="Oval" stroke="#979797"></path>
-                        <circle id="Oval" stroke="#979797" cx="20" cy="13" r="6.5"></circle>
-                    </g>
+                            <path d="M8.5,14 C8.5,10.8243627 9.78718134,7.94936269 11.868272,5.86827202 C13.9493627,3.78718134 16.8243627,2.5 20,2.5 C23.1756373,2.5 26.0506373,3.78718134 28.131728,5.86827202 C30.2128187,7.94936269 31.5,10.8243627 31.5,14 C31.5,18.2947181 27.6325211,25.9965025 19.9995546,37.1176651 C12.3669984,25.9955456 8.5,18.2944513 8.5,14 Z" id="Oval" stroke="#979797"></path>
+                            <circle id="Oval" stroke="#979797" cx="20" cy="13" r="6.5"></circle>
+                        </g>
                     }
                 />
 
