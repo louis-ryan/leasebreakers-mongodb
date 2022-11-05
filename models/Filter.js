@@ -9,6 +9,11 @@ const FilterSchema = new mongoose.Schema({
             type: String
         }
     ],
+    selectedAreas: [
+        {
+            type: String
+        }
+    ],
     rent: [
         {
             type: String

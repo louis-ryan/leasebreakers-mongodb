@@ -16,6 +16,7 @@ const Index = () => {
   const [notes, setNotes] = useState([])
   const [filter, setFilter] = useState({
     addresses: [],
+    selectedAreas: [],
     rent: [],
     minRentVal: null,
     maxRentVal: null,

@@ -6,60 +6,49 @@ import FilterHeader from "./FilterHeader";
 const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }) => {
 
     const [view, setView] = useState("AREA")
-
-    // const [selectedRegions, setSelectedRegions] = useState([])
+    const [filterRendered, setFilterRendered] = useState(false)
 
     const [areaSelectedArr, setAreaSelectedArr] = useState([])
     const [selectionArr, setSelectionArr] = useState([])
     const [areasArr, setAreasArr] = useState([])
 
-    var newSelectedRegions = []
 
-
-    const handleFilterAdd = (postCodes) => {
-
+    const handleFilterAdd = (postCodes, areaSelectedArr) => {
         var singleAddressesArr = []
-
         postCodes.map((code) => {
             if (singleAddressesArr.includes(code.place_name)) return
             singleAddressesArr.push(code.place_name)
         })
-
-        setFilter({ ...filter, addresses: singleAddressesArr })
+        setFilter({ ...filter, addresses: singleAddressesArr, selectedAreas: areaSelectedArr })
         getNotes()
     }
 
 
-    const filterAddressesFromRegions = (selectionArr) => {
+    const filterAddressesFromRegions = (selectionArr, areaSelectedArr) => {
         async function getPostCodes() {
             const res = await fetch(`./postCodes.json?`);
             const data = await res.json()
             let postCodeArr = []
             selectionArr.map((selection) => {
                 mapArr.map((map) => {
-                    if (map.name === selection) {
-                        const latitudeRange = (lat) => (lat < map.latStarts && lat > map.latEnds)
-                        const longitudeRange = (long) => (long > map.longStarts && long < map.longEnds)
-                        data.map((postCode) => {
-                            if (
-                                latitudeRange(postCode.latitude) &&
-                                longitudeRange(postCode.longitude)
-                            ) {
-                                postCodeArr.push(postCode)
-                            }
-                        })
+                    if (map.name !== selection) return
+                    const latitudeRange = (lat) => (lat < map.latStarts && lat > map.latEnds)
+                    const longitudeRange = (long) => (long > map.longStarts && long < map.longEnds)
+                    data.map((postCode) => {
+                        if (!(latitudeRange(postCode.latitude) && longitudeRange(postCode.longitude))) return
+                        postCodeArr.push(postCode)
 
-                    }
+                    })
                 })
             })
-            handleFilterAdd(postCodeArr)
+            handleFilterAdd(postCodeArr, areaSelectedArr)
         }
         getPostCodes()
 
     }
 
 
-    const filterRegionsFromAreas = (areaSelectedArr) => {
+    const filterRegionsFromAreas = (areaSelectedArr, filterAddresses) => {
         var newAvailableRegions = []
         areaSelectedArr.map((area) => {
             mapArr.map((map) => {
@@ -69,55 +58,22 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
             })
         })
         setSelectionArr(newAvailableRegions)
-        filterAddressesFromRegions(newAvailableRegions)
+        if (!filterAddresses) return
+        filterAddressesFromRegions(newAvailableRegions, areaSelectedArr)
     }
 
 
     const handleAreaSelection = (selection) => {
-
         var newAreaSelectedArr = [...areaSelectedArr]
         var index = newAreaSelectedArr.indexOf(selection)
 
         if (index === -1) {
-            newAreaSelectedArr.push(selection);
+            newAreaSelectedArr.push(selection)
         } else {
-            newAreaSelectedArr.splice(index, 1);
+            newAreaSelectedArr.splice(index, 1)
         }
-
         setAreaSelectedArr(newAreaSelectedArr)
-        filterRegionsFromAreas(newAreaSelectedArr)
-    }
-
-
-    const findFrequencyOfRegionsInAddressSearch = (selectedRegions) => {
-        setTimeout(() => {
-            var filteredSelectionArr = []
-            function search(arr, s) {
-                if (!arr) return
-                var counter = 0;
-                for (var j = 0; j < arr.length; j++)
-                    if (s === (arr[j]))
-                        counter++;
-                return counter;
-            }
-            function answerQueries(arr, q) {
-                var searchedArr = []
-                for (var i = 0; i < q.length; i++) {
-                    searchedArr.push({ name: q[i], freq: search(arr, q[i]) })
-                }
-                searchedArr.map((obj) => {
-                    if (obj.freq < 21) return
-                    filteredSelectionArr.push(obj.name)
-                })
-            }
-            var arr = selectedRegions;
-            var q = []
-            mapArr.map((map) => {
-                q.push(map.name)
-            })
-            answerQueries(arr, q);
-            setSelectionArr(filteredSelectionArr)
-        }, 1000)
+        filterRegionsFromAreas(newAreaSelectedArr, true)
     }
 
 
@@ -128,9 +84,6 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
         setFilter({ ...filter, addresses: newAddressList })
         getNotes()
     }
-
-
-
 
 
     /**
@@ -151,34 +104,16 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
 
 
     /**
-     * Set areas by addresses
+     * Populate with filter data on page render
      */
     useEffect(() => {
-        var selectedRegions = []
-        async function getPostCodes() {
-            const res = await fetch(`./postCodes.json?`);
-            const data = await res.json()
-            data.map((postCode) => {
-                filter.addresses.map((address) => {
-                    if (postCode.place_name === address) {
-                        mapArr.map((map) => {
-                            if (
-                                postCode.latitude < map.latStarts &&
-                                postCode.latitude > map.latEnds &&
-                                postCode.longitude > map.longStarts &&
-                                postCode.longitude < map.longEnds
-                            ) {
-                                selectedRegions.push(map.name)
-                            }
-                        })
-                    }
-                })
-            })
-        }
-        getPostCodes()
-
-        findFrequencyOfRegionsInAddressSearch(selectedRegions)
-    }, [filter])
+        if (filter.selectedAreas && filterRendered === true) return
+        setTimeout(() => {
+            setAreaSelectedArr(filter.selectedAreas)
+            filterRegionsFromAreas(filter.selectedAreas, false)
+            setFilterRendered(true)
+        }, 2000)
+    }, [filter.selectedAreas])
 
 
     return (
@@ -308,7 +243,8 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                                                     color: "white",
                                                     margin: "8px 8px 0px 0px",
                                                     fontSize: "12px",
-                                                    borderRadius: "8px"
+                                                    borderRadius: "8px",
+                                                    height: "30px",
                                                 }}
                                                 onClick={(e) => handleAddressRemove(e, idx)}
                                             >
