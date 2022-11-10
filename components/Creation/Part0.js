@@ -44,7 +44,10 @@ const Part1 = (props) => {
 
             <div style={{ height: "24px" }} />
 
-            <div style={{ zoom: "0.22" }}>
+            <div style={{
+                transform: "scale(0.22) translateY(-600px) translateX(-600px)",
+                height: "320px"
+            }}>
 
                 <svg width="1600px" height="1600px">
                     <g id="Artboard-Copy-8" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" opacity="0.607136805">
@@ -54,7 +57,7 @@ const Part1 = (props) => {
 
                 {props.postCode > 2999 && !props.errors.address &&
                     <div style={{ position: "absolute", width: "1600px", height: "1600px", zIndex: "20", marginTop: "-1600px" }}>
-                        <div style={{ width: "40px", height: "40px", backgroundColor: "red", marginLeft: `${props.longInPx - 20}px`, marginTop: `${props.latInPx - 20}px`, borderRadius: "50%" }}></div>
+                        <div style={{ width: "240px", height: "240px", backgroundColor: "grey", marginLeft: `${props.longInPx - 120}px`, marginTop: `${props.latInPx - 120}px`, borderRadius: "50%", border: "1px solid grey", opacity: "0.2" }}></div>
                     </div>
                 }
 

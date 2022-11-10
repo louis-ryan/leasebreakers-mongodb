@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
@@ -12,6 +12,8 @@ const Index = () => {
   const [mobileView, setMobileView] = useState("NOTES")
 
   const { user } = useUser()
+
+  const desktopComp = useRef()
 
   const [notes, setNotes] = useState([])
   const [filter, setFilter] = useState({
@@ -108,7 +110,7 @@ const Index = () => {
     return (
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-        <div style={{ marginTop: "72px", width: "1200px", zoom: "0.8" }}>
+        <div ref={desktopComp} style={{ marginTop: "72px", width: "1200px", zoom: "0.8" }}>
 
           <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"DESKTOP"} />
 

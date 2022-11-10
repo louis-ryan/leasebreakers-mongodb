@@ -20,8 +20,8 @@ const NewNote = () => {
     const { user, error, isLoading } = useUser();
 
     const [part, setPart] = useState(0);
-    const [form, setForm] = useState({});
-    const [post, setPost] = useState({});
+    const [form, setForm] = useState({ numBath: '', numRoom: '', });
+    const [post, setPost] = useState({ postCode1: '', postCode2: '', postCode3: '', postCode4: '', });
     const [validAddresses, setValidAddresses] = useState([]);
     const [mapCoords, setMapCoords] = useState({})
     const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
@@ -262,12 +262,12 @@ const NewNote = () => {
             <div style={{ marginBottom: "40px" }}>
 
                 <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", zoom: "0.8" }}>
+                    <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", transform: "scale(0.8)" }}>
                         <div><h1>Create Post</h1></div>
 
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
+                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
 
                         <div style={{ height: "24px" }} />
                     </div>
@@ -310,7 +310,7 @@ const NewNote = () => {
 
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "#1E304E", marginTop: "-9px", zIndex: "-1" }} />
+                        <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
 
                         <div style={{ height: "24px" }} />
                     </div>

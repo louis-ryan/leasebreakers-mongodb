@@ -107,13 +107,11 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
      * Populate with filter data on page render
      */
     useEffect(() => {
-        if (filter.selectedAreas && filterRendered === true) return
-        setTimeout(() => {
-            setAreaSelectedArr(filter.selectedAreas)
-            filterRegionsFromAreas(filter.selectedAreas, false)
-            setFilterRendered(true)
-        }, 2000)
-    }, [filter.selectedAreas])
+        if (filter.userId === null && filterRendered === true) return
+        setAreaSelectedArr(filter.selectedAreas)
+        filterRegionsFromAreas(filter.selectedAreas, false)
+        setFilterRendered(true)
+    }, [filter])
 
 
     return (
@@ -175,11 +173,11 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                         {view === "AREA" && (
                             <>
 
-                                <div style={{ height: "312px", margin: "-16px 0px 0px 16px" }}>
+                                <div style={{ height: "312px", margin: "-16px 0px 0px 16px", transform: "scale(0.2) translateY(-520px) translateX(-680px)" }}>
                                     {mapArr.map((map, idx) => {
                                         return (
                                             <div key={idx}>
-                                                <svg width="1600px" height="1600px" style={{ position: "absolute", zoom: "0.2" }}>
+                                                <svg width="1600px" height="1600px" style={{ position: "absolute" }}>
                                                     <g id={map.name} stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" style={{ cursor: "pointer" }}>
                                                         <path d={map.path} id="Rectangle" stroke="#979797" strokeWidth="4" fill={selectionArr.indexOf(map.name) === -1 ? "white" : "pink"}></path>
                                                     </g>
