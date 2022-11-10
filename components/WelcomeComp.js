@@ -21,7 +21,6 @@ const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
             <div>You are filtering by:</div>
 
             <div style={{ marginTop: "24px", display: "flex" }}>
-                
                 {filter.addresses.length > 0 && (
                     <div onClick={() => setFilter({ ...filter, addresses: [] })} style={labelStyle}>Location</div>
                 )}
