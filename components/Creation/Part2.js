@@ -16,15 +16,15 @@ const Part2 = (props) => {
     }
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        var element = document.getElementsByClassName('react-datepicker-popper')[0]
+    //     var element = document.getElementsByClassName('react-datepicker-popper')[0]
 
-        if (!element.style) return
-        console.log(element.style)
-        element.removeAttribute('style')
+    //     if (!element.style) return
+    //     console.log(element.style)
+    //     element.removeAttribute('style')
 
-    })
+    // })
 
 
     return (

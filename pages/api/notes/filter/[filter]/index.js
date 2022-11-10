@@ -13,8 +13,6 @@ export default async (req, res) => {
 
     const listOfFilters = filter.split(";")
 
-    console.log("list of filters: ", listOfFilters)
-
     listOfFilters.map((singleFilter) => {
         const [key, value] = singleFilter.split("=")
 
@@ -25,14 +23,11 @@ export default async (req, res) => {
         }
 
         if (key === "rent") {
-            console.log("YESSSS")
             const arrayOfRentValues = value.split(",")
             if (arrayOfRentValues[0] === '') return
             filterObject = { ...filterObject, rent: arrayOfRentValues }
         }
     })
-
-        console.log("filter object: ", filterObject)
 
 
         switch (method) {

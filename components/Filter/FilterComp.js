@@ -21,6 +21,7 @@ const FilterComp = ({ filter, setFilter, getNotes, notes, deviceSize }) => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
                     addresses: filter.addresses,
+                    selectedAreas: filter.selectedAreas,
                     rent: filter.rent,
                     minRentVal: filter.minRentVal,
                     maxRentVal: filter.maxRentVal,

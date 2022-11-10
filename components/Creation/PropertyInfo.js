@@ -77,7 +77,7 @@ const PropertyInfo = (props) => {
             <div
                 className='effect-fullscreen'
                 style={{
-                    width:props.device === "DESKTOP" ? "600px" : "100%",
+                    width: props.device === "DESKTOP" ? "600px" : "100%",
                     display: "flex",
                     justifyContent: "center",
                     paddingBottom: "40px"
@@ -86,7 +86,7 @@ const PropertyInfo = (props) => {
                 <form style={{
                     width: "calc(100% - 32px)",
                     maxWidth: "400px",
-                    zoom: props.device === "DESKTOP" ? "0.8" : "1"
+                    transform: `scale(${props.device === "DESKTOP" ? "0.8" : "1"})`
                 }}>
 
                     <div style={{ height: "40px" }} />
