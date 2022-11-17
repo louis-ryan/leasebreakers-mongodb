@@ -27,22 +27,32 @@ export default async (req, res) => {
             if (arrayOfRentValues[0] === '') return
             filterObject = { ...filterObject, rent: arrayOfRentValues }
         }
+
+        if (key === "minBed") {
+            filterObject = { ...filterObject, numRoom: { $gte: value } }
+        }
+
+        if (key === "minBath") {
+            filterObject = { ...filterObject, numBath: { $gte: value } }
+        }
     })
 
 
-        switch (method) {
-            case 'GET':
-                try {
-                    const notes = await Note.find(filterObject).limit(10);
+    switch (method) {
+        case 'GET':
+            try {
+                const notes = await Note.find(filterObject).limit(10);
 
-                    if (!notes) {
-                        return res.status(400).json({ success: false });
-                    }
+                console.log("notes: ", notes)
 
-                    res.status(200).json({ success: true, data: notes });
-                } catch (error) {
-                    res.status(400).json({ success: false });
+                if (!notes) {
+                    return res.status(400).json({ success: false });
                 }
-                break;
-        }
+
+                res.status(200).json({ success: true, data: notes });
+            } catch (error) {
+                res.status(400).json({ success: false });
+            }
+            break;
     }
+}

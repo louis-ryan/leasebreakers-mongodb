@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useUser } from '@auth0/nextjs-auth0';
 import Location from './Location'
 import Rent from './Rent'
+import Rooms from './Rooms'
 
 
 const FilterComp = ({ filter, setFilter, updateFilter, getNotes, notes, deviceSize }) => {
@@ -17,6 +17,10 @@ const FilterComp = ({ filter, setFilter, updateFilter, getNotes, notes, deviceSi
             <div style={{ height: "8px" }} />
 
             <Rent reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} notes={notes} />
+
+            <div style={{ height: "8px" }} />
+
+            <Rooms reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} notes={notes} />
 
             <div style={{ height: "8px" }} />
 

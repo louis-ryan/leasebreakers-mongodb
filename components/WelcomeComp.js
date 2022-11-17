@@ -7,6 +7,8 @@ const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
 
     const locationCondition = (filter.addresses.length > 0)
     const rentCondition = ((filter.selectedRentVal[0] > filter.minRentVal || filter.selectedRentVal[1] < filter.maxRentVal) && filter.rent.length > 0)
+    const bedCondition = (filter.minBed > 0)
+    const bathCondition = (filter.minBath > 0)
 
     return (
         <div
@@ -23,6 +25,10 @@ const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
                 {locationCondition && (<div onClick={() => setFilter({ ...filter, addresses: [], selectedAreas: [] })} style={labelStyle}>Location</div>)}
 
                 {rentCondition && (<div onClick={() => setFilter({ ...filter, rent: [], selectedRentVal: [] })} style={labelStyle}>Rent</div>)}
+
+                {bedCondition && (<div onClick={() => setFilter({ ...filter, minBed: 0 })} style={labelStyle}>Bed/Livingrooms</div>)}
+
+                {bathCondition && (<div onClick={() => setFilter({ ...filter, minBath: 0 })} style={labelStyle}>Bathrooms</div>)}
 
             </div>
 

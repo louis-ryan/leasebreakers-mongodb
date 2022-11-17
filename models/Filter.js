@@ -29,7 +29,13 @@ const FilterSchema = new mongoose.Schema({
         {
             type: Number
         }
-    ]
+    ],
+    minBed: {
+        type: Number
+    },
+    minBath: {
+        type: Number
+    }
 })
 
 module.exports = mongoose.models.Filter || mongoose.model('Filter', FilterSchema);

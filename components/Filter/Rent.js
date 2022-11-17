@@ -5,9 +5,13 @@ import ReactSlider from 'react-slider'
 
 const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes }) => {
 
+    console.log("filter: ", filter)
+    console.log("notes: ", notes)
+
     const [minVal, setMinVal] = useState(null)
     const [maxVal, setMaxVal] = useState(null)
     const [selectedVal, setSelectedVal] = useState([minVal, maxVal])
+    const [selectionArr, setSelectionArr] = useState([])
 
     const [graphicArr, setGraphicArr] = useState([{}])
     const [highestFreq, setHighestFreq] = useState(0)
@@ -23,13 +27,8 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
         for (var i = minSelection; i <= maxSelection; i++) {
             newSelectionArr.push(i)
         }
-        setFilter({
-            ...filter,
-            rent: newSelectionArr,
-            minRentVal: minVal,
-            maxRentVal: maxVal,
-            selectedRentVal: value,
-        })
+
+        setSelectionArr(newSelectionArr)
     }
 
 
@@ -140,7 +139,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                             style={{
                                                 width: `calc(100% / ${graphicArr.length})`,
                                                 height: `calc((100% / ${highestFreq}) * ${obj.numberWithVal})`,
-                                                background: "grey"
+                                                background: "lightgrey"
                                             }}
                                         />
                                     )
@@ -161,14 +160,25 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                 min={minVal}
                                 max={maxVal}
                             />
+                            
+                            <div style={{ height: "48px" }} />
 
-                            <div style={{ width: "100%", display: "flex", justifyContent: "space-between", marginTop: "40px" }}>
-                                <div>range-min: {selectedVal[0]}</div>
-                                <div>range-max: {selectedVal[1]}</div>
+                            <div 
+                            onClick={() => {
+                                setFilter({
+                                    ...filter,
+                                    rent: selectionArr,
+                                    minRentVal: minVal,
+                                    maxRentVal: maxVal,
+                                    selectedRentVal: selectedVal,
+                                })
+                            }}
+                            style={{ width: "100%", display: "flex", justifyContent: "center", border: "1px solid grey", padding: "24px 0px", borderRadius: "4px"}}
+                            >
+                                <div>Set min: {selectedVal[0]} and max: {selectedVal[1]}</div>
                             </div>
                         </div>
 
-                        <div style={{ height: "80px" }} />
                     </>
                 }
             </div>

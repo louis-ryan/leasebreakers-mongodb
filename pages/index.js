@@ -23,6 +23,8 @@ const Index = () => {
     minRentVal: null,
     maxRentVal: null,
     selectedRentVal: [null, null],
+    minBed: 0,
+    minBath: 0,
     userId: null
   })
 
@@ -36,6 +38,8 @@ const Index = () => {
       minRentVal: filter.minRentVal,
       maxRentVal: filter.maxRentVal,
       selectedRentVal: filter.selectedRentVal,
+      minBed: filter.minBed,
+      minBath: filter.minBath,
       userId: user.sub
     }
 
@@ -46,6 +50,7 @@ const Index = () => {
         body: JSON.stringify(body)
       })
       const { data } = await res.json();
+      console.log(data)
       setFilter(data)
     } else {
       const res = await fetch('api/filters', {
@@ -74,11 +79,14 @@ const Index = () => {
 
     const filterString = (
       `address=${filter.addresses.join()};` +
-      `rent=${filter.rent.join()};`
+      `rent=${filter.rent.join()};` +
+      `minBed=${filter.minBed};` +
+      `minBath=${filter.minBath};`
     )
 
     const res = await fetch(`api/notes/filter/${filterString}`);
     const { data } = await res.json();
+    console.log("notes: ", data)
     setNotes(data)
   }
 
