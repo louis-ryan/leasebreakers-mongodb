@@ -27,8 +27,41 @@ const Index = () => {
   })
 
 
+  async function updateFilter() {
+
+    const body = {
+      addresses: filter.addresses,
+      selectedAreas: filter.selectedAreas,
+      rent: filter.rent,
+      minRentVal: filter.minRentVal,
+      maxRentVal: filter.maxRentVal,
+      selectedRentVal: filter.selectedRentVal,
+      userId: user.sub
+    }
+
+    if (filter._id) {
+      const res = await fetch(`api/filters/filter/${filter._id}`, {
+        method: 'PUT',
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+      const { data } = await res.json();
+      setFilter(data)
+    } else {
+      const res = await fetch('api/filters', {
+        method: 'POST',
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+      const { data } = await res.json();
+      setFilter(data)
+    }
+  }
+
+
   async function getFilter() {
-    const res = await fetch(`api/filters/${user.sub}`);
+
+    const res = await fetch(`api/filters/user/${user.sub}`)
     const { data } = await res.json();
 
     if (typeof data !== 'object') return
@@ -45,14 +78,6 @@ const Index = () => {
     )
 
     const res = await fetch(`api/notes/filter/${filterString}`);
-    const { data } = await res.json();
-    setNotes(data)
-  }
-
-
-  async function getUnfilteredNotes() {
-
-    const res = await fetch(`api/notes`);
     const { data } = await res.json();
     setNotes(data)
   }
@@ -96,16 +121,6 @@ const Index = () => {
   }, [filter])
 
 
-  /**
-   * Got notes if not signed in
-   */
-  useEffect(() => {
-    if (user) return
-    getUnfilteredNotes()
-
-  }, [])
-
-
   if (windowWidth > 1200) {
     return (
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
@@ -117,7 +132,7 @@ const Index = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
 
             <div style={{ width: "29%" }}>
-              <FilterComp filter={filter} setFilter={setFilter} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
+              <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
             </div>
 
             <div style={{ width: "69%" }}>
@@ -166,7 +181,7 @@ const Index = () => {
         </div>
 
         {mobileView === "FILTERS" && (
-          <FilterComp filter={filter} setFilter={setFilter} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
+          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
         )}
 
         {mobileView === "NOTES" && (

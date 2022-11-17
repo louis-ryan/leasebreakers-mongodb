@@ -17,14 +17,36 @@ const NewNote = () => {
     const onePixLat = 0.00097731799
     const onePixLong = 0.0012070086
 
-    const { user, error, isLoading } = useUser();
+    const { user } = useUser();
 
     const [part, setPart] = useState(0);
-    const [form, setForm] = useState({ numBath: '', numRoom: '', });
-    const [post, setPost] = useState({ postCode1: '', postCode2: '', postCode3: '', postCode4: '', });
+    const [form, setForm] = useState({
+        numBath: '',
+        numRoom: '',
+        rent: '',
+        date: '',
+        moveInDate: '',
+        contractEnds: '',
+        contractTerminates: false
+    });
+    const [post, setPost] = useState({
+        postCode1: '',
+        postCode2: '',
+        postCode3: '',
+        postCode4: '',
+    });
     const [validAddresses, setValidAddresses] = useState([]);
     const [mapCoords, setMapCoords] = useState({})
-    const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
+    const [formBools, setFormBools] = useState({
+        petsAllowed: false,
+        outdoorArea: false,
+        garden: false,
+        parkingSpace: false,
+        supermarket: false,
+        trainStation: false,
+        sharingWall: false,
+        sharingFloor: false
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -32,6 +54,15 @@ const NewNote = () => {
 
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
+
+
+    /**
+     * If no user, send back to index
+     */
+    useEffect(() => {
+        if (user) return
+        router.push("/");
+    })
 
 
     /**
@@ -52,7 +83,6 @@ const NewNote = () => {
     })
 
 
-
     /**
      * Format form
      */
@@ -61,18 +91,26 @@ const NewNote = () => {
 
         setForm({
             ...form,
+
             title: `A new house ${new Date().getTime()}`,
+
             breakerId: user.sub,
             breakerName: user.name,
             breakerEmail: user.email,
             breakerPicture: user.picture,
+
             date: Date.now(),
+
             petsAllowed: formBools.petsAllowed,
-            outdoorArea: formBools.outdoorArea,
             parkingSpace: formBools.parkingSpace,
-            postCode: `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`,
+            outdoorArea: formBools.outdoorArea,
+            garden: formBools.garden,
+            sharingWall: formBools.sharingWall,
+            sharingFloor: formBools.sharingFloor,
             supermarket: formBools.supermarket,
-            trainStation: formBools.trainStation
+            trainStation: formBools.trainStation,
+
+            postCode: `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
         })
     }, [user, post, formBools])
 
@@ -134,6 +172,7 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
+            console.log("res: ", await res.json())
             setIsSubmitting(true)
             router.push("/");
         } catch (error) {
@@ -166,9 +205,21 @@ const NewNote = () => {
 
     /**
     * Change End of Contract
+    * @param {*} e 
+    */
+    const handleMoveInDate = (val) => { setForm({ ...form, moveInDate: val }) }
+
+    /**
+    * Change End of Contract
      * @param {*} e 
     */
     const handleContractEnds = (val) => { setForm({ ...form, contractEnds: val }) }
+
+    /**
+    * Contract Terminating
+    * @param {*} e 
+    */
+    const handleContractTerminates = (val) => { setForm({ ...form, contractTerminates: val }) }
 
     /**
     * Address
@@ -180,7 +231,7 @@ const NewNote = () => {
      * Clear Post Code
      */
     const handleClearPost = () => {
-        setPost({ postCode1: null, postCode2: null, postCode3: null, postCode4: null });
+        setPost({ postCode1: '', postCode2: '', postCode3: '', postCode4: '' });
         [1, 2, 3, 4].map((id) => document.getElementsByName(`postCode${id}`)[0].value = null);
         setValidAddresses([]);
         setMapCoords({});
@@ -267,7 +318,7 @@ const NewNote = () => {
 
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
+                        {/* <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} /> */}
 
                         <div style={{ height: "24px" }} />
                     </div>
@@ -276,8 +327,10 @@ const NewNote = () => {
                 <PropertyInfo
                     handleChange={handleChange}
                     handlePost={handlePost}
+                    handleMoveInDate={handleMoveInDate}
                     handleContractEnds={handleContractEnds}
                     handleAddress={handleAddress}
+                    handleContractTerminates={handleContractTerminates}
                     errors={errors}
                     form={form}
                     setForm={setForm}
@@ -310,7 +363,7 @@ const NewNote = () => {
 
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                        <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
+                        {/* <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} /> */}
 
                         <div style={{ height: "24px" }} />
                     </div>
@@ -319,8 +372,10 @@ const NewNote = () => {
                 <PropertyInfo
                     handleChange={handleChange}
                     handlePost={handlePost}
+                    handleMoveInDate={handleMoveInDate}
                     handleContractEnds={handleContractEnds}
                     handleAddress={handleAddress}
+                    handleContractTerminates={handleContractTerminates}
                     errors={errors}
                     form={form}
                     setForm={setForm}
@@ -340,7 +395,7 @@ const NewNote = () => {
                     handleRent={handleRent}
                     device={"MOBILE"}
                 />
-            </div >
+            </div>
 
         )
     }

@@ -1,10 +1,13 @@
+
+
 const PostCode = (props) => {
 
     const inputIsNumber = (e) => (e.target.value === "0" || e.target.value === "1" || e.target.value === "2" || e.target.value === "3" || e.target.value === "4" || e.target.value === "5" || e.target.value === "6" || e.target.value === "7" || e.target.value === "8" || e.target.value === "9")
 
     return (
         <>
-            Post Code
+
+            Postcode
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {[1, 2, 3, 4].map((id) => {

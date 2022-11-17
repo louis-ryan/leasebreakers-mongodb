@@ -33,7 +33,7 @@ export default async (req, res) => {
         switch (method) {
             case 'GET':
                 try {
-                    const notes = await Note.find(filterObject);
+                    const notes = await Note.find(filterObject).limit(10);
 
                     if (!notes) {
                         return res.status(400).json({ success: false });

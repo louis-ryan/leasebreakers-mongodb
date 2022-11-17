@@ -1,4 +1,4 @@
-
+import InputHeader from "./InputHeader";
 
 const Part3 = (props) => {
 
@@ -11,7 +11,7 @@ const Part3 = (props) => {
 
             <div style={{ height: "16px" }} />
 
-            <h2>Description</h2>
+            <InputHeader header={'Part 4: Description'} />
 
             <div style={{ height: "24px" }} />
 
@@ -19,6 +19,7 @@ const Part3 = (props) => {
             <textarea
                 name='description'
                 onChange={props.handleChange}
+                value={props.form.description}
                 style={{ border: "1px solid grey", width: "100%", resize: "none", fontFamily: "unset", fontSize: "24px" }}
             />
 

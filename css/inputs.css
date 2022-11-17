@@ -81,3 +81,22 @@ input::-webkit-inner-spin-button {
     border: none;
     box-shadow: none;
 }
+
+/* Image Input */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.file-upload {
+    background-color: black;
+    cursor: pointer;
+    color: white;
+}
+
+.file-upload:hover {
+    filter: brightness(1.2);
+}
+

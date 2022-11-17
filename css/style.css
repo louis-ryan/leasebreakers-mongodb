@@ -50,6 +50,16 @@ h4 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
+h5 {
+    font-weight: 800;
+    font-size: 28px;
+    color: rgb(142, 142, 142);
+    letter-spacing: 4px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: none;
+    font-style: italic;
+}
+
 p {
     color: #fff;
 }
@@ -82,19 +92,4 @@ a {
     margin-right: 4px;
     color: rgb(101, 101, 101);
     font-weight: 800;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-}
-
-.file-upload {
-    background-color: var(--grey-blue);
-    cursor: pointer;
-}
-
-.file-upload:hover {
-    filter: brightness(1.2);
 }

@@ -1,3 +1,4 @@
+import InputHeader from "./InputHeader";
 import PicUpload from "./PicUpload";
 
 
@@ -15,7 +16,7 @@ const Part4 = (props) => {
 
             <div style={{ height: "16px" }} />
 
-            <h2>Photos</h2>
+            <InputHeader header={'Part 5: Photos'} />
 
             Upload some photos
 
@@ -37,9 +38,9 @@ const Part4 = (props) => {
 
             <div
                 onClick={() => props.handleSubmit()}
-                style={{ bottom: "24px", height: "60px", backgroundColor: "#1E304E", color: "white", textAlign: "center", alignItems: "center", paddingTop: "18px", borderRadius: "4px", marginTop: "40px" }}
+                style={{ bottom: "24px", height: "60px", backgroundColor: "black", color: "white", textAlign: "center", alignItems: "center", paddingTop: "18px", borderRadius: "4px", marginTop: "40px" }}
             >
-                Create
+                Create post
             </div>
 
         </>
