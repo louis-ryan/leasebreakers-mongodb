@@ -59,12 +59,14 @@ input::-webkit-inner-spin-button {
 
 .slider-thumb {
     background: white;
-    border: 1px solid grey;
-    width: 40px;
-    height: 40px;
+    border: 2px solid pink;
+    width: 24px;
+    height: 24px;
     color: unset;
     transform: translateY(-18px);
     border-radius: 50%;
+    margin-top: 8px;
+    box-shadow: -2px 2px 0px 0px #D0C4CF;
 }
 
 .rent-input {

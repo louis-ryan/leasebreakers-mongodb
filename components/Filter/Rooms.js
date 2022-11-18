@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
 import FilterHeader from "./FilterHeader";
 
 
-const Rooms = ({ reveal, setReveal, deviceSize, filter, setFilter, notes }) => {
-
-
-
+const Rooms = ({ reveal, setReveal, deviceSize, filter, setFilter }) => {
 
     const activeCondition = (filter.minBed > 0 || filter.minBath > 0)
-
 
     const handleChange = (e, room) => {
         if (e.target.value) {
@@ -17,7 +12,6 @@ const Rooms = ({ reveal, setReveal, deviceSize, filter, setFilter, notes }) => {
             setFilter({ ...filter, [room]: 0 })
         }
     }
-
 
 
     return (

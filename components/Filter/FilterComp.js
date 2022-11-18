@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Location from './Location'
 import Rent from './Rent'
 import Rooms from './Rooms'
+import Details from './Details'
+import MoveIn from './MoveIn'
 
 
 const FilterComp = ({ filter, setFilter, updateFilter, getNotes, notes, deviceSize }) => {
@@ -20,7 +22,15 @@ const FilterComp = ({ filter, setFilter, updateFilter, getNotes, notes, deviceSi
 
             <div style={{ height: "8px" }} />
 
-            <Rooms reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} notes={notes} />
+            <Rooms reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} />
+
+            <div style={{ height: "8px" }} />
+
+            <Details reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} />
+
+            <div style={{ height: "8px" }} />
+
+            <MoveIn reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} />
 
             <div style={{ height: "8px" }} />
 

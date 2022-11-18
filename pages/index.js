@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
 import ListingComp from '../components/Listing/ListingComp';
 import WelcomeComp from '../components/WelcomeComp';
+import Logo from '../components/Logo'
 
 
 const Index = () => {
@@ -25,8 +26,20 @@ const Index = () => {
     selectedRentVal: [null, null],
     minBed: 0,
     minBath: 0,
+    petsAllowed: false,
+    parkingSpace: false,
+    terrace: false,
+    garden: false,
+    noSharedWalls: false,
+    noSharedFloor: false,
+    walkToSupermarket: false,
+    walkToTrain: false,
+    moveInEarliest: null,
+    moveInLatest: null,
     userId: null
   })
+
+  console.log("filter: ", filter)
 
 
   async function updateFilter() {
@@ -40,6 +53,16 @@ const Index = () => {
       selectedRentVal: filter.selectedRentVal,
       minBed: filter.minBed,
       minBath: filter.minBath,
+      petsAllowed: filter.petsAllowed,
+      parkingSpace: filter.parkingSpace,
+      terrace: filter.terrace,
+      garden: filter.garden,
+      noSharedWalls: filter.noSharedWalls,
+      noSharedFloor: filter.noSharedFloor,
+      walkToSupermarket: filter.walkToSupermarket,
+      walkToTrain: filter.walkToTrain,
+      moveInEarliest: filter.moveInEarliest,
+      moveInLatest: filter.moveInLatest,
       userId: user.sub
     }
 
@@ -78,15 +101,24 @@ const Index = () => {
   async function getNotes() {
 
     const filterString = (
+      `searchLimit=10;` +
       `address=${filter.addresses.join()};` +
-      `rent=${filter.rent.join()};` +
+      `rent=${filter.selectedRentVal};` +
       `minBed=${filter.minBed};` +
-      `minBath=${filter.minBath};`
+      `minBath=${filter.minBath};` +
+      `petsAllowed=${filter.petsAllowed};` +
+      `parkingSpace=${filter.parkingSpace};` +
+      `terrace=${filter.terrace};` +
+      `garden=${filter.garden};` +
+      `noSharedWalls=${filter.noSharedWalls};` +
+      `noSharedFloor=${filter.noSharedFloor};` +
+      `walkToSupermarket=${filter.walkToSupermarket};` +
+      `walkToTrain=${filter.walkToTrain};` +
+      `moveIn=${[filter.moveInEarliest, filter.moveInLatest]};`
     )
 
     const res = await fetch(`api/notes/filter/${filterString}`);
     const { data } = await res.json();
-    console.log("notes: ", data)
     setNotes(data)
   }
 
@@ -133,7 +165,18 @@ const Index = () => {
     return (
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-        <div ref={desktopComp} style={{ marginTop: "72px", width: "1200px", zoom: "0.8" }}>
+        <div ref={desktopComp} style={{ marginTop: "152px", width: "1200px", zoom: "0.8" }}>
+
+          <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+            <img
+              src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+              style={{ width: "100%" }}
+            />
+          </div>
+
+          <div style={{position: "absolute", top: "16px", left: "24px"}}>
+            <Logo />
+          </div>
 
           <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"DESKTOP"} />
 

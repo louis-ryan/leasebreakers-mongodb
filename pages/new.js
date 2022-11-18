@@ -204,7 +204,7 @@ const NewNote = () => {
     const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
 
     /**
-    * Change End of Contract
+    * Change Move in Date
     * @param {*} e 
     */
     const handleMoveInDate = (val) => { setForm({ ...form, moveInDate: val }) }

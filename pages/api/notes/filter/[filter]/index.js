@@ -4,11 +4,9 @@ import Note from '../../../../../models/Note';
 dbConnect();
 
 export default async (req, res) => {
-    const {
-        query: { filter },
-        method
-    } = req;
+    const { query: { filter } } = req;
 
+    var searchLimit = 10
     var filterObject = {}
 
     const listOfFilters = filter.split(";")
@@ -16,43 +14,98 @@ export default async (req, res) => {
     listOfFilters.map((singleFilter) => {
         const [key, value] = singleFilter.split("=")
 
-        if (key === "address") {
-            const arrayOfPlaceNames = value.split(",")
-            if (arrayOfPlaceNames[0] === '') return
-            filterObject = { ...filterObject, address: arrayOfPlaceNames }
-        }
+        switch (key) {
 
-        if (key === "rent") {
-            const arrayOfRentValues = value.split(",")
-            if (arrayOfRentValues[0] === '') return
-            filterObject = { ...filterObject, rent: arrayOfRentValues }
-        }
+            case "searchLimit":
+                searchLimit = value
+                break;
 
-        if (key === "minBed") {
-            filterObject = { ...filterObject, numRoom: { $gte: value } }
-        }
+            case "address":
+                const arrayOfPlaceNames = value.split(",")
+                if (arrayOfPlaceNames[0] === '') return
+                filterObject = { ...filterObject, address: arrayOfPlaceNames }
+                break;
 
-        if (key === "minBath") {
-            filterObject = { ...filterObject, numBath: { $gte: value } }
+            case "rent":
+                const selectionArr = value.split(",")
+                filterObject = { ...filterObject, rent: { $gte: selectionArr[0], $lte: selectionArr[1] } }
+                break;
+
+            case "minBed":
+                filterObject = { ...filterObject, numRoom: { $gte: value } }
+                break;
+
+            case "minBath":
+                filterObject = { ...filterObject, numBath: { $gte: value } }
+                break;
+
+            case "petsAllowed":
+                if (value !== "true") return
+                filterObject = { ...filterObject, petsAllowed: true }
+                break;
+
+            case "parkingSpace":
+                if (value !== "true") return
+                filterObject = { ...filterObject, parkingSpace: true }
+                break;
+
+            case "terrace":
+                if (value !== "true") return
+                filterObject = { ...filterObject, outdoorArea: true }
+                break;
+
+            case "garden":
+                if (value !== "true") return
+                filterObject = { ...filterObject, garden: true }
+                break;
+
+            case "noSharedWalls":
+                if (value !== "true") return
+                filterObject = { ...filterObject, sharingWall: false }
+                break;
+
+            case "noSharedFloor":
+                if (value !== "true") return
+                filterObject = { ...filterObject, sharingFloor: false }
+                break;
+
+            case "walkToSupermarket":
+                if (value !== "true") return
+                filterObject = { ...filterObject, walkToSupermarket: true }
+                break;
+
+            case "walkToTrain":
+                if (value !== "true") return
+                filterObject = { ...filterObject, walkToStation: true }
+                break;
+
+            case "moveIn":
+                if (value === ['', '']) return
+                const moveInArr = value.split(",")
+                if (moveInArr[1] === '') {
+                    filterObject = { ...filterObject, moveInDate: { $gte: moveInArr[0] } }
+                } else if (moveInArr[0] === '') {
+                    filterObject = { ...filterObject, moveInDate: { $lte: moveInArr[1] } }
+                } else {
+                    filterObject = { ...filterObject, moveInDate: { $gte: moveInArr[0], $lte: moveInArr[1] } }
+                }
+
+                break;
         }
     })
 
 
-    switch (method) {
-        case 'GET':
-            try {
-                const notes = await Note.find(filterObject).limit(10);
+    try {
+        const notes = await Note.find(filterObject).limit(Number(searchLimit));
 
-                console.log("notes: ", notes)
+        if (!notes) {
+            return res.status(400).json({ success: false });
+        }
 
-                if (!notes) {
-                    return res.status(400).json({ success: false });
-                }
-
-                res.status(200).json({ success: true, data: notes });
-            } catch (error) {
-                res.status(400).json({ success: false });
-            }
-            break;
+        res.status(200).json({ success: true, data: notes });
+    } catch (error) {
+        res.status(400).json({ success: false });
     }
+
+
 }

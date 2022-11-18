@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Delete</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Delete" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <line x1="14.1585366" y1="14.1463415" x2="26.8414634" y2="25.8536585" id="Line" stroke="#FFFFFF" stroke-linecap="square"></line>
+        <line x1="25.8589744" y1="14.1463415" x2="15.1410256" y2="25.8536585" id="Line-20" stroke="#FFFFFF" stroke-linecap="square"></line>
+        <circle id="Oval" stroke="#FFFFFF" cx="20.5" cy="19.5" r="15"></circle>
+    </g>
+</svg>

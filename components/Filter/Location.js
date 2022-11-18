@@ -260,7 +260,7 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                                         setFilter({ ...filter, addresses: [] })
                                         getNotes()
                                     }}
-                                    style={{ width: "100%", textAlign: "center", padding: "16px", backgroundColor: "black", color: "white", borderRadius: "8px" }}
+                                    style={{ width: "100%", textAlign: "center", padding: "16px", backgroundColor: "black", color: "white" }}
                                 >
                                     CLEAR ADDRESSES
                                 </div>

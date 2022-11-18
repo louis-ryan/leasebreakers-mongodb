@@ -1,6 +1,6 @@
 const Logo = () => (
     
-    <svg width="195px" height="82px" viewBox="0 0 195 82">
+    <svg width="195px" height="82px" viewBox="0 0 195 82" style={{height: "80px", transform: "translateX(-30px)"}}>
         <g id="LBM-Logo-Small" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <polygon id="Rectangle-Copy-3" fill="#6D556B" points="12 69 171.017241 69 173 71 13.9827586 71"></polygon>
             <g id="Group-Copy-33" transform="translate(170.000000, 57.000000)" stroke="#979797">
