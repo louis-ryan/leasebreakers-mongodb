@@ -2,9 +2,6 @@ import InputHeader from "./InputHeader";
 import PicUpload from "./PicUpload";
 
 
-const PicsWrapper = `display: flex; flex-wrap: wrap; justify-content: space-between;`;
-
-
 const Part4 = (props) => {
 
     return (

@@ -26,7 +26,7 @@ const Part1 = (props) => {
 
     return (
         <>
-            <InputHeader header={'Part 1: Location'} />
+            {/* <InputHeader header={'Part 1: Location'} /> */}
 
             <PostCode
                 handlePost={props.handlePost}

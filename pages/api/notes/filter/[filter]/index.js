@@ -6,7 +6,8 @@ dbConnect();
 export default async (req, res) => {
     const { query: { filter } } = req;
 
-    var searchLimit = 10
+    var searchLimit = 5
+    var searchSkip = 10
     var filterObject = {}
 
     const listOfFilters = filter.split(";")
@@ -18,6 +19,10 @@ export default async (req, res) => {
 
             case "searchLimit":
                 searchLimit = value
+                break;
+
+            case "searchSkip":
+                searchSkip = value
                 break;
 
             case "address":
@@ -96,7 +101,9 @@ export default async (req, res) => {
 
 
     try {
-        const notes = await Note.find(filterObject).limit(Number(searchLimit));
+        const notes = await Note.find(filterObject)
+            .skip(Number(searchSkip))
+            .limit(Number(searchLimit))
 
         if (!notes) {
             return res.status(400).json({ success: false });

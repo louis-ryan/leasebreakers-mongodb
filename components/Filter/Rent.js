@@ -15,6 +15,8 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
     const activeCondition = (filter.selectedRentVal[0] !== minVal || filter.selectedRentVal[1] !== maxVal)
     const setValCondition = (filter.selectedRentVal[0] !== selectedVal[0] || filter.selectedRentVal[1] !== selectedVal[1])
 
+    const graphicStyle = { height: "72px", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "baseline" }
+
 
     const handleSetGraphicArr = (sortedRentArr) => {
         var newGraphicArr = [{}]
@@ -65,7 +67,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
      */
     useEffect(() => {
         getCompleteNotes()
-    }, [notes, filter, minVal, maxVal])
+    }, [notes, filter])
 
 
     /**
@@ -94,7 +96,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
                 <FilterHeader
                     headerTitle={'Rent'}
-                    headerSubTitle={`${selectedVal[0]}aud to ${selectedVal[1]}aud`}
+                    headerSubTitle={`$${selectedVal[0]}pw to $${selectedVal[1]}pw`}
                     activeCondition={activeCondition}
                     onClick={() => reveal === "RENT" ? setReveal("NONE") : setReveal("RENT")}
                     icon={
@@ -114,7 +116,13 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                     <>
                         <div style={{ padding: "16px" }}>
 
-                            <div style={{ height: "72px", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                            <div
+                                style={{
+                                    ...graphicStyle,
+                                    opacity: graphicArr[1].rentVal === null ? "0" : "1",
+                                    transition: "1s"
+                                }}
+                            >
                                 {graphicArr.map((obj, idx) => {
                                     return (
                                         <div
@@ -144,6 +152,13 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                 max={maxVal}
                             />
 
+                            <div style={{ height: "24px" }} />
+
+                            <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                                <div>min: ${minVal}pw</div>
+                                <div>max: ${maxVal}pw</div>
+                            </div>
+
                             <div style={{ height: "48px" }} />
 
                             {setValCondition && (
@@ -159,7 +174,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                     }}
                                     style={{ width: "100%", display: "flex", justifyContent: "center", padding: "16px 0px", cursor: "pointer" }}
                                 >
-                                    <div>SET RANGE</div>
+                                    <div>SET RANGE ${selectedVal[0]} - ${selectedVal[1]}</div>
                                 </div>
                             )}
 

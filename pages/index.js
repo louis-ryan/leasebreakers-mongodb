@@ -11,6 +11,11 @@ const Index = () => {
 
   const [windowWidth, setWindowWidth] = useState(null)
   const [mobileView, setMobileView] = useState("NOTES")
+  const [rendering, setRendering] = useState(false)
+  const [filterUpdating, setFilterUpdating] = useState("UPDATE")
+
+  const [unlimitedNotes, setUnlimitedNotes] = useState(0)
+  const [skipping, setSkipping] = useState(0)
 
   const { user } = useUser()
 
@@ -39,10 +44,10 @@ const Index = () => {
     userId: null
   })
 
-  console.log("filter: ", filter)
-
 
   async function updateFilter() {
+
+    setFilterUpdating("UPDATING")
 
     const body = {
       addresses: filter.addresses,
@@ -73,8 +78,8 @@ const Index = () => {
         body: JSON.stringify(body)
       })
       const { data } = await res.json();
-      console.log(data)
       setFilter(data)
+      setFilterUpdating("DONE")
     } else {
       const res = await fetch('api/filters', {
         method: 'POST',
@@ -83,6 +88,7 @@ const Index = () => {
       })
       const { data } = await res.json();
       setFilter(data)
+      setFilterUpdating("DONE")
     }
   }
 
@@ -98,10 +104,13 @@ const Index = () => {
   }
 
 
-  async function getNotes() {
+  async function getNotes(condition, searchLimit, searchSkip) {
+
+    console.log("skip: ", searchSkip)
 
     const filterString = (
-      `searchLimit=10;` +
+      `searchLimit=${searchLimit};` +
+      `searchSkip=${searchSkip};` +
       `address=${filter.addresses.join()};` +
       `rent=${filter.selectedRentVal};` +
       `minBed=${filter.minBed};` +
@@ -119,7 +128,30 @@ const Index = () => {
 
     const res = await fetch(`api/notes/filter/${filterString}`);
     const { data } = await res.json();
-    setNotes(data)
+
+    switch (condition) {
+
+      case "SET_BROWSE":
+        // console.log("data: ", data)
+        setNotes(data)
+        setTimeout(() => {
+          setFilterUpdating("UPDATE")
+        }, 1000)
+        break;
+
+      case "SET_FILTER":
+        // console.log("data: ", data)
+        setNotes(data)
+        setTimeout(() => {
+          setFilterUpdating("UPDATE")
+        }, 1000)
+        break;
+
+      case "SET_UNLIMITED":
+        console.log("unlimited: ", data.length)
+        setUnlimitedNotes(data.length)
+
+    }
   }
 
 
@@ -152,13 +184,21 @@ const Index = () => {
 
 
   /**
-   * Set Filtered and Limited Notes
+   * Set Filtered and Limited Notes on page render
    */
   useEffect(() => {
     if (!filter.addresses) return;
-    getNotes()
+    getNotes('SET_FILTER', 5, 0)
 
   }, [filter])
+
+
+  /**
+   * Call notes endpoint once to get unlimited filtered notes
+   */
+  useEffect(() => {
+    getNotes('SET_UNLIMITED', null, null)
+  })
 
 
   if (windowWidth > 1200) {
@@ -174,7 +214,7 @@ const Index = () => {
             />
           </div>
 
-          <div style={{position: "absolute", top: "16px", left: "24px"}}>
+          <div style={{ position: "absolute", top: "16px", left: "24px" }}>
             <Logo />
           </div>
 
@@ -183,11 +223,11 @@ const Index = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
 
             <div style={{ width: "29%" }}>
-              <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
+              <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
             </div>
 
             <div style={{ width: "69%" }}>
-              <ListingComp notes={notes} />
+              <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
             </div>
 
           </div>
@@ -232,11 +272,11 @@ const Index = () => {
         </div>
 
         {mobileView === "FILTERS" && (
-          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
+          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
         )}
 
         {mobileView === "NOTES" && (
-          <ListingComp notes={notes} />
+          <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
         )}
 
 

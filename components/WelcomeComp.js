@@ -94,11 +94,11 @@ const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
                             style={{ ...labelStyle, display: !label.condition ? "none" : "flex" }}
                         >
                             <div>
-                                <svg width="40px" height="40px" viewBox="0 0 40 40" style={{ height: "20px", filter: "invert(1)" }}>
-                                    <g id="Delete" stroke="none" strokeWidth="2" fill="none" fillRule="evenodd">
+                                <svg width="40px" height="40px" viewBox="0 0 40 40" style={{ height: "20px" }}>
+                                    <g id="Delete" stroke="none" strokeWidth="2" fillRule="evenodd">
                                         <line x1="14.1585366" y1="14.1463415" x2="26.8414634" y2="25.8536585" id="Line" stroke="#FFFFFF" strokeLinecap="square"></line>
                                         <line x1="25.8589744" y1="14.1463415" x2="15.1410256" y2="25.8536585" id="Line-20" stroke="#FFFFFF" strokeLinecap="square"></line>
-                                        <circle id="Oval" stroke="#FFFFFF" cx="20.5" cy="19.5" r="15"></circle>
+                                        <circle id="Oval" stroke="#FFFFFF" fill="#e2b5ca" cx="20.5" cy="19.5" r="15"></circle>
                                     </g>
                                 </svg>
                             </div>

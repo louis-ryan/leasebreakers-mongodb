@@ -91,8 +91,7 @@ const PropertyInfo = (props) => {
                 <form style={{
                     width: "calc(100% - 32px)",
                     maxWidth: "400px",
-                    transform: `scale(${props.device === "DESKTOP" ? "0.8" : "1"})`,
-                    padding: `${props.device === "DESKTOP" ? "0px 0px" : "80px 0px"}`
+                    padding: "40px 0px"
                 }}>
 
                     <Parts props={props} />

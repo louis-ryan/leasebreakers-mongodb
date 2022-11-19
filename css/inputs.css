@@ -67,6 +67,11 @@ input::-webkit-inner-spin-button {
     border-radius: 50%;
     margin-top: 8px;
     box-shadow: -2px 2px 0px 0px #D0C4CF;
+    cursor: grab;
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
 }
 
 .rent-input {
@@ -102,3 +107,12 @@ input::-webkit-inner-spin-button {
     filter: brightness(1.2);
 }
 
+/* Date Input */
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
+}

@@ -19,13 +19,8 @@ const Part1 = (props) => {
 
     return (
         <>
-            <h4 onClick={() => props.setPart(0)}>
-                {'< Back to Location'}
-            </h4>
 
-            <div style={{ height: "16px" }} />
-
-            <InputHeader header={'Part 2: Property'} />
+            {/* <InputHeader header={'Part 2: Property'} /> */}
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <div style={{ width: "48%" }}>
@@ -233,12 +228,22 @@ const Part1 = (props) => {
 
             <div style={{ height: "24px" }} />
 
-            <div
-                className="button primary"
-                onClick={() => props.setPart(2)}
-                style={handleNextButton}
-            >
-                Next
+            <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                <div
+                    className="button secondary"
+                    onClick={() => props.setPart(0)}
+                    style={{ width: "48%" }}
+                >
+                    Back
+                </div>
+
+                <div
+                    className="button primary"
+                    onClick={() => props.setPart(2)}
+                    style={{ ...handleNextButton, width: "48%" }}
+                >
+                    Next
+                </div>
             </div>
 
 

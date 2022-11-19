@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="36px" viewBox="0 0 30 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>List Arrow</title>
+    <desc>Created with Sketch.</desc>
+    <g id="List-Arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M36.6863297,26.9872221 L27.8372965,29.1419772 L10.8131415,33.2873888 L19.8135331,10.1126459 L42.3118317,1.78776922 L36.6863297,26.9872221 Z" id="Rectangle" stroke="#979797" transform="translate(26.500000, 17.500000) rotate(45.000000) translate(-26.500000, -17.500000) "></path>
+        <rect id="Rectangle" fill="#FFFFFF" x="26" y="-6" width="24" height="47"></rect>
+    </g>
+</svg>
