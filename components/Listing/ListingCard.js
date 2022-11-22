@@ -16,7 +16,7 @@ const ListingCard = ({ note, rendering }) => {
      */
     const handleCardRoute = () => {
         if (user) {
-            return `/${note._id}`
+            return `/${note._id}#Details`
         } else {
             return "/api/auth/login"
         }

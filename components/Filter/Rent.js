@@ -44,6 +44,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     async function getCompleteNotes() {
+        console.log("getting")
         var rentArr = []
 
         const res = await fetch(`api/notes/`);
@@ -80,6 +81,23 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
             setSelectedVal([minVal, maxVal])
         }
     }, [filter, minVal, maxVal])
+
+
+    /**
+     * Set init selection if no auth user
+     */
+    useEffect(() => {
+        if (filter.selectedRentVal[0] === null && filter.selectedRentVal[1] === null) {
+            console.log("true")
+            setSelectedVal([minVal, maxVal])
+            setFilter({
+                ...filter,
+                minRentVal: minVal,
+                maxRentVal: maxVal,
+                selectedRentVal: [minVal, maxVal],
+            })
+        }
+    }, [minVal, maxVal])
 
 
     return (

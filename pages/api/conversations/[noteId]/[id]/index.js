@@ -35,6 +35,7 @@ export default async (req, res) => {
                 }
 
                 res.status(200).json({ success: true, data: conversation });
+
             } catch (error) {
                 res.status(400).json({ success: false });
             }

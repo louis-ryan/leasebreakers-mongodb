@@ -5,19 +5,15 @@ const MyComment = ({ commentPicture, comment }) => {
 
     return (
         <>
-            <div style={{ fontSize: "8px" }}>{comment.posterName}</div>
             <div style={{ display: "flex", justifyContent: "left", marginBottom: "8px" }}>
                 <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>
-                    <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
+                    <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerPolicy="no-referrer" />
                 </div>
                 <div style={{ width: "8px" }} />
-                <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="black" points="159 0 159 146 0 73"></polygon> </g></svg>
+                <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px" }}> <g id="Artboard-Copy-3" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"> <polygon id="Rectangle-Copy-3" fill="black" points="159 0 159 146 0 73"></polygon> </g></svg>
                 <div style={{ backgroundColor: "black", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)", color: "white" }}>
                     <div>
                         {comment.comment}
-                    </div>
-                    <div style={{ fontSize: "8px", marginTop: "8px" }}>
-                        {comment.timeOfComment}
                     </div>
                 </div>
             </div>
@@ -29,20 +25,16 @@ const TheirComment = ({ commentPicture, comment }) => {
 
     return (
         <>
-            <div style={{ fontSize: "8px" }}>{comment.posterName}</div>
             <div style={{ display: "flex", justifyContent: "right", marginBottom: "8px" }}>
-                <div style={{ backgroundColor: "#5D4A26", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)" }}>
+                <div style={{ backgroundColor: "pink", padding: "16px", borderRadius: "8px", maxWidth: "calc(100% - 56px)", color: "black" }}>
                     <div>
                         {comment.comment}
                     </div>
-                    <div style={{ fontSize: "8px", marginTop: "8px" }}>
-                        {comment.timeOfComment}
-                    </div>
                 </div>
-                <div width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px", transform: "rotate(180deg)" }}> <g id="Artboard-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <polygon id="Rectangle-Copy-3" fill="#5D4A26" points="159 0 159 146 0 73"></polygon> </g></div>
+                <svg width="8px" height="8px" viewBox="0 0 159 146" version="1.1" style={{ marginTop: "16px", transform: "rotate(180deg)" }}> <g id="Artboard-Copy-3" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd"> <polygon id="Rectangle-Copy-3" fill="pink" points="159 0 159 146 0 73"></polygon> </g></svg>
                 <div style={{ width: "8px" }} />
                 <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>
-                    <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerpolicy="no-referrer" />
+                    <img src={commentPicture} width="40px" height="40px" alt="profile image" referrerPolicy="no-referrer" />
                 </div>
             </div>
         </>
@@ -73,7 +65,7 @@ const IndividualComment = ({ idx, comment, conversation, user }) => {
     )
 }
 
-const NoteComments = ({ conversation, user }) => {
+const NoteComments = ({ conversation, user, typing }) => {
 
     return (
         <div id="scroll-page">
@@ -87,6 +79,10 @@ const NoteComments = ({ conversation, user }) => {
                     user={user}
                 />
             ))}
+
+            {typing.user !== user.sub && typing.typing === true && (
+                <div style={{ textAlign: "right" }}>{typing.userName} is typing...</div>
+            )}
 
             <div style={{ height: "72px" }} />
         </div>

@@ -22,7 +22,6 @@ const NewNote = () => {
     const { user } = useUser();
 
     const [part, setPart] = useState(0);
-    console.log("part: ", part)
     const [form, setForm] = useState({
         numBath: '',
         numRoom: '',
@@ -315,7 +314,7 @@ const NewNote = () => {
         return (
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-                <div style={{ marginTop: "320px", width: "1200px", zoom: "0.8" }}>
+                <div style={{ marginTop: "120px", width: "1200px", zoom: "0.8" }}>
 
                     <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
                         <img
@@ -325,7 +324,7 @@ const NewNote = () => {
                     </div>
 
                     <div style={{ position: "absolute", top: "16px", left: "24px" }}>
-                        <Logo />
+                       <Link href="/"><Logo /></Link> 
                     </div>
 
                     <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>

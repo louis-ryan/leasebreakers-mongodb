@@ -33,6 +33,7 @@ export default async (req, res) => {
 
             case "rent":
                 const selectionArr = value.split(",")
+                if (!selectionArr[0] && !selectionArr[1]) return
                 filterObject = { ...filterObject, rent: { $gte: selectionArr[0], $lte: selectionArr[1] } }
                 break;
 
