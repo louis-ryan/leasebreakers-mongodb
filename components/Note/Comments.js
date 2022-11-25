@@ -5,7 +5,7 @@ import NoteComments from "./NoteComments";
 
 let socket
 
-const Comments = ({ conversation, setConversation, user, comment, handleChange, handleSubmit }) => {
+const Comments = ({ conversation, setConversation, user, comment, handleChange, handleSubmit, screenSize }) => {
 
   const [instantMessage, setInstantMessage] = useState({})
   const [typing, setTyping] = useState({})
@@ -98,7 +98,11 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
       <form>
         <div
           id="scroll-window"
-          style={{ height: "calc(100vh - 400px)", overflowY: "scroll", padding: "8px" }}
+          style={{
+            height: screenSize === 'DESKTOP' ? "calc(100vh - 320px)" : "calc(100vh - 400px)",
+            overflowY: "scroll",
+            padding: "8px"
+          }}
         >
           <NoteComments
             conversation={conversation}
@@ -108,7 +112,17 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
           />
         </div>
 
-        <div style={{ position: "absolute", bottom: "16px", width: "100%", maxWidth: "600px" }}>
+        <div
+          style={{
+            position: "absolute",
+            bottom: "16px",
+            width: "100%",
+            width: screenSize === 'DESKTOP' ? "920px" : "100%",
+            display: screenSize === 'DESKTOP' && "flex",
+            justifyContent: screenSize === 'DESKTOP' && "space-between",
+            padding: screenSize === 'MOBILE' && "16px"
+          }}
+        >
           <div style={{ height: "24px" }} />
 
           <input
@@ -117,23 +131,31 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
             value={comment ? comment : ''}
             name='comment'
             onChange={(e) => handleChange(e.target.value)}
-            style={{ width: "100%", fontSize: "16px", padding: "32px 8px" }}
+            style={{
+              width: screenSize === 'DESKTOP' ? "720px" : "100%",
+              fontSize: "16px",
+              padding: "32px 8px"
+            }}
           />
 
-          <div style={{ height: "24px" }} />
+          <div style={{ height: "24px", width: "16px" }} />
 
           <div
             id="send"
             className="button primary"
             onClick={() => {
               if (comment.length === 0) return
-
               socket.emit('input-change', `${comment}#${user.sub}#${user.given_name}`, router.asPath)
               socket.emit('typing', `false#${user.sub}`, router.asPath)
               handleSubmit(comment)
-
               document.getElementsByName('comment')[0].value = "";
               document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
+            }}
+            style={{
+              width: screenSize === 'DESKTOP' && "200px",
+              transform: screenSize === 'DESKTOP' && "translateY(4px)",
+              height: "64px",
+              paddingTop: "22px"
             }}
           >
             Comment

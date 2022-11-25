@@ -234,7 +234,10 @@ const Index = () => {
     return (
       <div style={{ width: "100%" }}>
 
-        <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"MOBILE"} />
+        <div style={{zoom: "0.8"}}>
+          <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"MOBILE"} />
+        </div>
+
 
         <div
           onClick={() => mobileView === "NOTES" ? setMobileView("FILTERS") : setMobileView("NOTES")}

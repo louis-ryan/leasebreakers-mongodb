@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="16px" viewBox="0 0 120 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>View Selector</title>
+    <desc>Created with Sketch.</desc>
+    <g id="View-Selector" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" x="1" y="4" width="120" height="16"></rect>
+        <path d="M32.9857728,0 L85.0224811,0 C93.1118656,-1.25024236e-06 100.775053,3.6270519 105.903388,9.88311403 C105.935275,9.92201256 105.967479,9.96097455 106,10 C109.333333,14 114,16 120,16 L0,16 C5.10820997,15.3049029 9.10820997,13.3049029 12,10 C12.0865064,9.90113553 12.1710216,9.80224563 12.2535456,9.70333028 C17.3834376,3.55451254 24.9780421,1.47099627e-15 32.9857728,0 Z" id="Rectangle" fill="#000000"></path>
+    </g>
+</svg>

@@ -6,10 +6,11 @@ import Logo from '../../components/Logo'
 import ViewSelector from '../../components/Note/ViewSelectors';
 import Details from '../../components/Note/Details';
 import Photos from '../../components/Note/Photos';
+import PhotosDesk from '../../components/Note/PhotosDesk';
 import MyInbox from '../../components/Note/MyInbox';
 import Comments from '../../components/Note/Comments';
 
-const Note = (props) => {
+const Note = () => {
 
     const [windowWidth, setWindowWidth] = useState(null)
 
@@ -226,7 +227,7 @@ const Note = (props) => {
 
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-                <div style={{ width: "600px", zoom: "0.8" }}>
+                <div style={{ width: "920px", zoom: "0.8" }}>
 
                     <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
                         <img
@@ -253,7 +254,7 @@ const Note = (props) => {
                         view={view}
                         thisIsMyNote={note.breakerId === user.sub}
                         commenterId={user.sub}
-                        router={router}
+                        screenSize={'DESKTOP'}
                     />
 
                     <div style={{ height: "24px" }} />
@@ -265,7 +266,7 @@ const Note = (props) => {
                     )}
 
                     {view === "Photos" && (
-                        <Photos
+                        <PhotosDesk
                             pics={note.pics}
                         />
                     )}
@@ -286,6 +287,7 @@ const Note = (props) => {
                             comment={comment}
                             handleChange={handleChange}
                             handleSubmit={handleSubmit}
+                            screenSize={'DESKTOP'}
                         />
                     )}
 
@@ -298,17 +300,20 @@ const Note = (props) => {
 
             <div style={{ width: "100%" }}>
 
-                <div style={{ height: "100px" }} />
+                <div style={{ height: "80px" }} />
 
-                <div
-                    onClick={() => {
-                        router.push('/')
-                    }}
-                >
+                <div onClick={() => { router.push('/') }} style={{ padding: "24px" }}>
                     {'< BACK TO LISTINGS'}
                 </div>
 
-                <ViewSelector view={view} setView={setView} />
+                <div style={{ height: "24px" }} />
+
+                <ViewSelector
+                    view={view}
+                    thisIsMyNote={note.breakerId === user.sub}
+                    commenterId={user.sub}
+                    screenSize={'MOBILE'}
+                />
 
                 <div style={{ height: "24px" }} />
 
@@ -340,6 +345,7 @@ const Note = (props) => {
                         comment={comment}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
+                        screenSize={'MOBILE'}
                     />
                 )}
             </div >

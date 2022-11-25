@@ -93,3 +93,12 @@ a {
     color: rgb(101, 101, 101);
     font-weight: 800;
 }
+
+.view-selector-option {
+    padding: 0px 8px;
+    cursor: pointer;
+}
+
+.view-selector-option:hover {
+    filter: brightness(0);
+}

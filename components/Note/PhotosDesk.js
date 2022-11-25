@@ -1,15 +1,14 @@
-const Photos = ({ pics }) => {
+const PhotosDesk = ({ pics }) => {
 
     return (
-        <div style={{ height: "calc(100vh - 240px)", overflow: "scroll" }} >
-
+        <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
             {pics.map((pic, idx) => {
-                
+
                 return (
                     <div key={idx}>
                         <img
                             src={pic.url}
-                            style={{ width: "100%" }}
+                            style={{ height: "120px" }}
                         />
                     </div>
                 )
@@ -18,4 +17,4 @@ const Photos = ({ pics }) => {
     )
 }
 
-export default Photos;
+export default PhotosDesk;
