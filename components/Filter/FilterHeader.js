@@ -28,10 +28,10 @@ const FilterHeader = ({ headerTitle, headerSubTitle, activeCondition, onClick, i
                 marginTop: "18px",
                 opacity: activeCondition ? "1" : "0"
             }}>
-                <svg width="40px" height="40px">
-                    <g id="Tick" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                        <circle id="Oval" fill="black" cx="20" cy="20" r="20"></circle>
-                        <polyline id="Line-11" stroke="#FFFFFF" strokeLinecap="round" points="30.5 11 17.5 29 10 23"></polyline>
+                <svg width="52px" height="40px" viewBox="0 0 52 62" style={{transform: "translateX(18px)"}}>
+                    <g id="Tick-Styled" stroke="none" strokeWidth="4" fill="none" fillRule="evenodd">
+                        <path d="M20,51 L40.3940137,51.7032419 C45.5376857,51.8806099 49.99548,55.3182667 51.4743818,60.2479392 L52,62 L52,62 L52,2.13162821e-13 L51.4116158,2.15740887 C49.9877789,7.37814405 45.2458626,11 39.8344499,11 L20,11 L20,11 C8.954305,11 0,19.954305 0,31 C0,42.045695 8.954305,51 20,51 Z" id="Oval" fill="#E2B5CA"></path>
+                        <polyline id="Line-11" stroke="#FFFFFF" strokeLinecap="round" points="33 22 19.6829268 40 12 34"></polyline>
                     </g>
                 </svg>
             </div>

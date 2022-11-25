@@ -34,6 +34,7 @@ const Parts = ((props) => {
                     handleChange={props.props.handleChange}
                     formBools={props.props.formBools}
                     setFormBools={props.props.setFormBools}
+                    handleMoveInDate={props.props.handleMoveInDate}
                 />
             )
         case 2:
@@ -42,7 +43,9 @@ const Parts = ((props) => {
                     errors={props.props.errors}
                     setPart={props.props.setPart}
                     form={props.props.form}
+                    setForm={props.props.setForm}
                     handleContractEnds={props.props.handleContractEnds}
+                    handleContractTerminates={props.props.handleContractTerminates}
                     handleRent={props.props.handleRent}
                 />
             )
@@ -51,6 +54,7 @@ const Parts = ((props) => {
                 <Part3
                     errors={props.props.errors}
                     setPart={props.props.setPart}
+                    form={props.props.form}
                     handleChange={props.props.handleChange}
                 />
             )
@@ -75,21 +79,20 @@ const PropertyInfo = (props) => {
     return (
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div
-                className='effect-fullscreen'
                 style={{
-                    width: props.device === "DESKTOP" ? "600px" : "100%",
+                    width: props.device === "DESKTOP" ? "480px" : "100%",
                     display: "flex",
                     justifyContent: "center",
-                    paddingBottom: "40px"
+                    backgroundColor: "white",
+                    border: "1px solid grey",
+                    borderRadius: "16px"
                 }}
             >
                 <form style={{
                     width: "calc(100% - 32px)",
                     maxWidth: "400px",
-                    transform: `scale(${props.device === "DESKTOP" ? "0.8" : "1"})`
+                    padding: "40px 0px"
                 }}>
-
-                    <div style={{ height: "40px" }} />
 
                     <Parts props={props} />
 

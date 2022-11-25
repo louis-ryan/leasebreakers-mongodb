@@ -1,10 +1,9 @@
 import fetch from 'isomorphic-unfetch';
-
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
-
-import NoteComments from '../../components/Note/NoteComments';
+import Logo from '../../components/Logo'
 import ViewSelector from '../../components/Note/ViewSelectors';
 import Details from '../../components/Note/Details';
 import Photos from '../../components/Note/Photos';
@@ -13,17 +12,61 @@ import Comments from '../../components/Note/Comments';
 
 const Note = () => {
 
-    const { user, error, isLoading } = useUser();
+    const [windowWidth, setWindowWidth] = useState(null)
+
+    const { user } = useUser();
 
     const [view, setView] = useState("Details")
+    const [searchPath, setSearchPath] = useState("")
 
     const [note, setNote] = useState(null)
-    const [comment, setComment] = useState(null)
-    const [conversationModal, setConversationModal] = useState(false)
+    const [comment, setComment] = useState('')
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
 
     const router = useRouter();
+
+
+    /**
+     * Initialise window width
+     */
+    useEffect(() => {
+        setWindowWidth(window.innerWidth)
+    })
+
+
+    /**
+     * Listen for window width
+     */
+    useEffect(() => {
+        window.addEventListener('resize', function (event) {
+            setWindowWidth(event.currentTarget.innerWidth)
+        }, true);
+    })
+
+
+    /**
+     * Set view from router
+     */
+    useEffect(() => {
+        const pathArr = router.asPath.split('#')
+        const viewFromPath = pathArr[1]
+        setView(viewFromPath)
+    })
+
+
+    /**
+    * Set commenterId from router
+    */
+    useEffect(() => {
+        if (!router.asPath) return
+        if (!router.asPath.includes('#Conversation')) return
+
+        var routerArr = router.asPath.split('#')
+        var pathNameArr = routerArr[1].split('=')
+        var searchPath = pathNameArr[1]
+        setSearchPath(searchPath)
+    })
 
 
     /**
@@ -54,43 +97,48 @@ const Note = () => {
 
 
     /**
-     * Get conversation with poster or list with applicants
+     * If at #Conversation=[id], use id to get conversation
      */
     useEffect(() => {
-        async function getInitialComments() {
+        async function getConversation() {
+            if (!note) return
+            if (!searchPath) return
+
+            const res = await fetch(`api/conversations/${router.query.id}/commenter/${searchPath}`);
+            const { data } = await res.json();
+
+            setConversation(data)
+        }
+        getConversation()
+
+    }, [user, note, router])
+
+
+    /**
+     * If at #Inbox
+     */
+    useEffect(() => {
+        async function getListOfConversations() {
 
             if (!note) return
 
             const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
-            const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
-            const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
 
-            const res = await fetch(`api/conversations/${router.query.id}`);
-            const { data } = await res.json();
-            if (!user) return
-            var gatherMyConversations = []
-            data.map((conversation) => {
-
-                if (noteBelongsToCurrentUser) {
-                    if (conversationBelongsToThisNote(conversation)) {
-                        gatherMyConversations.push(conversation)
-                    }
-                } else {
-                    if (conversationBelongsToThisNote(conversation) && commenterInConversationIsUser(conversation)) {
-                        setConversation(conversation)
-                    }
-                }
-
-            })
-            setMyConversations(gatherMyConversations)
+            if (noteBelongsToCurrentUser) {
+                const res = await fetch(`api/conversations/${router.query.id}`);
+                const { data } = await res.json();
+                if (!user) return
+                var gatherMyConversations = []
+                data.map((conversation) => {
+                    gatherMyConversations.push(conversation)
+                })
+                setMyConversations(gatherMyConversations)
+            }
         }
-        getInitialComments()
+        getListOfConversations()
     }, [user, note])
 
 
-    /**
-    * Create new conversation
-    */
     const createConversation = async () => {
         try {
             const res = await fetch(`api/conversations`, {
@@ -118,26 +166,17 @@ const Note = () => {
                     ]
                 })
             })
-            if (res) {
-                async function getComments() {
-                    const res = await fetch(`api/conversations`);
-                    const { data } = await res.json();
-                    data.map((i) => {
-                        if (i.breakerId === note.breakerId && i.commenterId === user.sub && note.breakerId !== user.sub) { setConversation(i) }
-                    })
-                }
-                getComments();
-                setComment(null);
-            }
+
+            const { data } = await res.json();
+            setConversation(data)
+            setComment('');
+
         } catch (error) {
             console.log("THIS SHOULD BE A MODAL SAYING SORRY");
         }
     }
 
 
-    /**
-     * UPDATE EXISTING CONVERSATION ID WITH NEW COMMENT ARRAY
-     */
     const updateConversation = async () => {
         const newComments = [
             ...conversation.comments, {
@@ -162,18 +201,15 @@ const Note = () => {
             if (res) {
                 const resJSON = await res.json()
                 setConversation(resJSON.data)
-                setComment(null);
+                setComment('');
             }
         } catch (error) {
             console.log(error);
         }
     }
 
-    /**
-    * CALLBACK FOR SUBMIT EVENT
-    */
+
     const handleSubmit = () => {
-        setComment(null)
         if (!conversation) {
             createConversation();
         } else {
@@ -181,81 +217,121 @@ const Note = () => {
         }
     }
 
-    /**
-    * CALLBACK FOR CHANGE EVENT
-    * @param {*} e 
-    */
-    const handleChange = (e) => { setComment(e.target.value) }
+
+    const handleChange = (value) => { setComment(value) }
 
 
     if (!note) return
 
-    return (
+    if (windowWidth > 1200) {
+        return (
 
-        <div style={{ width: "100%" }}>
+            <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
+                <div style={{ width: "600px", zoom: "0.8" }}>
 
-            <div style={{ height: "100px" }} />
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+                        <img
+                            src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+                            style={{ width: "100%" }}
+                        />
+                    </div>
 
-            <ViewSelector view={view} setView={setView} />
+                    <div style={{ position: "absolute", top: "16px", left: "24px" }}>
+                        <Link href="/"><Logo /></Link>
+                    </div>
 
-            <div style={{ height: "24px" }} />
+                    <div style={{ height: "272px" }} />
 
-            {view === "Details" && (<Details note={note} />)}
+                    <ViewSelector
+                        view={view}
+                        thisIsMyNote={note.breakerId === user.sub}
+                        commenterId={user.sub}
+                        router={router}
+                    />
 
-            {view === "Photos" && (<Photos pics={note.pics} />)}
+                    <div style={{ height: "24px" }} />
 
-            {view === "Conversation" && (
-                user && note.breakerId === user.sub ? (
+                    {view === "Details" && (
+                        <Details
+                            note={note}
+                        />
+                    )}
+
+                    {view === "Photos" && (
+                        <Photos
+                            pics={note.pics}
+                        />
+                    )}
+
+                    {view === "Inbox" && (
+                        <MyInbox
+                            myConversations={myConversations}
+                            setConversation={setConversation}
+                            router={router}
+                        />
+                    )}
+
+                    {view === `Conversation=${searchPath}` && (
+                        <Comments
+                            conversation={conversation}
+                            setConversation={setConversation}
+                            user={user}
+                            comment={comment}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                        />
+                    )}
+
+                </div>
+            </div >
+
+        )
+    } else {
+        return (
+
+            <div style={{ width: "100%" }}>
+
+                <div style={{ height: "100px" }} />
+
+                <ViewSelector view={view} setView={setView} />
+
+                <div style={{ height: "24px" }} />
+
+                {view === "Details" && (
+                    <Details
+                        note={note}
+                    />
+                )}
+
+                {view === "Photos" && (
+                    <Photos
+                        pics={note.pics}
+                    />
+                )}
+
+                {view === "Inbox" && (
                     <MyInbox
                         myConversations={myConversations}
                         setConversation={setConversation}
-                        setConversationModal={setConversationModal}
+                        router={router}
                     />
-                ) : (
+                )}
+
+                {view === `Conversation=${searchPath}` && (
                     <Comments
                         conversation={conversation}
+                        setConversation={setConversation}
                         user={user}
                         comment={comment}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
                     />
-                )
-            )}
+                )}
+            </div >
 
-
-
-            {conversationModal &&
-                <div>
-                    <div
-                        style={{ position: "fixed", top: "80px", zIndex: "50" }}
-                        onClick={() => { setConversationModal(false); setConversation(null) }}
-                    >
-                        close
-                    </div>
-                    <form>
-                        <div id="scroll-window">
-                            <NoteComments
-                                conversation={conversation}
-                                user={user}
-                            />
-                        </div>
-
-                        <div>
-                            <textarea placeholder='Comment' name='comment' onChange={handleChange} />
-                            <div
-                                onClick={() => handleSubmit()}
-                                style={{ width: "100%", height: "80px" }}
-                            >
-                                Comment
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            }
-        </div >
-
-    )
+        )
+    }
 
 }
 

@@ -29,7 +29,43 @@ const FilterSchema = new mongoose.Schema({
         {
             type: Number
         }
-    ]
+    ],
+    minBed: {
+        type: Number
+    },
+    minBath: {
+        type: Number
+    },
+    petsAllowed: {
+        type: Boolean
+    },
+    parkingSpace: {
+        type: Boolean
+    },
+    terrace: {
+        type: Boolean
+    },
+    garden: {
+        type: Boolean
+    },
+    noSharedWalls: {
+        type: Boolean
+    },
+    noSharedFloor: {
+        type: Boolean
+    },
+    walkToSupermarket: {
+        type: Boolean
+    },
+    walkToTrain: {
+        type: Boolean
+    },
+    moveInEarliest: {
+        type: Date
+    },
+    moveInLatest: {
+        type: Date
+    }
 })
 
 module.exports = mongoose.models.Filter || mongoose.model('Filter', FilterSchema);

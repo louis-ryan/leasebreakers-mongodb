@@ -9,6 +9,7 @@ import '../css/inputs.css';
 import '../css/effect.css';
 import '../css/datepicker.css';
 import '../css/filter.css';
+import '../css/loaders.css';
 
 function MyApp({ Component, pageProps }) {
 

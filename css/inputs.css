@@ -59,12 +59,19 @@ input::-webkit-inner-spin-button {
 
 .slider-thumb {
     background: white;
-    border: 1px solid grey;
-    width: 40px;
-    height: 40px;
+    border: 2px solid pink;
+    width: 24px;
+    height: 24px;
     color: unset;
     transform: translateY(-18px);
     border-radius: 50%;
+    margin-top: 8px;
+    box-shadow: -2px 2px 0px 0px #D0C4CF;
+    cursor: grab;
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
 }
 
 .rent-input {
@@ -80,4 +87,32 @@ input::-webkit-inner-spin-button {
 .rent-field:focus {
     border: none;
     box-shadow: none;
+}
+
+/* Image Input */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.file-upload {
+    background-color: black;
+    cursor: pointer;
+    color: white;
+}
+
+.file-upload:hover {
+    filter: brightness(1.2);
+}
+
+/* Date Input */
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
 }

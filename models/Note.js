@@ -8,8 +8,16 @@ const NoteSchema = new mongoose.Schema({
         type: Date,
         required: false
     },
+    moveInDate: {
+        type: Date,
+        required: false
+    },
     contractEnds: {
         type: Date,
+        required: false
+    },
+    contractTerminates: {
+        type: Boolean,
         required: false
     },
     description: {
@@ -42,6 +50,10 @@ const NoteSchema = new mongoose.Schema({
         required: false
     },
     outdoorArea: {
+        type: Boolean,
+        required: false
+    },
+    garden: {
         type: Boolean,
         required: false
     },
@@ -80,7 +92,15 @@ const NoteSchema = new mongoose.Schema({
     walkToSupermarket: {
         type: Boolean,
         required: false
-    }
+    },
+    sharingWall: {
+        type: Boolean,
+        required: false
+    },
+    sharingFloor: {
+        type: Boolean,
+        required: false
+    },
 })
 
 module.exports = mongoose.models.Note || mongoose.model('Note', NoteSchema);

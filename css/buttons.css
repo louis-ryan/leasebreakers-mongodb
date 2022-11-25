@@ -40,3 +40,13 @@
     background-color: white;
     color: black;
 }
+
+.button-action {
+    background-color: black;
+    color: white;
+}
+
+.button-action:hover {
+    background-color: white;
+    color: black;
+}

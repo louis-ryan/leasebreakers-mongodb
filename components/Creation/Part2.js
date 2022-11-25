@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import InputHeader from "./InputHeader";
 import DatePicker from "react-datepicker";
 
 const Part2 = (props) => {
@@ -12,19 +13,8 @@ const Part2 = (props) => {
 
     const handleCalendar = (e) => {
         setCalendarDate(e)
-        props.handleContractEnds(Math.floor(e / 1000))
+        props.handleContractEnds(e)
     }
-
-
-    // useEffect(() => {
-
-    //     var element = document.getElementsByClassName('react-datepicker-popper')[0]
-
-    //     if (!element.style) return
-    //     console.log(element.style)
-    //     element.removeAttribute('style')
-
-    // })
 
 
     return (
@@ -35,30 +25,39 @@ const Part2 = (props) => {
 
             <div style={{ height: "16px" }} />
 
-            <h2>Contract</h2>
+            <InputHeader header={'Part 3: Contract'} />
 
-
-            <div>End of contract</div>
+            <div>End of current contract</div>
             <DatePicker
                 id="date_picker"
                 selected={calendarDate}
+                value={calendarDate}
                 onChange={(e) => handleCalendar(e)}
-                startOpen
-                shouldCloseOnSelect
-                autofocus
-                open
             />
 
+            <div style={{ height: "24px" }} />
 
-            <div style={{ height: "320px" }} />
+            <div style={{ display: "flex" }}>
+                <div
+                    onClick={() => props.handleContractTerminates(props.form.contractTerminates ? false : true)}
+                    style={{ height: "40px", width: "64px", minWidth: "64px", border: "1px solid grey", borderRadius: "40px", backgroundColor: `${props.form.contractTerminates ? "pink" : "grey"}` }}
+                >
+                    <div style={{ height: "32px", width: "32px", margin: "3px", backgroundColor: "white", border: "1px solid grey", borderRadius: "50%", transform: `translateX(${props.form.contractTerminates ? "24px" : "0px"})`, transition: "300ms", cursor: "pointer" }} />
+                </div>
 
+                <div style={{ width: "16px" }} />
+
+                <div>Contract extension after this date is not possible</div>
+            </div>
+
+            <div style={{ height: "80px" }} />
 
             <div>Rent Calculated Weekly</div>
             <div className="rent-input">
                 <div style={{ fontSize: "32px", margin: "24px 8px 0px 0px" }}>$</div>
                 <input
                     className="rent-field"
-                    value={props.form.rent}
+                    value={props.form.rent === 0 ? '' : props.form.rent}
                     placeholder='0'
                     control='input'
                     name='rent'
@@ -68,11 +67,6 @@ const Part2 = (props) => {
                 />
                 <div style={{ fontSize: "32px", margin: "24px 0px 0px 8px" }}>AUD</div>
             </div>
-
-
-
-
-
 
             <div style={{ height: "40px" }} />
 

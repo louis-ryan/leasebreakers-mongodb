@@ -3,9 +3,11 @@ import ListingCardRight from './ListingCardRight';
 import ListingCardLeft from './ListingCardLeft';
 import Link from 'next/link';
 
-const ListingCard = ({ note }) => {
+const ListingCard = ({ note, rendering }) => {
 
-    const { user, error, isLoading } = useUser()
+    const { user } = useUser()
+
+    const cardStyle = { height: "100%", width: "100%", marginTop: "24px", borderRadius: "8px", border: "1px solid grey", overflow: "hidden", backgroundColor: "white" }
 
 
     /**
@@ -14,7 +16,7 @@ const ListingCard = ({ note }) => {
      */
     const handleCardRoute = () => {
         if (user) {
-            return `/${note._id}`
+            return `/${note._id}#Details`
         } else {
             return "/api/auth/login"
         }
@@ -25,7 +27,12 @@ const ListingCard = ({ note }) => {
         <Link href={handleCardRoute()}>
             <div
                 key={note._id}
-                style={{ height: "100%", width: "100%", backgroundColor: "white", marginTop: "24px", borderRadius: "8px", border: "1px solid grey", overflow: "hidden" }}
+                style={{
+                    ...cardStyle,
+                    opacity: rendering && "0.5",
+                    filter: rendering && "brightness(0) invert(1)",
+                    transition: "opacity 500ms"
+                }}
             >
 
                 {/* Content: Tags, Details */}

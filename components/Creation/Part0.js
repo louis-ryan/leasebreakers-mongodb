@@ -1,6 +1,8 @@
+import { useEffect } from "react"
+import InputHeader from "./InputHeader"
 import PostCode from "./PostCode"
 import mapPath from "./MapPath"
-import { useEffect } from "react"
+
 
 
 const Part1 = (props) => {
@@ -24,7 +26,7 @@ const Part1 = (props) => {
 
     return (
         <>
-            <h2>Location</h2>
+            {/* <InputHeader header={'Part 1: Location'} /> */}
 
             <PostCode
                 handlePost={props.handlePost}

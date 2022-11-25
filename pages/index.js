@@ -1,17 +1,25 @@
 import { useEffect, useState, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
 import ListingComp from '../components/Listing/ListingComp';
 import WelcomeComp from '../components/WelcomeComp';
-
+import Logo from '../components/Logo'
 
 const Index = () => {
 
   const [windowWidth, setWindowWidth] = useState(null)
   const [mobileView, setMobileView] = useState("NOTES")
+  const [rendering, setRendering] = useState(false)
+  const [filterUpdating, setFilterUpdating] = useState("UPDATE")
+
+  const [unlimitedNotes, setUnlimitedNotes] = useState(0)
+  const [skipping, setSkipping] = useState(0)
 
   const { user } = useUser()
+
+  const { router } = useRouter()
 
   const desktopComp = useRef()
 
@@ -23,12 +31,73 @@ const Index = () => {
     minRentVal: null,
     maxRentVal: null,
     selectedRentVal: [null, null],
+    minBed: 0,
+    minBath: 0,
+    petsAllowed: false,
+    parkingSpace: false,
+    terrace: false,
+    garden: false,
+    noSharedWalls: false,
+    noSharedFloor: false,
+    walkToSupermarket: false,
+    walkToTrain: false,
+    moveInEarliest: null,
+    moveInLatest: null,
     userId: null
   })
 
 
+  async function updateFilter() {
+
+    setFilterUpdating("UPDATING")
+
+    const body = {
+      addresses: filter.addresses,
+      selectedAreas: filter.selectedAreas,
+      rent: filter.rent,
+      minRentVal: filter.minRentVal,
+      maxRentVal: filter.maxRentVal,
+      selectedRentVal: filter.selectedRentVal,
+      minBed: filter.minBed,
+      minBath: filter.minBath,
+      petsAllowed: filter.petsAllowed,
+      parkingSpace: filter.parkingSpace,
+      terrace: filter.terrace,
+      garden: filter.garden,
+      noSharedWalls: filter.noSharedWalls,
+      noSharedFloor: filter.noSharedFloor,
+      walkToSupermarket: filter.walkToSupermarket,
+      walkToTrain: filter.walkToTrain,
+      moveInEarliest: filter.moveInEarliest,
+      moveInLatest: filter.moveInLatest,
+      userId: user.sub
+    }
+
+    if (filter._id) {
+      const res = await fetch(`api/filters/filter/${filter._id}`, {
+        method: 'PUT',
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+      const { data } = await res.json();
+      setFilter(data)
+      setFilterUpdating("DONE")
+    } else {
+      const res = await fetch('api/filters', {
+        method: 'POST',
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      })
+      const { data } = await res.json();
+      setFilter(data)
+      setFilterUpdating("DONE")
+    }
+  }
+
+
   async function getFilter() {
-    const res = await fetch(`api/filters/${user.sub}`);
+
+    const res = await fetch(`api/filters/user/${user.sub}`)
     const { data } = await res.json();
 
     if (typeof data !== 'object') return
@@ -37,24 +106,48 @@ const Index = () => {
   }
 
 
-  async function getNotes() {
+  async function getNotes(condition, searchLimit, searchSkip) {
 
     const filterString = (
+      `searchLimit=${searchLimit};` +
+      `searchSkip=${searchSkip};` +
       `address=${filter.addresses.join()};` +
-      `rent=${filter.rent.join()};`
+      `rent=${filter.selectedRentVal};` +
+      `minBed=${filter.minBed};` +
+      `minBath=${filter.minBath};` +
+      `petsAllowed=${filter.petsAllowed};` +
+      `parkingSpace=${filter.parkingSpace};` +
+      `terrace=${filter.terrace};` +
+      `garden=${filter.garden};` +
+      `noSharedWalls=${filter.noSharedWalls};` +
+      `noSharedFloor=${filter.noSharedFloor};` +
+      `walkToSupermarket=${filter.walkToSupermarket};` +
+      `walkToTrain=${filter.walkToTrain};` +
+      `moveIn=${[filter.moveInEarliest, filter.moveInLatest]};`
     )
 
     const res = await fetch(`api/notes/filter/${filterString}`);
     const { data } = await res.json();
-    setNotes(data)
-  }
 
+    switch (condition) {
 
-  async function getUnfilteredNotes() {
+      case "SET_BROWSE":
+        setNotes(data)
+        setTimeout(() => {
+          setFilterUpdating("UPDATE")
+        }, 1000)
+        break;
 
-    const res = await fetch(`api/notes`);
-    const { data } = await res.json();
-    setNotes(data)
+      case "SET_FILTER":
+        setNotes(data)
+        setTimeout(() => {
+          setFilterUpdating("UPDATE")
+        }, 1000)
+        break;
+
+      case "SET_UNLIMITED":
+        setUnlimitedNotes(data.length)
+    }
   }
 
 
@@ -87,41 +180,50 @@ const Index = () => {
 
 
   /**
-   * Set Filtered and Limited Notes
+   * Set Filtered and Limited Notes on page render
    */
   useEffect(() => {
     if (!filter.addresses) return;
-    getNotes()
+    getNotes('SET_FILTER', 5, 0)
 
   }, [filter])
 
 
   /**
-   * Got notes if not signed in
+   * Call notes endpoint once to get unlimited filtered notes
    */
   useEffect(() => {
-    if (user) return
-    getUnfilteredNotes()
-
-  }, [])
+    getNotes('SET_UNLIMITED', null, null)
+  })
 
 
   if (windowWidth > 1200) {
     return (
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-        <div ref={desktopComp} style={{ marginTop: "72px", width: "1200px", zoom: "0.8" }}>
+        <div ref={desktopComp} style={{ marginTop: "152px", width: "1200px", zoom: "0.8" }}>
+
+          <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+            <img
+              src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+              style={{ width: "100%" }}
+            />
+          </div>
+
+          <div style={{ position: "absolute", top: "16px", left: "24px" }}>
+            <Logo />
+          </div>
 
           <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"DESKTOP"} />
 
           <div style={{ display: "flex", justifyContent: "space-between" }}>
 
             <div style={{ width: "29%" }}>
-              <FilterComp filter={filter} setFilter={setFilter} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
+              <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} getNotes={getNotes} notes={notes} deviceSize={"DESKTOP"} />
             </div>
 
             <div style={{ width: "69%" }}>
-              <ListingComp notes={notes} />
+              <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
             </div>
 
           </div>
@@ -166,11 +268,11 @@ const Index = () => {
         </div>
 
         {mobileView === "FILTERS" && (
-          <FilterComp filter={filter} setFilter={setFilter} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
+          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
         )}
 
         {mobileView === "NOTES" && (
-          <ListingComp notes={notes} />
+          <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
         )}
 
 

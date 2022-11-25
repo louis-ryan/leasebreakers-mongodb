@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Compress from 'react-image-file-resizer';
 import PropertyInfo from '../components/Creation/PropertyInfo';
+import Logo from '../components/Logo'
+import InputHeader from '../components/Creation/InputHeader';
 
 
 const NewNote = () => {
@@ -17,14 +19,36 @@ const NewNote = () => {
     const onePixLat = 0.00097731799
     const onePixLong = 0.0012070086
 
-    const { user, error, isLoading } = useUser();
+    const { user } = useUser();
 
     const [part, setPart] = useState(0);
-    const [form, setForm] = useState({ numBath: '', numRoom: '', });
-    const [post, setPost] = useState({ postCode1: '', postCode2: '', postCode3: '', postCode4: '', });
+    const [form, setForm] = useState({
+        numBath: '',
+        numRoom: '',
+        rent: '',
+        date: '',
+        moveInDate: '',
+        contractEnds: '',
+        contractTerminates: false
+    });
+    const [post, setPost] = useState({
+        postCode1: '',
+        postCode2: '',
+        postCode3: '',
+        postCode4: '',
+    });
     const [validAddresses, setValidAddresses] = useState([]);
     const [mapCoords, setMapCoords] = useState({})
-    const [formBools, setFormBools] = useState({ petsAllowed: false, outdoorArea: false, parkingSpace: false, supermarket: false, trainStation: false });
+    const [formBools, setFormBools] = useState({
+        petsAllowed: false,
+        outdoorArea: false,
+        garden: false,
+        parkingSpace: false,
+        supermarket: false,
+        trainStation: false,
+        sharingWall: false,
+        sharingFloor: false
+    });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -32,6 +56,15 @@ const NewNote = () => {
 
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
+
+
+    /**
+     * If no user, send back to index
+     */
+    useEffect(() => {
+        if (user) return
+        router.push("/");
+    })
 
 
     /**
@@ -52,7 +85,6 @@ const NewNote = () => {
     })
 
 
-
     /**
      * Format form
      */
@@ -61,18 +93,26 @@ const NewNote = () => {
 
         setForm({
             ...form,
+
             title: `A new house ${new Date().getTime()}`,
+
             breakerId: user.sub,
             breakerName: user.name,
             breakerEmail: user.email,
             breakerPicture: user.picture,
+
             date: Date.now(),
+
             petsAllowed: formBools.petsAllowed,
-            outdoorArea: formBools.outdoorArea,
             parkingSpace: formBools.parkingSpace,
-            postCode: `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`,
+            outdoorArea: formBools.outdoorArea,
+            garden: formBools.garden,
+            sharingWall: formBools.sharingWall,
+            sharingFloor: formBools.sharingFloor,
             supermarket: formBools.supermarket,
-            trainStation: formBools.trainStation
+            trainStation: formBools.trainStation,
+
+            postCode: `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
         })
     }, [user, post, formBools])
 
@@ -134,6 +174,7 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
+            console.log("res: ", await res.json())
             setIsSubmitting(true)
             router.push("/");
         } catch (error) {
@@ -165,10 +206,22 @@ const NewNote = () => {
     const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
 
     /**
+    * Change Move in Date
+    * @param {*} e 
+    */
+    const handleMoveInDate = (val) => { setForm({ ...form, moveInDate: val }) }
+
+    /**
     * Change End of Contract
      * @param {*} e 
     */
     const handleContractEnds = (val) => { setForm({ ...form, contractEnds: val }) }
+
+    /**
+    * Contract Terminating
+    * @param {*} e 
+    */
+    const handleContractTerminates = (val) => { setForm({ ...form, contractTerminates: val }) }
 
     /**
     * Address
@@ -180,7 +233,7 @@ const NewNote = () => {
      * Clear Post Code
      */
     const handleClearPost = () => {
-        setPost({ postCode1: null, postCode2: null, postCode3: null, postCode4: null });
+        setPost({ postCode1: '', postCode2: '', postCode3: '', postCode4: '' });
         [1, 2, 3, 4].map((id) => document.getElementsByName(`postCode${id}`)[0].value = null);
         setValidAddresses([]);
         setMapCoords({});
@@ -259,44 +312,88 @@ const NewNote = () => {
 
     if (windowWidth > 1200) {
         return (
-            <div style={{ marginBottom: "40px" }}>
+            <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-                <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <div style={{ width: "calc(100% - 32px)", maxWidth: "400px", transform: "scale(0.8)" }}>
-                        <div><h1>Create Post</h1></div>
+                <div style={{ marginTop: "120px", width: "1200px", zoom: "0.8" }}>
 
-                        <Link href="/"><h4>{'< Back to listings'}</h4></Link>
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+                        <img
+                            src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+                            style={{ width: "100%" }}
+                        />
+                    </div>
 
-                        <div style={{ width: part === 0 ? "0%" : part === 1 ? "calc(25% - 32px)" : part === 2 ? "calc(50% - 32px)" : part === 3 ? "calc(75% - 32px)" : "calc(100% - 32px)", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
+                    <div style={{ position: "absolute", top: "16px", left: "24px" }}>
+                       <Link href="/"><Logo /></Link> 
+                    </div>
 
-                        <div style={{ height: "24px" }} />
+                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+
+                        <div style={{ width: "320px", height: "400px" }}>
+
+                            <div style={{ height: "40px" }} />
+                            <div><h1>Create Post</h1></div>
+                            <div style={{ height: "16px" }} />
+
+                            {
+                                [
+                                    'Part 1: Location',
+                                    'Part 2: Property',
+                                    'Part 3: Contract',
+                                    'Part 4: Description',
+                                    'Part 5: Photos'
+                                ]
+                                    .map((title, idx) => (
+                                        <div style={{ height: "80px", display: "flex", justifyContent: "space-between" }}>
+                                            <h2>{title}</h2>
+                                            <div>
+                                                <svg
+                                                    width="60px"
+                                                    height="60px"
+                                                    viewBox="0 0 30 36"
+                                                    style={{ transform: "translateX(13px) translateY(8px)", opacity: part === idx ? "1" : "0" }}
+                                                >
+                                                    <g id="List-Arrow" stroke="none" strokeWidth="1" fill="white" fillRule="evenodd">
+                                                        <path d="M36.6863297,26.9872221 L27.8372965,29.1419772 L10.8131415,33.2873888 L19.8135331,10.1126459 L42.3118317,1.78776922 L36.6863297,26.9872221 Z" id="Rectangle" stroke="#979797" transform="translate(26.500000, 17.500000) rotate(45.000000) translate(-26.500000, -17.500000) "></path>
+                                                        <rect id="Rectangle" fill="#FFFFFF" x="26" y="-6" width="24" height="47"></rect>
+                                                    </g>
+                                                </svg>
+
+                                            </div>
+                                        </div>
+                                    ))
+                            }
+                        </div>
+
+                        <PropertyInfo
+                            handleChange={handleChange}
+                            handlePost={handlePost}
+                            handleMoveInDate={handleMoveInDate}
+                            handleContractEnds={handleContractEnds}
+                            handleAddress={handleAddress}
+                            handleContractTerminates={handleContractTerminates}
+                            errors={errors}
+                            form={form}
+                            setForm={setForm}
+                            formBools={formBools}
+                            setFormBools={setFormBools}
+                            compressFile={compressFile}
+                            handleSubmit={handleSubmit}
+                            part={part}
+                            setPart={setPart}
+                            postCode={form.postCode}
+                            validAddresses={validAddresses}
+                            latInPx={latInPx}
+                            longInPx={longInPx}
+                            handleClearPost={handleClearPost}
+                            handleClearEndDate={handleClearEndDate}
+                            post={post}
+                            handleRent={handleRent}
+                            device={"DESKTOP"}
+                        />
+
                     </div>
                 </div>
-
-                <PropertyInfo
-                    handleChange={handleChange}
-                    handlePost={handlePost}
-                    handleContractEnds={handleContractEnds}
-                    handleAddress={handleAddress}
-                    errors={errors}
-                    form={form}
-                    setForm={setForm}
-                    formBools={formBools}
-                    setFormBools={setFormBools}
-                    compressFile={compressFile}
-                    handleSubmit={handleSubmit}
-                    part={part}
-                    setPart={setPart}
-                    postCode={form.postCode}
-                    validAddresses={validAddresses}
-                    latInPx={latInPx}
-                    longInPx={longInPx}
-                    handleClearPost={handleClearPost}
-                    handleClearEndDate={handleClearEndDate}
-                    post={post}
-                    handleRent={handleRent}
-                    device={"DESKTOP"}
-                />
             </div >
 
         )
@@ -310,7 +407,7 @@ const NewNote = () => {
 
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
 
-                        <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} />
+                        {/* <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} /> */}
 
                         <div style={{ height: "24px" }} />
                     </div>
@@ -319,8 +416,10 @@ const NewNote = () => {
                 <PropertyInfo
                     handleChange={handleChange}
                     handlePost={handlePost}
+                    handleMoveInDate={handleMoveInDate}
                     handleContractEnds={handleContractEnds}
                     handleAddress={handleAddress}
+                    handleContractTerminates={handleContractTerminates}
                     errors={errors}
                     form={form}
                     setForm={setForm}
@@ -340,7 +439,7 @@ const NewNote = () => {
                     handleRent={handleRent}
                     device={"MOBILE"}
                 />
-            </div >
+            </div>
 
         )
     }
