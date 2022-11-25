@@ -9,14 +9,21 @@ const SocketHandler = (req, res) => {
     res.socket.server.io = io
 
     io.on('connection', socket => {
-      socket.on('input-change', msg => {
-        socket.broadcast.emit('update-input', msg)
+
+      socket.on('join-room', room => {
+        socket.join(room)
       })
 
-      socket.on('typing', msg => {
-        socket.broadcast.emit('typing', msg)
+      socket.on('input-change', (msg, room) => {
+        socket.to(room).emit('update-input', msg)
+      })
+
+      socket.on('typing', (msg, room) => {
+        console.log("typing: ", room)
+        socket.to(room).emit('typing', msg)
       })
     })
+
   }
   res.end()
 }

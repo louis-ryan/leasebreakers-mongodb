@@ -203,7 +203,7 @@ const Index = () => {
 
         <div ref={desktopComp} style={{ marginTop: "152px", width: "1200px", zoom: "0.8" }}>
 
-          <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+          <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
             <img
               src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
               style={{ width: "100%" }}

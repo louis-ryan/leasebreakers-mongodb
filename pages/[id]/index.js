@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-unfetch';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
@@ -10,7 +9,7 @@ import Photos from '../../components/Note/Photos';
 import MyInbox from '../../components/Note/MyInbox';
 import Comments from '../../components/Note/Comments';
 
-const Note = () => {
+const Note = (props) => {
 
     const [windowWidth, setWindowWidth] = useState(null)
 
@@ -220,7 +219,6 @@ const Note = () => {
 
     const handleChange = (value) => { setComment(value) }
 
-
     if (!note) return
 
     if (windowWidth > 1200) {
@@ -230,18 +228,26 @@ const Note = () => {
 
                 <div style={{ width: "600px", zoom: "0.8" }}>
 
-                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
                         <img
-                            src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+                            src={note.pics[0].url}
                             style={{ width: "100%" }}
                         />
                     </div>
 
-                    <div style={{ position: "absolute", top: "16px", left: "24px" }}>
-                        <Link href="/"><Logo /></Link>
+                    <div onClick={() => { router.push('/') }} style={{ position: "absolute", top: "16px", left: "24px" }} >
+                        <Logo />
                     </div>
 
-                    <div style={{ height: "272px" }} />
+                    <div style={{ height: "140px" }} />
+
+                    <h1 style={{ color: "white" }}>Property in {note.address}</h1>
+                    <div style={{ display: "flex" }}>
+                        <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>  <img height="40px" width="40px" src={note.breakerPicture} alt="breaker picture" /></div>
+                        <div style={{ width: "16px" }} />
+                        <h2 style={{ color: "white", transform: "translateY(-12px)" }}>Listed by {note.breakerName}</h2>
+                    </div>
+
 
                     <ViewSelector
                         view={view}
@@ -293,6 +299,14 @@ const Note = () => {
             <div style={{ width: "100%" }}>
 
                 <div style={{ height: "100px" }} />
+
+                <div
+                    onClick={() => {
+                        router.push('/')
+                    }}
+                >
+                    {'< BACK TO LISTINGS'}
+                </div>
 
                 <ViewSelector view={view} setView={setView} />
 

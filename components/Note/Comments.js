@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import io from 'Socket.IO-client'
 import NoteComments from "./NoteComments";
 
@@ -8,6 +9,8 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
 
   const [instantMessage, setInstantMessage] = useState({})
   const [typing, setTyping] = useState({})
+
+  const router = useRouter()
 
 
   /**
@@ -45,7 +48,8 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
       socket = io()
 
       socket.on('connect', () => {
-        console.log('connected')
+        console.log('connected: ', router.asPath)
+        socket.emit('join-room', router.asPath)
       })
 
       socket.on('update-input', msg => {
@@ -80,10 +84,10 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
    */
   useEffect(() => {
     if (comment.length > 0) {
-      socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`)
+      socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`, router.asPath)
     } else {
       setTimeout(() => {
-        socket.emit('typing', `false`)
+        socket.emit('typing', `false`, router.asPath)
       }, 2000)
     }
   }, [comment])
@@ -104,7 +108,7 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
           />
         </div>
 
-        <div style={{ position: "absolute", bottom: "0px", width: "100%", maxWidth: "600px", padding: "8px", backgroundColor: "white" }}>
+        <div style={{ position: "absolute", bottom: "16px", width: "100%", maxWidth: "600px" }}>
           <div style={{ height: "24px" }} />
 
           <input
@@ -124,8 +128,8 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
             onClick={() => {
               if (comment.length === 0) return
 
-              socket.emit('input-change', `${comment}#${user.sub}#${user.given_name}`)
-              socket.emit('typing', `false#${user.sub}`)
+              socket.emit('input-change', `${comment}#${user.sub}#${user.given_name}`, router.asPath)
+              socket.emit('typing', `false#${user.sub}`, router.asPath)
               handleSubmit(comment)
 
               document.getElementsByName('comment')[0].value = "";
