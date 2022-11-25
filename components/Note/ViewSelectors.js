@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const ViewSelector = ({ view }) => {
+const ViewSelector = ({ view, thisIsMyNote, commenterId }) => {
 
     const router = useRouter();
 
@@ -41,7 +41,7 @@ const ViewSelector = ({ view }) => {
                 </div>
             </Link>
 
-            <Link href={`${router.query.id}#Conversation`}>
+            <Link href={thisIsMyNote ? `${router.query.id}#Inbox` : `${router.query.id}#Conversation=${commenterId}`}>
                 <div className='effect-regular' style={{ padding: "0px 8px" }}>
                     <svg width="60px" height="60px" viewBox="0 0 40 40" style={{ filter: view === "Conversation" && "brightness(0)" }}>
                         <g id="Comments" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -49,7 +49,8 @@ const ViewSelector = ({ view }) => {
                             <path d="M35.7857143,33.9187798 L30.4695028,29.4 L22,29.4 C21.5857864,29.4 21.2107864,29.2321068 20.9393398,28.9606602 C20.6678932,28.6892136 20.5,28.3142136 20.5,27.9 L20.5,20 C20.5,19.5857864 20.6678932,19.2107864 20.9393398,18.9393398 C21.2107864,18.6678932 21.5857864,18.5 22,18.5 L36,18.5 C36.4142136,18.5 36.7892136,18.6678932 37.0606602,18.9393398 C37.3321068,19.2107864 37.5,19.5857864 37.5,20 L37.5,28.1857143 C37.5,28.52103 37.3640864,28.8246015 37.1443439,29.0443439 C36.8189255,29.3697624 36.3096628,29.5113365 35.7857143,29.2999079 L35.7857143,33.9187798 Z" id="Rectangle-Copy" stroke="#979797" transform="translate(29.000000, 26.500000) scale(-1, 1) translate(-29.000000, -26.500000) "></path>
                         </g>
                     </svg>
-                    {view === "Conversation" && <div style={{ width: "100%", height: "8px", backgroundColor: "pink" }} />}
+                    {view === `Conversation=${commenterId}` && <div style={{ width: "100%", height: "8px", backgroundColor: "pink" }} />}
+                    {view === "Inbox" && <div style={{ width: "100%", height: "8px", backgroundColor: "pink" }} />}
                     <div style={{ height: "4px" }} />
                 </div>
             </Link>

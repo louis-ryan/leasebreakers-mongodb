@@ -21,7 +21,7 @@ const FilterComp = ({ filter, setFilter, updateFilter, filterUpdating, getNotes,
                 <div>Selecting filtering options</div>
             </div>
 
-            <div style={{height: "24px"}} />
+            <div style={{ height: "24px" }} />
 
             <Location reveal={reveal} setReveal={setReveal} deviceSize={deviceSize} filter={filter} setFilter={setFilter} getNotes={getNotes} />
 

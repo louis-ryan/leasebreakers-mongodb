@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
 import ListingComp from '../components/Listing/ListingComp';
 import WelcomeComp from '../components/WelcomeComp';
 import Logo from '../components/Logo'
-
 
 const Index = () => {
 
@@ -18,6 +18,8 @@ const Index = () => {
   const [skipping, setSkipping] = useState(0)
 
   const { user } = useUser()
+
+  const { router } = useRouter()
 
   const desktopComp = useRef()
 
@@ -106,8 +108,6 @@ const Index = () => {
 
   async function getNotes(condition, searchLimit, searchSkip) {
 
-    console.log("skip: ", searchSkip)
-
     const filterString = (
       `searchLimit=${searchLimit};` +
       `searchSkip=${searchSkip};` +
@@ -132,7 +132,6 @@ const Index = () => {
     switch (condition) {
 
       case "SET_BROWSE":
-        // console.log("data: ", data)
         setNotes(data)
         setTimeout(() => {
           setFilterUpdating("UPDATE")
@@ -140,7 +139,6 @@ const Index = () => {
         break;
 
       case "SET_FILTER":
-        // console.log("data: ", data)
         setNotes(data)
         setTimeout(() => {
           setFilterUpdating("UPDATE")
@@ -148,9 +146,7 @@ const Index = () => {
         break;
 
       case "SET_UNLIMITED":
-        console.log("unlimited: ", data.length)
         setUnlimitedNotes(data.length)
-
     }
   }
 

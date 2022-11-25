@@ -65,10 +65,10 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
         const msgObj = {
           typing: (msgArr[0] === 'true' ? true : false),
           user: msgArr[1],
-          userName: msgArr[2]
+          userName: msgArr[2],
+          picture: msgArr[3]
         }
         setTyping(msgObj)
-        console.log("typing obj: ", msgObj)
       })
     }
     socketInitializer()
@@ -80,10 +80,10 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
    */
   useEffect(() => {
     if (comment.length > 0) {
-      socket.emit('typing', `true#${user.sub}#${user.given_name}`)
+      socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`)
     } else {
       setTimeout(() => {
-        socket.emit('typing', `false#${user.sub}#${user.given_name}`)
+        socket.emit('typing', `false`)
       }, 2000)
     }
   }, [comment])

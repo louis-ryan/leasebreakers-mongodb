@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-unfetch';
-
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
-
+import Logo from '../../components/Logo'
 import ViewSelector from '../../components/Note/ViewSelectors';
 import Details from '../../components/Note/Details';
 import Photos from '../../components/Note/Photos';
@@ -17,10 +17,10 @@ const Note = () => {
     const { user } = useUser();
 
     const [view, setView] = useState("Details")
+    const [searchPath, setSearchPath] = useState("")
 
     const [note, setNote] = useState(null)
     const [comment, setComment] = useState('')
-    const [conversationModal, setConversationModal] = useState(false)
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
 
@@ -54,6 +54,21 @@ const Note = () => {
         setView(viewFromPath)
     })
 
+
+    /**
+    * Set commenterId from router
+    */
+    useEffect(() => {
+        if (!router.asPath) return
+        if (!router.asPath.includes('#Conversation')) return
+
+        var routerArr = router.asPath.split('#')
+        var pathNameArr = routerArr[1].split('=')
+        var searchPath = pathNameArr[1]
+        setSearchPath(searchPath)
+    })
+
+
     /**
      * Inititalise conversation at bottom of scroll
      */
@@ -82,37 +97,45 @@ const Note = () => {
 
 
     /**
-     * Get conversation with poster or list with applicants
+     * If at #Conversation=[id], use id to get conversation
      */
     useEffect(() => {
-        async function getInitialComments() {
+        async function getConversation() {
+            if (!note) return
+            if (!searchPath) return
+
+            const res = await fetch(`api/conversations/${router.query.id}/commenter/${searchPath}`);
+            const { data } = await res.json();
+
+            setConversation(data)
+        }
+        getConversation()
+
+    }, [user, note, router])
+
+
+    /**
+     * If at #Inbox
+     */
+    useEffect(() => {
+        async function getListOfConversations() {
 
             if (!note) return
 
             const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
-            const conversationBelongsToThisNote = (conversation) => conversation.noteId === note._id;
-            const commenterInConversationIsUser = (conversation) => conversation.commenterId === user.sub;
 
-            const res = await fetch(`api/conversations/${router.query.id}`);
-            const { data } = await res.json();
-            if (!user) return
-            var gatherMyConversations = []
-            data.map((conversation) => {
-
-                if (noteBelongsToCurrentUser) {
-                    if (conversationBelongsToThisNote(conversation)) {
-                        gatherMyConversations.push(conversation)
-                    }
-                } else {
-                    if (conversationBelongsToThisNote(conversation) && commenterInConversationIsUser(conversation)) {
-                        setConversation(conversation)
-                    }
-                }
-
-            })
-            setMyConversations(gatherMyConversations)
+            if (noteBelongsToCurrentUser) {
+                const res = await fetch(`api/conversations/${router.query.id}`);
+                const { data } = await res.json();
+                if (!user) return
+                var gatherMyConversations = []
+                data.map((conversation) => {
+                    gatherMyConversations.push(conversation)
+                })
+                setMyConversations(gatherMyConversations)
+            }
         }
-        getInitialComments()
+        getListOfConversations()
     }, [user, note])
 
 
@@ -205,46 +228,59 @@ const Note = () => {
 
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-                <div style={{ width: "600px" }}>
+                <div style={{ width: "600px", zoom: "0.8" }}>
 
-                    <div style={{ height: "100px" }} />
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+                        <img
+                            src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
+                            style={{ width: "100%" }}
+                        />
+                    </div>
 
-                    <ViewSelector view={view} setView={setView} />
+                    <div style={{ position: "absolute", top: "16px", left: "24px" }}>
+                        <Link href="/"><Logo /></Link>
+                    </div>
+
+                    <div style={{ height: "272px" }} />
+
+                    <ViewSelector
+                        view={view}
+                        thisIsMyNote={note.breakerId === user.sub}
+                        commenterId={user.sub}
+                        router={router}
+                    />
 
                     <div style={{ height: "24px" }} />
 
-                    {view === "Details" && (<Details note={note} />)}
+                    {view === "Details" && (
+                        <Details
+                            note={note}
+                        />
+                    )}
 
-                    {view === "Photos" && (<Photos pics={note.pics} />)}
+                    {view === "Photos" && (
+                        <Photos
+                            pics={note.pics}
+                        />
+                    )}
 
-                    {view === "Conversation" && (
-                        user && note.breakerId === user.sub ? (
-                            conversationModal ? (
-                                <Comments
-                                    conversation={conversation}
-                                    setConversation={setConversation}
-                                    user={user}
-                                    comment={comment}
-                                    handleChange={handleChange}
-                                    handleSubmit={handleSubmit}
-                                />
-                            ) : (
-                                <MyInbox
-                                    myConversations={myConversations}
-                                    setConversation={setConversation}
-                                    setConversationModal={setConversationModal}
-                                />
-                            )
-                        ) : (
-                            <Comments
-                                conversation={conversation}
-                                setConversation={setConversation}
-                                user={user}
-                                comment={comment}
-                                handleChange={handleChange}
-                                handleSubmit={handleSubmit}
-                            />
-                        )
+                    {view === "Inbox" && (
+                        <MyInbox
+                            myConversations={myConversations}
+                            setConversation={setConversation}
+                            router={router}
+                        />
+                    )}
+
+                    {view === `Conversation=${searchPath}` && (
+                        <Comments
+                            conversation={conversation}
+                            setConversation={setConversation}
+                            user={user}
+                            comment={comment}
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                        />
                     )}
 
                 </div>
@@ -262,38 +298,35 @@ const Note = () => {
 
                 <div style={{ height: "24px" }} />
 
-                {view === "Details" && (<Details note={note} />)}
+                {view === "Details" && (
+                    <Details
+                        note={note}
+                    />
+                )}
 
-                {view === "Photos" && (<Photos pics={note.pics} />)}
+                {view === "Photos" && (
+                    <Photos
+                        pics={note.pics}
+                    />
+                )}
 
-                {view === "Conversation" && (
-                    user && note.breakerId === user.sub ? (
-                        conversationModal ? (
-                            <Comments
-                                conversation={conversation}
-                                setConversation={setConversation}
-                                user={user}
-                                comment={comment}
-                                handleChange={handleChange}
-                                handleSubmit={handleSubmit}
-                            />
-                        ) : (
-                            <MyInbox
-                                myConversations={myConversations}
-                                setConversation={setConversation}
-                                setConversationModal={setConversationModal}
-                            />
-                        )
-                    ) : (
-                        <Comments
-                            conversation={conversation}
-                            setConversation={setConversation}
-                            user={user}
-                            comment={comment}
-                            handleChange={handleChange}
-                            handleSubmit={handleSubmit}
-                        />
-                    )
+                {view === "Inbox" && (
+                    <MyInbox
+                        myConversations={myConversations}
+                        setConversation={setConversation}
+                        router={router}
+                    />
+                )}
+
+                {view === `Conversation=${searchPath}` && (
+                    <Comments
+                        conversation={conversation}
+                        setConversation={setConversation}
+                        user={user}
+                        comment={comment}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                    />
                 )}
             </div >
 
