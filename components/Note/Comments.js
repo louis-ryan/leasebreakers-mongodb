@@ -48,7 +48,6 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
       socket = io()
 
       socket.on('connect', () => {
-        console.log('connected: ', router.asPath)
         socket.emit('join-room', router.asPath)
       })
 

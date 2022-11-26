@@ -172,7 +172,7 @@ const Note = () => {
             setComment('');
 
         } catch (error) {
-            console.log("THIS SHOULD BE A MODAL SAYING SORRY");
+            console.log("err: ", error);
         }
     }
 
@@ -204,7 +204,7 @@ const Note = () => {
                 setComment('');
             }
         } catch (error) {
-            console.log(error);
+            console.log("err: ", error);
         }
     }
 

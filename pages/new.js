@@ -173,11 +173,10 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
-            console.log("res: ", await res.json())
             setIsSubmitting(true)
             router.push("/");
         } catch (error) {
-            console.log("THIS SHOULD BE A MODAL SAYING SORRY");
+            console.log("err: ", error);
         }
     }
 

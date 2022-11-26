@@ -12,7 +12,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
     const [graphicArr, setGraphicArr] = useState([{}])
     const [highestFreq, setHighestFreq] = useState(0)
 
-    const activeCondition = (filter.selectedRentVal[0] !== minVal || filter.selectedRentVal[1] !== maxVal)
+    const activeCondition = (minVal && maxVal && (filter.selectedRentVal[0] !== minVal || filter.selectedRentVal[1] !== maxVal))
     const setValCondition = (filter.selectedRentVal[0] !== selectedVal[0] || filter.selectedRentVal[1] !== selectedVal[1])
 
     const graphicStyle = { height: "72px", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "baseline" }
@@ -44,7 +44,6 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     async function getCompleteNotes() {
-        console.log("getting")
         var rentArr = []
 
         const res = await fetch(`api/notes/`);
@@ -88,7 +87,6 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
      */
     useEffect(() => {
         if (filter.selectedRentVal[0] === null && filter.selectedRentVal[1] === null) {
-            console.log("true")
             setSelectedVal([minVal, maxVal])
             setFilter({
                 ...filter,
@@ -148,7 +146,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                             style={{
                                                 width: `calc(100% / ${graphicArr.length})`,
                                                 height: `calc((100% / ${highestFreq}) * ${obj.numberWithVal})`,
-                                                background: "lightgrey"
+                                                background: "grey"
                                             }}
                                         />
                                     )

@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
-import { useRouter } from 'next/router'
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
 import ListingComp from '../components/Listing/ListingComp';
@@ -18,8 +17,6 @@ const Index = () => {
   const [skipping, setSkipping] = useState(0)
 
   const { user } = useUser()
-
-  const { router } = useRouter()
 
   const desktopComp = useRef()
 
@@ -108,6 +105,10 @@ const Index = () => {
 
   async function getNotes(condition, searchLimit, searchSkip) {
 
+    if (condition !== "SET_UNLIMITED") {
+      setRendering(true)
+    }
+
     const filterString = (
       `searchLimit=${searchLimit};` +
       `searchSkip=${searchSkip};` +
@@ -129,24 +130,14 @@ const Index = () => {
     const res = await fetch(`api/notes/filter/${filterString}`);
     const { data } = await res.json();
 
-    switch (condition) {
-
-      case "SET_BROWSE":
-        setNotes(data)
-        setTimeout(() => {
-          setFilterUpdating("UPDATE")
-        }, 1000)
-        break;
-
-      case "SET_FILTER":
-        setNotes(data)
-        setTimeout(() => {
-          setFilterUpdating("UPDATE")
-        }, 1000)
-        break;
-
-      case "SET_UNLIMITED":
-        setUnlimitedNotes(data.length)
+    if (condition === "SET_UNLIMITED") {
+      setUnlimitedNotes(data.length)
+    } else {
+      setNotes(data)
+      setTimeout(() => {
+        setFilterUpdating("UPDATE")
+        setRendering(false)
+      }, 1000)
     }
   }
 
@@ -175,7 +166,6 @@ const Index = () => {
   useEffect(() => {
     if (!user) return
     getFilter()
-
   }, [user])
 
 
@@ -194,7 +184,7 @@ const Index = () => {
    */
   useEffect(() => {
     getNotes('SET_UNLIMITED', null, null)
-  })
+  }, [filter])
 
 
   if (windowWidth > 1200) {
@@ -234,7 +224,7 @@ const Index = () => {
     return (
       <div style={{ width: "100%" }}>
 
-        <div style={{zoom: "0.8"}}>
+        <div style={{ zoom: "0.8" }}>
           <WelcomeComp user={user} filter={filter} setFilter={setFilter} deviceSize={"MOBILE"} />
         </div>
 
@@ -271,7 +261,7 @@ const Index = () => {
         </div>
 
         {mobileView === "FILTERS" && (
-          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} getNotes={getNotes} notes={notes} deviceSize={"MOBILE"} />
+          <FilterComp filter={filter} setFilter={setFilter} updateFilter={updateFilter} filterUpdating={filterUpdating} notes={notes} deviceSize={"MOBILE"} />
         )}
 
         {mobileView === "NOTES" && (

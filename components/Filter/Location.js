@@ -3,7 +3,7 @@ import mapArr from './MapArr';
 import FilterHeader from "./FilterHeader";
 
 
-const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }) => {
+const Location = ({ reveal, setReveal, deviceSize, filter, setFilter }) => {
 
     const [view, setView] = useState("AREA")
     const [filterRendered, setFilterRendered] = useState(false)
@@ -20,7 +20,6 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
             singleAddressesArr.push(code.place_name)
         })
         setFilter({ ...filter, addresses: singleAddressesArr, selectedAreas: areaSelectedArr })
-        getNotes()
     }
 
 
@@ -82,7 +81,6 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
         var newAddressList = [...filter.addresses]
         newAddressList.splice(idx, 1)
         setFilter({ ...filter, addresses: newAddressList })
-        getNotes()
     }
 
 
@@ -111,6 +109,17 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
         setAreaSelectedArr(filter.selectedAreas)
         filterRegionsFromAreas(filter.selectedAreas, false)
         setFilterRendered(true)
+    }, [filter])
+
+
+    /**
+     * Set graphic back to null if deselected from welcome comp
+     */
+    useEffect(() => {
+        if (filter.addresses.length === 0) {
+            setAreaSelectedArr([])
+            setSelectionArr([])
+        }
     }, [filter])
 
 
@@ -260,7 +269,6 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter, getNotes }
                                     onClick={(e) => {
                                         e.preventDefault()
                                         setFilter({ ...filter, addresses: [] })
-                                        getNotes()
                                     }}
                                     style={{ width: "100%", textAlign: "center", padding: "16px", backgroundColor: "black", color: "white" }}
                                 >
