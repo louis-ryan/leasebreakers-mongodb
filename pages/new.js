@@ -56,6 +56,8 @@ const NewNote = () => {
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
 
+    console.log("form: ", form)
+
 
     /**
      * If no user, send back to index
@@ -175,6 +177,7 @@ const NewNote = () => {
             })
             setIsSubmitting(true)
             router.push("/");
+            console.log("res: ", res)
         } catch (error) {
             console.log("err: ", error);
         }
@@ -236,15 +239,6 @@ const NewNote = () => {
         setValidAddresses([]);
         setMapCoords({});
         setErrors({ ...errors, address: null })
-    }
-
-    /**
-    * Clear End Date
-    */
-    const handleClearEndDate = () => {
-        setEndDate({ endDate1: null, endDate2: null, endDate3: null, endDate4: null, endDate5: null, endDate6: null, endDate7: null, endDate8: null });
-        [1, 2, 3, 4, 5, 6, 7, 8].map((id) => document.getElementsByName(`endDate${id}`)[0].value = null);
-        setErrors({ ...errors, contractEnds: null })
     }
 
 
@@ -312,7 +306,7 @@ const NewNote = () => {
         return (
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
 
-                <div style={{ marginTop: "120px", width: "1200px", zoom: "0.8" }}>
+                <div style={{ marginTop: "120px", zoom: "0.8" }}>
 
                     <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
                         <img
@@ -328,72 +322,38 @@ const NewNote = () => {
                         <Logo />
                     </div>
 
-                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-
-                        <div style={{ width: "320px", height: "400px" }}>
-
-                            <div style={{ height: "40px" }} />
-                            <div><h1>Create Post</h1></div>
-                            <div style={{ height: "16px" }} />
-
-                            {
-                                [
-                                    'Part 1: Location',
-                                    'Part 2: Property',
-                                    'Part 3: Contract',
-                                    'Part 4: Description',
-                                    'Part 5: Photos'
-                                ]
-                                    .map((title, idx) => (
-                                        <div style={{ height: "80px", display: "flex", justifyContent: "space-between" }}>
-                                            <h2>{title}</h2>
-                                            <div>
-                                                <svg
-                                                    width="60px"
-                                                    height="60px"
-                                                    viewBox="0 0 30 36"
-                                                    style={{ transform: "translateX(13px) translateY(8px)", opacity: part === idx ? "1" : "0" }}
-                                                >
-                                                    <g id="List-Arrow" stroke="none" strokeWidth="1" fill="white" fillRule="evenodd">
-                                                        <path d="M36.6863297,26.9872221 L27.8372965,29.1419772 L10.8131415,33.2873888 L19.8135331,10.1126459 L42.3118317,1.78776922 L36.6863297,26.9872221 Z" id="Rectangle" stroke="#979797" transform="translate(26.500000, 17.500000) rotate(45.000000) translate(-26.500000, -17.500000) "></path>
-                                                        <rect id="Rectangle" fill="#FFFFFF" x="26" y="-6" width="24" height="47"></rect>
-                                                    </g>
-                                                </svg>
-
-                                            </div>
-                                        </div>
-                                    ))
-                            }
-                        </div>
-
-                        <PropertyInfo
-                            handleChange={handleChange}
-                            handlePost={handlePost}
-                            handleMoveInDate={handleMoveInDate}
-                            handleContractEnds={handleContractEnds}
-                            handleAddress={handleAddress}
-                            handleContractTerminates={handleContractTerminates}
-                            errors={errors}
-                            form={form}
-                            setForm={setForm}
-                            formBools={formBools}
-                            setFormBools={setFormBools}
-                            compressFile={compressFile}
-                            handleSubmit={handleSubmit}
-                            part={part}
-                            setPart={setPart}
-                            postCode={form.postCode}
-                            validAddresses={validAddresses}
-                            latInPx={latInPx}
-                            longInPx={longInPx}
-                            handleClearPost={handleClearPost}
-                            handleClearEndDate={handleClearEndDate}
-                            post={post}
-                            handleRent={handleRent}
-                            device={"DESKTOP"}
-                        />
-
+                    <div style={{ height: "40px" }} />
+                    <div>
+                        <h1 style={{ color: "white" }}>Create Post</h1>
                     </div>
+                    <div style={{ height: "16px" }} />
+
+                    <PropertyInfo
+                        handleChange={handleChange}
+                        handlePost={handlePost}
+                        handleMoveInDate={handleMoveInDate}
+                        handleContractEnds={handleContractEnds}
+                        handleAddress={handleAddress}
+                        handleContractTerminates={handleContractTerminates}
+                        errors={errors}
+                        form={form}
+                        setForm={setForm}
+                        formBools={formBools}
+                        setFormBools={setFormBools}
+                        compressFile={compressFile}
+                        handleSubmit={handleSubmit}
+                        part={part}
+                        setPart={setPart}
+                        postCode={form.postCode}
+                        validAddresses={validAddresses}
+                        latInPx={latInPx}
+                        longInPx={longInPx}
+                        handleClearPost={handleClearPost}
+                        post={post}
+                        handleRent={handleRent}
+                        device={"DESKTOP"}
+                    />
+
                 </div>
             </div >
 
@@ -435,7 +395,6 @@ const NewNote = () => {
                     latInPx={latInPx}
                     longInPx={longInPx}
                     handleClearPost={handleClearPost}
-                    handleClearEndDate={handleClearEndDate}
                     post={post}
                     handleRent={handleRent}
                     device={"MOBILE"}

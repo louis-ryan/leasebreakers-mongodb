@@ -86,8 +86,10 @@ export default async (req, res) => {
                 break;
 
             case "moveIn":
-                if (value === ['', '']) return
                 const moveInArr = value.split(",")
+
+                if (moveInArr[0] === '' && moveInArr[1] === '') return
+
                 if (moveInArr[1] === '') {
                     filterObject = { ...filterObject, moveInDate: { $gte: moveInArr[0] } }
                 } else if (moveInArr[0] === '') {
@@ -95,10 +97,11 @@ export default async (req, res) => {
                 } else {
                     filterObject = { ...filterObject, moveInDate: { $gte: moveInArr[0], $lte: moveInArr[1] } }
                 }
-
                 break;
         }
     })
+
+    console.log("filter object: ", filterObject)
 
 
     try {

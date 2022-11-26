@@ -1,7 +1,7 @@
 import ListingCard from './ListingCard';
 
 
-const ListingComp = ({ notes, getNotes, rendering, unlimitedNotes, skipping, setSkipping }) => {
+const ListingComp = ({ notes, getNotes, rendering, unlimitedNotes, skipping, setSkipping, deviceSize }) => {
 
 
     return (
@@ -12,8 +12,7 @@ const ListingComp = ({ notes, getNotes, rendering, unlimitedNotes, skipping, set
             <div style={{ width: "100%", display: "flex", justifyContent: "space-between", padding: "8px" }}>
                 <div>Viewing {skipping + 1} to {skipping + 5 > unlimitedNotes ? unlimitedNotes : skipping + 5} of {unlimitedNotes}</div>
 
-                
-
+            
                 <div
                     onClick={() => {
                         if (skipping === 0) return
@@ -40,6 +39,7 @@ const ListingComp = ({ notes, getNotes, rendering, unlimitedNotes, skipping, set
                         key={idx}
                         note={note}
                         rendering={rendering}
+                        deviceSize={deviceSize}
                     />
                 )
             })}

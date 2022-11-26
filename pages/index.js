@@ -133,6 +133,9 @@ const Index = () => {
     if (condition === "SET_UNLIMITED") {
       setUnlimitedNotes(data.length)
     } else {
+      if (condition === "SET_FILTER") {
+        setSkipping(0)
+      }
       setNotes(data)
       setTimeout(() => {
         setFilterUpdating("UPDATE")
@@ -213,7 +216,7 @@ const Index = () => {
             </div>
 
             <div style={{ width: "69%" }}>
-              <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
+              <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} deviceSize={"DESKTOP"} />
             </div>
 
           </div>
@@ -265,7 +268,7 @@ const Index = () => {
         )}
 
         {mobileView === "NOTES" && (
-          <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} />
+          <ListingComp notes={notes} getNotes={getNotes} rendering={rendering} unlimitedNotes={unlimitedNotes} skipping={skipping} setSkipping={setSkipping} deviceSize={"MOBILE"} />
         )}
 
 

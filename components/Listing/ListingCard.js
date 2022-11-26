@@ -3,13 +3,11 @@ import ListingCardRight from './ListingCardRight';
 import ListingCardLeft from './ListingCardLeft';
 import Link from 'next/link';
 
-const ListingCard = ({ note, rendering }) => {
+const ListingCard = ({ note, rendering, deviceSize }) => {
 
     const { user } = useUser()
 
-    const cardStyle = { height: "100%", width: "100%", marginTop: "24px", borderRadius: "8px", border: "1px solid grey", overflow: "hidden", backgroundColor: "white" }
-
-
+    
     /**
      * If not signed in => sign in
      * If signed in => go to details and comments
@@ -27,8 +25,8 @@ const ListingCard = ({ note, rendering }) => {
         <Link href={handleCardRoute()}>
             <div
                 key={note._id}
+                className="card"
                 style={{
-                    ...cardStyle,
                     opacity: rendering && "0.5",
                     filter: rendering && "brightness(0) invert(1)",
                     transition: "opacity 500ms"
@@ -36,7 +34,7 @@ const ListingCard = ({ note, rendering }) => {
             >
 
                 {/* Content: Tags, Details */}
-                <ListingCardLeft note={note} user={user} />
+                <ListingCardLeft note={note} deviceSize={deviceSize} />
 
                 {/* Scrolling Imgs Background */}
                 <ListingCardRight note={note} />
