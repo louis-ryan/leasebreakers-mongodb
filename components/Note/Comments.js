@@ -5,7 +5,7 @@ import NoteComments from "./NoteComments";
 
 let socket
 
-const Comments = ({ conversation, setConversation, user, comment, handleChange, handleSubmit, screenSize }) => {
+const Comments = ({ conversation, setConversation, user, comment, weAreLive, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
 
   const [instantMessage, setInstantMessage] = useState({})
   const [typing, setTyping] = useState({})
@@ -13,12 +13,31 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
   const router = useRouter()
 
 
+  const scrollToBottom = () => {
+    if (comment) return
+    if (!document.getElementsByName('comment')) return
+    if (!document.getElementById('scroll-window')) return
+
+    document.getElementsByName('comment')[0].value = "";
+    document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
+  }
+
+
   /**
-   * On instant message set conversation to show messages
+   * Init to bottom of page
+   */
+  useEffect(() => {
+    scrollToBottom()
+  }, [conversation])
+
+
+  /**
+   * Message from sender through sockets
    */
   useEffect(() => {
     if (!instantMessage.comment) return
     if (!conversation) return
+
     const newComments = [
       ...conversation.comments, {
         comment: instantMessage.comment,
@@ -34,8 +53,10 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
       comments: newComments
     })
 
-    document.getElementsByName('comment')[0].value = "";
-    document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
+    console.log(instantMessage)
+
+    setWeAreLive(true)
+
   }, [instantMessage])
 
 
@@ -60,19 +81,21 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
           userName: msgArr[2]
         }
         setInstantMessage(msgObj)
+        scrollToBottom()
       })
 
-      socket.on('typing', msg => {
-        if (!msg) return
-        const msgArr = msg.split('#')
-        const msgObj = {
-          typing: (msgArr[0] === 'true' ? true : false),
-          user: msgArr[1],
-          userName: msgArr[2],
-          picture: msgArr[3]
-        }
-        setTyping(msgObj)
-      })
+      // socket.on('typing', msg => {
+      //   if (!msg) return
+      //   const msgArr = msg.split('#')
+      //   const msgObj = {
+      //     typing: (msgArr[0] === 'true' ? true : false),
+      //     user: msgArr[1],
+      //     userName: msgArr[2],
+      //     picture: msgArr[3]
+      //   }
+      //   setTyping(msgObj)
+      //   scrollToBottom()
+      // })
     }
     socketInitializer()
   }, [])
@@ -81,15 +104,15 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
   /**
    * If comment string is not empty, show b client that a is typing
    */
-  useEffect(() => {
-    if (comment.length > 0) {
-      socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`, router.asPath)
-    } else {
-      setTimeout(() => {
-        socket.emit('typing', `false`, router.asPath)
-      }, 2000)
-    }
-  }, [comment])
+  // useEffect(() => {
+  //   if (comment.length > 0) {
+  //     socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`, router.asPath)
+  //   } else {
+  //     setTimeout(() => {
+  //       socket.emit('typing', `false`, router.asPath)
+  //     }, 2000)
+  //   }
+  // }, [comment])
 
 
   return (
@@ -144,11 +167,11 @@ const Comments = ({ conversation, setConversation, user, comment, handleChange, 
             className="button primary"
             onClick={() => {
               if (comment.length === 0) return
+
               socket.emit('input-change', `${comment}#${user.sub}#${user.given_name}`, router.asPath)
-              socket.emit('typing', `false#${user.sub}`, router.asPath)
+
               handleSubmit(comment)
-              document.getElementsByName('comment')[0].value = "";
-              document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
+              scrollToBottom()
             }}
             style={{
               width: screenSize === 'DESKTOP' && "200px",
