@@ -1,20 +1,7 @@
-:root {
-    --dark-blue: #1E304E;
-    --sky-blue: #99A9C6;
-    --grey-blue: #8596b2;
-    --charcoal-blue: #3B4657;
-    --light-yellow: #FBEED4;
-    --dark-yellow: #5D4A26;
-    --blue-white-gradient: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%, rgba(7, 74, 167, 1) 100%);
-}
-
 * {
     -webkit-box-sizing: border-box;
-    /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;
-    /* Firefox, other Gecko */
     box-sizing: border-box;
-    /* Opera/IE 8+ */
 }
 
 body {

@@ -56,16 +56,14 @@ const NewNote = () => {
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
 
-    console.log("form: ", form)
-
 
     /**
      * If no user, send back to index
      */
-    useEffect(() => {
-        if (user) return
-        router.push("/");
-    })
+    // useEffect(() => {
+    //     if (user) return
+    //     router.push("/");
+    // })
 
 
     /**

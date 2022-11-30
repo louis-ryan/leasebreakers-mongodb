@@ -1,4 +1,5 @@
-import { mailOptions, transporter } from "../../utils/nodeMailer";
+import { transporter } from "../../utils/nodeMailer";
+
 
 const generateEmailContent = (data) => {
   return {
@@ -67,8 +68,9 @@ const handler = async (req, res) => {
 
     try {
       await transporter.sendMail({
-        ...mailOptions,
         ...generateEmailContent(data),
+        from: "louis.sw.ryan@gmail.com",
+        to: data.email,
         subject: data.subject,
       });
 

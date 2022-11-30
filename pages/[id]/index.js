@@ -29,6 +29,17 @@ const Note = () => {
 
 
     /**
+    * If no user, redirect to Auth0
+    */
+    useEffect(() => {
+        if (note === null) return
+        if (user) return
+        router.push('/api/auth/login')
+        localStorage.setItem("redirect_to", window.location.href)
+    }, [note])
+
+
+    /**
     * Send email informing that new message sent
     */
     async function sendEmail(email) {
@@ -309,6 +320,8 @@ const Note = () => {
 
     if (!note) return
 
+    if (!user) return
+
     if (windowWidth > 1200) {
         return (
 
@@ -331,7 +344,7 @@ const Note = () => {
 
 
 
-                    {note.breakerId === user.sub ? (
+                    {note.breakerId === user && user.sub ? (
                         <>
                             <h1 style={{ color: "white" }}>Your property in {note.address}</h1>
                             <div style={{ padding: "16px", backgroundColor: "black", color: "white", width: "240px", textAlign: "center" }}>DELETE PROPERTY</div>
@@ -350,7 +363,7 @@ const Note = () => {
 
                     <ViewSelector
                         view={view}
-                        thisIsMyNote={note.breakerId === user.sub}
+                        thisIsMyNote={note.breakerId === user && user.sub}
                         commenterId={user.sub}
                         weAreLive={weAreLive}
                         screenSize={'DESKTOP'}
@@ -411,7 +424,7 @@ const Note = () => {
 
                 <ViewSelector
                     view={view}
-                    thisIsMyNote={note.breakerId === user.sub}
+                    thisIsMyNote={note.breakerId === user && user.sub}
                     commenterId={user.sub}
                     weAreLive={weAreLive}
                     screenSize={'MOBILE'}

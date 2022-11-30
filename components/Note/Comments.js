@@ -70,6 +70,7 @@ const Comments = ({ conversation, setConversation, user, comment, weAreLive, set
 
       socket.on('connect', () => {
         socket.emit('join-room', router.asPath)
+        console.log("joined")
       })
 
       socket.on('update-input', msg => {

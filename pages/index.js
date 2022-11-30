@@ -146,6 +146,18 @@ const Index = () => {
 
 
   /**
+   * Handle redirections after auth0 login
+   */
+  useEffect(() => {
+    if (!localStorage.getItem("redirect_to")) return
+    const route = localStorage.getItem("redirect_to")
+    console.log("REDIRECT: ", route)
+    window.location.replace(route)
+    localStorage.removeItem("redirect_to")
+  })
+
+
+  /**
    * Initialise window width
    */
   useEffect(() => {
