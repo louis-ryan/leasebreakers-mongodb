@@ -58,15 +58,6 @@ const NewNote = () => {
 
 
     /**
-     * If no user, send back to index
-     */
-    // useEffect(() => {
-    //     if (user) return
-    //     router.push("/");
-    // })
-
-
-    /**
     * Init window width
     */
     useEffect(() => {
