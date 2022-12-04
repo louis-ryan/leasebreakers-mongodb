@@ -2,6 +2,11 @@ import InputHeader from "./InputHeader";
 
 const Part3 = (props) => {
 
+    const handleNextButton = {
+        opacity: props.form.description ? "1" : "0.5",
+        pointerEvents: props.form.description ? "inherit" : "none",
+    }
+
     return (
         <>
             <div style={{ height: "16px" }} />

@@ -41,10 +41,10 @@ const Part1 = (props) => {
             <div
                 className="button secondary"
                 onClick={() => props.handleClearPost()}
+                style={{ display: !props.post.postCode1 && !props.post.postCode2 && !props.post.postCode3 && !props.post.postCode1 && "none" }}
             >
                 CLEAR
             </div>
-
 
             <div style={{ height: "24px" }} />
 

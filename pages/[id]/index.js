@@ -46,10 +46,10 @@ const Note = () => {
     */
     async function sendEmail(email) {
 
-        // const currTimeinSeconds = Math.floor(Date.now() / 1000) 
-        // const newEmailThreshold = timeOfLastEmail + 1800
+        const currTimeinSeconds = Math.floor(Date.now() / 1000) 
+        const newEmailThreshold = timeOfLastEmail + 1800
 
-        // if (currTimeinSeconds < newEmailThreshold) return
+        if (currTimeinSeconds < newEmailThreshold) return
 
         try {
             await fetch("/api/contact", {

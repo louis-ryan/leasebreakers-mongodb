@@ -164,9 +164,16 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
-            setIsSubmitting(true)
-            router.push("/");
+            // setIsSubmitting(true)
+            // router.push("/");
             console.log("res: ", res)
+            if (res.status === 201) {
+                const res = await fetch('api/filters/contact', {
+                    method: 'POST',
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify(form)
+                })
+            }
         } catch (error) {
             console.log("err: ", error);
         }

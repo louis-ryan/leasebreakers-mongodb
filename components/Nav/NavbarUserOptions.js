@@ -11,8 +11,6 @@ const NavbarUserOptions = ({ setUserOptions }) => {
 
     const router = useRouter()
 
-    console.log("router: ", router)
-
 
     if (user) {
         return (
