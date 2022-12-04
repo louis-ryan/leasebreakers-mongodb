@@ -9,11 +9,7 @@ const ListingCard = ({ note, rendering, deviceSize }) => {
 
     const router = useRouter()
 
-
-    /**
-     * If not signed in => sign in
-     * If signed in => go to details and comments
-     */
+    
     const handleCardRoute = () => {
         if (user) {
             router.push(`/${note._id}#Details`)

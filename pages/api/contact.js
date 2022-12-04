@@ -1,7 +1,44 @@
 import { transporter } from "../../utils/nodeMailer";
 
 
+const returnContent = (data) => {
+
+  switch (data.type) {
+
+    case 'NEW_MESSAGE':
+      return (
+        `
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">  <tr> 
+            <td style=" padding: 0 0 0 0; font-size: 16px; line-height: 25px; color: #232323; " class="padding message-content" > 
+              <img src="https://images.squarespace-cdn.com/content/v1/56dce00a45bf214a0b3fadf3/305f7d18-be6a-43c9-b01b-8f4e6f8d4508/LBM+Logo+Auth.png?format=500w" alt="LBM logo"/>
+              <h2> ${data.header} </h2>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" > <tr> 
+                <td style=" width: 20%;  ">
+                  <img src=${data.picture} alt="picture of email sender" /> 
+                </td>
+                <td style=" width: 80%; background-color: #e5e1e5; padding: 16px "> 
+                  <div> ${data.message} </div>
+                </td> 
+              </tr> </table>
+              <h2>
+                Click below to reply
+              </h2>
+              <a href=${data.link} >
+                <div style=" background-color: black; text-align: center; padding: 16px; color: white; cursor: pointer; text-decoration: none; "> 
+                  To your account 
+                </div>
+              </a>
+            </td>
+          </tr> </table> 
+      `
+      )
+  }
+
+}
+
+
 const generateEmailContent = (data) => {
+
   return {
     html: `
       <!DOCTYPE html>
@@ -21,29 +58,7 @@ const generateEmailContent = (data) => {
                           <table width="100%" border="0" cellspacing="0" cellpadding="0"> 
                             <tr> 
                               <td> 
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0" > 
-                                  <tr> 
-                                    <td style=" padding: 0 0 0 0; font-size: 16px; line-height: 25px; color: #232323; " class="padding message-content" > 
-                                      <img
-                                        src="https://images.squarespace-cdn.com/content/v1/56dce00a45bf214a0b3fadf3/305f7d18-be6a-43c9-b01b-8f4e6f8d4508/LBM+Logo+Auth.png?format=500w"
-                                        alt="LBM logo"
-                                      />
-                                      <h2>
-                                        ${data.header}
-                                      </h2>
-                                      <img
-                                        src=${data.picture}
-                                        alt="picture of email sender"
-                                      />
-                                      <div>
-                                        ${data.message}
-                                      </div>
-                                      <div>
-                                        ${data.link}
-                                    </div>
-                                    </td>
-                                  </tr>
-                                </table> 
+                                ${returnContent(data)}
                               </td>
                             </tr>
                           </table> 
@@ -60,16 +75,17 @@ const generateEmailContent = (data) => {
 };
 
 const handler = async (req, res) => {
+
   if (req.method === "POST") {
+
     const data = req.body;
-    if (!data || !data.name || !data.email || !data.subject || !data.message) {
-      return res.status(400).send({ message: "Bad request" });
-    }
+
+    if (!data) { return res.status(400).send({ message: "Bad request" }) }
 
     try {
       await transporter.sendMail({
         ...generateEmailContent(data),
-        from: "louis.sw.ryan@gmail.com",
+        from: "info.leasebreakersmelbourne@gmail.com",
         to: data.email,
         subject: data.subject,
       });

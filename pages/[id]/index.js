@@ -24,6 +24,7 @@ const Note = () => {
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
     const [weAreLive, setWeAreLive] = useState(false)
+    const [timeOfLastEmail, setTimeOfLastEmail] = useState(null)
 
     const router = useRouter();
 
@@ -41,12 +42,20 @@ const Note = () => {
 
     /**
     * Send email informing that new message sent
+    * Include an interval of 30 mins where emails are blocked after each
     */
     async function sendEmail(email) {
+
+        // const currTimeinSeconds = Math.floor(Date.now() / 1000) 
+        // const newEmailThreshold = timeOfLastEmail + 1800
+
+        // if (currTimeinSeconds < newEmailThreshold) return
+
         try {
             await fetch("/api/contact", {
                 method: "POST",
                 body: JSON.stringify({
+                    type: email.type,
                     name: email.name,
                     email: email.email,
                     subject: email.subject,
@@ -59,10 +68,11 @@ const Note = () => {
             }).then((res) => {
                 if (!res.ok) throw new Error("Failed to send message");
                 return res.json();
-            });
+            })
         } catch (error) {
             console.log("err: ", error)
         }
+        setTimeOfLastEmail(Math.floor(Date.now() / 1000))
     };
 
 
@@ -222,23 +232,24 @@ const Note = () => {
             setComment('');
 
             if (!weAreLive) {
-                const isMyProperty = (conversation.breakerId === user.sub)
 
+                /**
+                 * New Conversation must always be initialised by the commenter not the breaker
+                 */
                 const email = {
-                    name: isMyProperty ? conversation.commenterName : conversation.breakerName,
-                    email: isMyProperty ? conversation.commenterEmail : conversation.breakerEmail,
+                    type: 'NEW_MESSAGE',
+                    name: note.breakerName,
+                    email: note.breakerEmail,
                     subject: `Message from ${user.name}`,
                     picture: user.picture,
                     header: `
-                        You recieved a message from 
+                        You recieved a new message of interest from 
                             ${user.name} 
-                        about 
-                            ${isMyProperty ? "a" : "your"}
-                        property in 
+                        about your property in 
                             ${note.address}
                     `,
                     message: `${comment}`,
-                    link: `http://localhost:3000/${note._id}#Conversation=${conversation.commenterId}`,
+                    link: `http://localhost:3000/${note._id}#Conversation=${user.sub}`,
                 }
                 sendEmail(email)
             }
@@ -280,6 +291,7 @@ const Note = () => {
                 const isMyProperty = (conversation.breakerId === user.sub)
 
                 const email = {
+                    type: 'NEW_MESSAGE',
                     name: isMyProperty ? conversation.commenterName : conversation.breakerName,
                     email: isMyProperty ? conversation.commenterEmail : conversation.breakerEmail,
                     subject: `Message from ${user.name}`,
