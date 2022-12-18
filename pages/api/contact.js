@@ -90,7 +90,7 @@ const handler = async (req, res) => {
         subject: data.subject,
       });
 
-      return res.status(200).json({ success: true });
+      return res.status(200).json({ success: true, data: data });
     } catch (err) {
       console.log(err);
       return res.status(400).json({ message: err.message });

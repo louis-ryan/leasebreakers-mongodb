@@ -126,17 +126,19 @@ export default async (req, res) => {
 
                     // Min Bed
                     if (filter.minBed > 0) {
-                        if (req.body.numRoom > filter.minBed) { higherThanMinBed = true }
+                        if (req.body.numRoom >= filter.minBed) { higherThanMinBed = true }
                     } else { higherThanMinBed = true }
 
 
                     // Min Bath
                     if (filter.minBath > 0) {
-                        if (req.body.numBath > filter.minBath) { higherThanMinBath = true }
+                        if (req.body.numBath >= filter.minBath) { higherThanMinBath = true }
                     } else { higherThanMinBath = true }
 
                     console.log(
                         filter.userId,
+                        filter.userName,
+                        filter.userEmail,
                         "address: ", addressWithinArr,
                         "rent: ", higherThanMinRent, "-", lowerThanMaxRent,
                         "move-in: ", canMoveInAfterEarliest, "-", canMoveInBeforeLatest,
@@ -151,6 +153,10 @@ export default async (req, res) => {
                         "min bed: ", higherThanMinBed,
                         "min bath: ", higherThanMinBath
                     )
+
+                    if (!filter.userName) return
+
+                    if (filter.email === req.body.breakerEmail) return
 
                     if (
                         addressWithinArr === true &&
@@ -169,21 +175,23 @@ export default async (req, res) => {
                         higherThanMinBed === true &&
                         higherThanMinBath === true
                     ) {
-                        console.log(filter)
+                        console.log("getting through: ", filter.userEmail)
                         async function sendEmail() {
+
+                            // console.log("SENDING EMAIL TO: ", filter.userEmail)
 
                             try {
                                 await fetch("http://localhost:3000/api/contact", {
                                     method: "POST",
                                     body: JSON.stringify({
                                         type: "NEW_MESSAGE",
-                                        name: "Recipiant",
-                                        email: "louis.sw.ryan@gmail.com",
-                                        subject: "Property matches filter",
-                                        picture: "www.thishorsedoesnotexist.com",
-                                        header: "This property matches a filter",
-                                        message: "Waaaaaaaa",
-                                        link: "www.thishorsedoesnotexist.com",
+                                        name: filter.userName,
+                                        email: filter.userEmail,
+                                        subject: 'A new property matches your filter!',
+                                        picture: req.body.pics[0].url,
+                                        header: `Hi, ${filter.userName} This property matches a filter`,
+                                        message: req.body.description,
+                                        link: `http://localhost:3000/${req.body._id}#Details`,
                                     }),
                                     headers: { "Content-Type": "application/json", Accept: "application/json" },
                                 }).then((res) => {

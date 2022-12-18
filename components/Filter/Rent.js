@@ -7,6 +7,8 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
     const [minVal, setMinVal] = useState(null)
     const [maxVal, setMaxVal] = useState(null)
+    const [rentArr, setRentArr] = useState([])
+
     const [selectedVal, setSelectedVal] = useState([minVal, maxVal])
 
     const [graphicArr, setGraphicArr] = useState([{}])
@@ -19,8 +21,13 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     const handleSetGraphicArr = (sortedRentArr) => {
+        console.log("sorted rent: ", sortedRentArr)
+        
         var newGraphicArr = [{}]
+        console.log("new graph arr: ", newGraphicArr)
+
         var newHighestFreq = 0
+
         for (var i = minVal; i <= maxVal; i++) {
             var availableArr = []
             sortedRentArr.map((rent) => {
@@ -57,9 +64,13 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
         setMinVal(sortedRentArr[0])
         setMaxVal(sortedRentArr[sortedRentArr.length - 1])
-
-        handleSetGraphicArr(sortedRentArr)
+        setRentArr(sortedRentArr)
     }
+
+
+    useEffect(() => {
+        handleSetGraphicArr(rentArr)
+    }, [rentArr])
 
 
     /**

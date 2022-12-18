@@ -166,13 +166,16 @@ const NewNote = () => {
             })
             // setIsSubmitting(true)
             // router.push("/");
-            console.log("res: ", res)
+            const resJSON = await res.json()
+
+            console.log("new note res: ", resJSON)
             if (res.status === 201) {
                 const res = await fetch('api/filters/contact', {
                     method: 'POST',
                     headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                    body: JSON.stringify(form)
+                    body: JSON.stringify({...form, _id: resJSON.data._id})
                 })
+                console.log("email res: ", res)
             }
         } catch (error) {
             console.log("err: ", error);
