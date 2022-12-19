@@ -101,8 +101,6 @@ export default async (req, res) => {
         }
     })
 
-    console.log("filter object: ", filterObject)
-
 
     try {
         const notes = await Note.find(filterObject)

@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import FilterComp from '../components/Filter/FilterComp';
 import ListingComp from '../components/Listing/ListingComp';
@@ -17,6 +18,8 @@ const Index = () => {
   const [skipping, setSkipping] = useState(0)
 
   const { user } = useUser()
+
+  const router = useRouter()
 
   const desktopComp = useRef()
 
@@ -40,11 +43,18 @@ const Index = () => {
     walkToTrain: false,
     moveInEarliest: null,
     moveInLatest: null,
-    userId: null
+    userId: null,
+    userName: null,
+    userEmail: null
   })
 
 
   async function updateFilter() {
+
+    if (!user) {
+      router.push("/api/auth/login")
+      return
+    }
 
     setFilterUpdating("UPDATING")
 
@@ -67,7 +77,9 @@ const Index = () => {
       walkToTrain: filter.walkToTrain,
       moveInEarliest: filter.moveInEarliest,
       moveInLatest: filter.moveInLatest,
-      userId: user.sub
+      userId: user.sub,
+      userName: user.given_name,
+      userEmail: user.email
     }
 
     if (filter._id) {
@@ -146,6 +158,17 @@ const Index = () => {
 
 
   /**
+   * Handle redirections after auth0 login
+   */
+  useEffect(() => {
+    if (!localStorage.getItem("redirect_to")) return
+    const route = localStorage.getItem("redirect_to")
+    window.location.replace(route)
+    localStorage.removeItem("redirect_to")
+  })
+
+
+  /**
    * Initialise window width
    */
   useEffect(() => {
@@ -187,7 +210,7 @@ const Index = () => {
    */
   useEffect(() => {
     getNotes('SET_UNLIMITED', null, null)
-  }, [filter])
+  })
 
 
   if (windowWidth > 1200) {

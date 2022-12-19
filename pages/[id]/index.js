@@ -23,8 +23,57 @@ const Note = () => {
     const [comment, setComment] = useState('')
     const [myConversations, setMyConversations] = useState([])
     const [conversation, setConversation] = useState(null)
+    const [weAreLive, setWeAreLive] = useState(false)
+    const [timeOfLastEmail, setTimeOfLastEmail] = useState(null)
 
     const router = useRouter();
+
+
+    /**
+    * If no user, redirect to Auth0
+    */
+    useEffect(() => {
+        if (note === null) return
+        if (user) return
+        router.push('/api/auth/login')
+        localStorage.setItem("redirect_to", window.location.href)
+    }, [note])
+
+
+    /**
+    * Send email informing that new message sent
+    * Include an interval of 30 mins where emails are blocked after each
+    */
+    async function sendEmail(email) {
+
+        const currTimeinSeconds = Math.floor(Date.now() / 1000) 
+        const newEmailThreshold = timeOfLastEmail + 1800
+
+        if (currTimeinSeconds < newEmailThreshold) return
+
+        try {
+            await fetch("/api/contact", {
+                method: "POST",
+                body: JSON.stringify({
+                    type: email.type,
+                    name: email.name,
+                    email: email.email,
+                    subject: email.subject,
+                    picture: email.picture,
+                    header: email.header,
+                    message: email.message,
+                    link: email.link,
+                }),
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+            }).then((res) => {
+                if (!res.ok) throw new Error("Failed to send message");
+                return res.json();
+            })
+        } catch (error) {
+            console.log("err: ", error)
+        }
+        setTimeOfLastEmail(Math.floor(Date.now() / 1000))
+    };
 
 
     /**
@@ -70,6 +119,16 @@ const Note = () => {
 
 
     /**
+     * Set live to false when not in comments
+     */
+    useEffect(() => {
+        if (router.asPath.includes('#Conversation')) return
+
+        setWeAreLive(false)
+    })
+
+
+    /**
      * Inititalise conversation at bottom of scroll
      */
     useEffect(() => {
@@ -109,9 +168,10 @@ const Note = () => {
 
             setConversation(data)
         }
+
         getConversation()
 
-    }, [user, note, router])
+    }, [user, note, router, view])
 
 
     /**
@@ -171,6 +231,29 @@ const Note = () => {
             setConversation(data)
             setComment('');
 
+            if (!weAreLive) {
+
+                /**
+                 * New Conversation must always be initialised by the commenter not the breaker
+                 */
+                const email = {
+                    type: 'NEW_MESSAGE',
+                    name: note.breakerName,
+                    email: note.breakerEmail,
+                    subject: `Message from ${user.name}`,
+                    picture: user.picture,
+                    header: `
+                        You recieved a new message of interest from 
+                            ${user.name} 
+                        about your property in 
+                            ${note.address}
+                    `,
+                    message: `${comment}`,
+                    link: `http://localhost:3000/${note._id}#Conversation=${user.sub}`,
+                }
+                sendEmail(email)
+            }
+
         } catch (error) {
             console.log("err: ", error);
         }
@@ -198,11 +281,35 @@ const Note = () => {
                     comments: newComments
                 })
             })
-            if (res) {
-                const resJSON = await res.json()
-                setConversation(resJSON.data)
-                setComment('');
+
+            const resJSON = await res.json()
+            setConversation(resJSON.data)
+            setComment('');
+
+            if (!weAreLive) {
+
+                const isMyProperty = (conversation.breakerId === user.sub)
+
+                const email = {
+                    type: 'NEW_MESSAGE',
+                    name: isMyProperty ? conversation.commenterName : conversation.breakerName,
+                    email: isMyProperty ? conversation.commenterEmail : conversation.breakerEmail,
+                    subject: `Message from ${user.name}`,
+                    picture: user.picture,
+                    header: `
+                        You recieved a message from 
+                            ${user.name} 
+                        about 
+                            ${isMyProperty ? "a" : "your"}
+                        property in 
+                            ${note.address}
+                    `,
+                    message: `${comment}`,
+                    link: `http://localhost:3000/${note._id}#Conversation=${conversation.commenterId}`,
+                }
+                sendEmail(email)
             }
+
         } catch (error) {
             console.log("err: ", error);
         }
@@ -218,9 +325,14 @@ const Note = () => {
     }
 
 
-    const handleChange = (value) => { setComment(value) }
+    const handleChange = (value) => {
+        setComment(value)
+    }
+
 
     if (!note) return
+
+    if (!user) return
 
     if (windowWidth > 1200) {
         return (
@@ -229,7 +341,7 @@ const Note = () => {
 
                 <div style={{ width: "920px", zoom: "0.8" }}>
 
-                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.25)", opacity: "0.8" }}>
                         <img
                             src={note.pics[0].url}
                             style={{ width: "100%" }}
@@ -242,18 +354,30 @@ const Note = () => {
 
                     <div style={{ height: "140px" }} />
 
-                    <h1 style={{ color: "white" }}>Property in {note.address}</h1>
-                    <div style={{ display: "flex" }}>
-                        <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>  <img height="40px" width="40px" src={note.breakerPicture} alt="breaker picture" /></div>
-                        <div style={{ width: "16px" }} />
-                        <h2 style={{ color: "white", transform: "translateY(-12px)" }}>Listed by {note.breakerName}</h2>
-                    </div>
 
+
+                    {note.breakerId === user && user.sub ? (
+                        <>
+                            <h1 style={{ color: "white" }}>Your property in {note.address}</h1>
+                            <div style={{ padding: "16px", backgroundColor: "black", color: "white", width: "240px", textAlign: "center" }}>DELETE PROPERTY</div>
+                            <div style={{ height: "16px" }} />
+                        </>
+                    ) : (
+                        <>
+                            <h1 style={{ color: "white" }}>Property in {note.address}</h1>
+                            <div style={{ display: "flex" }}>
+                                <div style={{ width: "40px", height: "40px", borderRadius: "50%", overflow: "hidden" }}>  <img height="40px" width="40px" src={note.breakerPicture} alt="breaker picture" /></div>
+                                <div style={{ width: "16px" }} />
+                                <h2 style={{ color: "white", transform: "translateY(-12px)" }}>Listed by {note.breakerName}</h2>
+                            </div>
+                        </>
+                    )}
 
                     <ViewSelector
                         view={view}
-                        thisIsMyNote={note.breakerId === user.sub}
+                        thisIsMyNote={note.breakerId === user && user.sub}
                         commenterId={user.sub}
+                        weAreLive={weAreLive}
                         screenSize={'DESKTOP'}
                     />
 
@@ -285,6 +409,8 @@ const Note = () => {
                             setConversation={setConversation}
                             user={user}
                             comment={comment}
+                            weAreLive={weAreLive}
+                            setWeAreLive={setWeAreLive}
                             handleChange={handleChange}
                             handleSubmit={handleSubmit}
                             screenSize={'DESKTOP'}
@@ -310,8 +436,9 @@ const Note = () => {
 
                 <ViewSelector
                     view={view}
-                    thisIsMyNote={note.breakerId === user.sub}
+                    thisIsMyNote={note.breakerId === user && user.sub}
                     commenterId={user.sub}
+                    weAreLive={weAreLive}
                     screenSize={'MOBILE'}
                 />
 
@@ -343,6 +470,8 @@ const Note = () => {
                         setConversation={setConversation}
                         user={user}
                         comment={comment}
+                        weAreLive={weAreLive}
+                        setWeAreLive={setWeAreLive}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
                         screenSize={'MOBILE'}

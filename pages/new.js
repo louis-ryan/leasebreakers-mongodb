@@ -56,17 +56,6 @@ const NewNote = () => {
     var latInPx = (latInit - mapCoords.lat) / onePixLat
     var longInPx = (mapCoords.long - longInit) / onePixLong
 
-    console.log("form: ", form)
-
-
-    /**
-     * If no user, send back to index
-     */
-    useEffect(() => {
-        if (user) return
-        router.push("/");
-    })
-
 
     /**
     * Init window width
@@ -175,9 +164,19 @@ const NewNote = () => {
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify(form)
             })
-            setIsSubmitting(true)
-            router.push("/");
-            console.log("res: ", res)
+            // setIsSubmitting(true)
+            // router.push("/");
+            const resJSON = await res.json()
+
+            console.log("new note res: ", resJSON)
+            if (res.status === 201) {
+                const res = await fetch('api/filters/contact', {
+                    method: 'POST',
+                    headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify({...form, _id: resJSON.data._id})
+                })
+                console.log("email res: ", res)
+            }
         } catch (error) {
             console.log("err: ", error);
         }
