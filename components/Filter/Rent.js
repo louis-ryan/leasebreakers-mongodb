@@ -21,10 +21,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     const handleSetGraphicArr = (sortedRentArr) => {
-        console.log("sorted rent: ", sortedRentArr)
-        
         var newGraphicArr = [{}]
-        console.log("new graph arr: ", newGraphicArr)
 
         var newHighestFreq = 0
 

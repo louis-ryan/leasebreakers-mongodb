@@ -92,7 +92,7 @@ const handler = async (req, res) => {
 
       return res.status(200).json({ success: true, data: data });
     } catch (err) {
-      console.log(err);
+      console.log("send email err, ", err);
       return res.status(400).json({ message: err.message });
     }
   }

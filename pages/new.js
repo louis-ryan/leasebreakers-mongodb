@@ -6,11 +6,10 @@ import { useRouter } from 'next/router';
 import Compress from 'react-image-file-resizer';
 import PropertyInfo from '../components/Creation/PropertyInfo';
 import Logo from '../components/Logo'
+import useWindowWidth from '../custom_hooks/useWindowWidth';
 
 
 const NewNote = () => {
-
-    const [windowWidth, setWindowWidth] = useState(null)
 
     const latInit = -37.1989648128
     const longInit = 144.340643773
@@ -19,6 +18,7 @@ const NewNote = () => {
     const onePixLong = 0.0012070086
 
     const { user } = useUser();
+    const windowWidth = useWindowWidth();
 
     const [part, setPart] = useState(0);
     const [form, setForm] = useState({
@@ -48,7 +48,6 @@ const NewNote = () => {
         sharingWall: false,
         sharingFloor: false
     });
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
 
     const router = useRouter();
@@ -58,28 +57,32 @@ const NewNote = () => {
 
 
     /**
-    * Init window width
-    */
-    useEffect(() => {
-        setWindowWidth(typeof window !== "undefined" && window.innerWidth)
-    }, [])
-
-
-    /**
-     * Listen for window width
+     * Send to login if no user for 2 seconds
      */
     useEffect(() => {
-        window.addEventListener('resize', function (event) {
-            setWindowWidth(event.currentTarget.innerWidth)
-        }, true);
-    })
+        var stillNoUser = false
+
+        if (user === undefined) {
+            setTimeout(() => {
+                if (user === undefined) {
+                    stillNoUser = true
+                }
+            }, 2000)
+        }
+
+        if (stillNoUser) {
+            localStorage.setItem("redirect_to", `/new`)
+            router.push("/api/auth/login")
+        }
+    }, [])
 
 
     /**
      * Format form
      */
     useEffect(() => {
-        if (!user) return
+
+        if (user === undefined) return
 
         setForm({
             ...form,
@@ -168,17 +171,15 @@ const NewNote = () => {
             // router.push("/");
             const resJSON = await res.json()
 
-            console.log("new note res: ", resJSON)
             if (res.status === 201) {
                 const res = await fetch('api/filters/contact', {
                     method: 'POST',
                     headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                    body: JSON.stringify({...form, _id: resJSON.data._id})
+                    body: JSON.stringify({ ...form, _id: resJSON.data._id })
                 })
-                console.log("email res: ", res)
             }
         } catch (error) {
-            console.log("err: ", error);
+            console.log("create note err: ", error);
         }
     }
 

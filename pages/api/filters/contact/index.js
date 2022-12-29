@@ -175,10 +175,7 @@ export default async (req, res) => {
                         higherThanMinBed === true &&
                         higherThanMinBath === true
                     ) {
-                        console.log("getting through: ", filter.userEmail)
                         async function sendEmail() {
-
-                            // console.log("SENDING EMAIL TO: ", filter.userEmail)
 
                             try {
                                 await fetch("http://localhost:3000/api/contact", {
@@ -199,7 +196,7 @@ export default async (req, res) => {
                                     return res.json();
                                 })
                             } catch (error) {
-                                console.log("err: ", error)
+                                console.log("send email err: ", error)
                             }
                         };
                         sendEmail()

@@ -70,7 +70,7 @@ const Note = () => {
                 return res.json();
             })
         } catch (error) {
-            console.log("err: ", error)
+            console.log("send email err: ", error)
         }
         setTimeOfLastEmail(Math.floor(Date.now() / 1000))
     };
@@ -255,7 +255,7 @@ const Note = () => {
             }
 
         } catch (error) {
-            console.log("err: ", error);
+            console.log("create conversation err: ", error);
         }
     }
 
@@ -311,7 +311,7 @@ const Note = () => {
             }
 
         } catch (error) {
-            console.log("err: ", error);
+            console.log("update conversation err: ", error);
         }
     }
 

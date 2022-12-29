@@ -12,7 +12,7 @@ const NavbarUserOptions = ({ setUserOptions }) => {
     const router = useRouter()
 
 
-    if (user) {
+    if (user !== undefined) {
         return (
             <div className='navbar-container'>
 
