@@ -1,6 +1,5 @@
 import { transporter } from "../../utils/nodeMailer";
 
-
 const returnContent = (data) => {
 
   switch (data.type) {

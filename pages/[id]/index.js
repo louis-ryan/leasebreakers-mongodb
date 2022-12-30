@@ -9,16 +9,14 @@ import Photos from '../../components/Note/Photos';
 import PhotosDesk from '../../components/Note/PhotosDesk';
 import MyInbox from '../../components/Note/MyInbox';
 import Comments from '../../components/Note/Comments';
+import useWindowWidth from '../../custom_hooks/useWindowWidth';
 
 const Note = () => {
 
-    const [windowWidth, setWindowWidth] = useState(null)
-
+    const windowWidth = useWindowWidth()
     const { user } = useUser();
-
     const [view, setView] = useState("Details")
     const [searchPath, setSearchPath] = useState("")
-
     const [note, setNote] = useState(null)
     const [comment, setComment] = useState('')
     const [myConversations, setMyConversations] = useState([])
@@ -74,24 +72,6 @@ const Note = () => {
         }
         setTimeOfLastEmail(Math.floor(Date.now() / 1000))
     };
-
-
-    /**
-     * Initialise window width
-     */
-    useEffect(() => {
-        setWindowWidth(window.innerWidth)
-    })
-
-
-    /**
-     * Listen for window width
-     */
-    useEffect(() => {
-        window.addEventListener('resize', function (event) {
-            setWindowWidth(event.currentTarget.innerWidth)
-        }, true);
-    })
 
 
     /**
@@ -356,7 +336,7 @@ const Note = () => {
 
 
 
-                    {note.breakerId === user && user.sub ? (
+                    {note.breakerId === user.sub ? (
                         <>
                             <h1 style={{ color: "white" }}>Your property in {note.address}</h1>
                             <div style={{ padding: "16px", backgroundColor: "black", color: "white", width: "240px", textAlign: "center" }}>DELETE PROPERTY</div>
@@ -375,7 +355,7 @@ const Note = () => {
 
                     <ViewSelector
                         view={view}
-                        thisIsMyNote={note.breakerId === user && user.sub}
+                        thisIsMyNote={note.breakerId === user.sub}
                         commenterId={user.sub}
                         weAreLive={weAreLive}
                         screenSize={'DESKTOP'}
@@ -436,7 +416,7 @@ const Note = () => {
 
                 <ViewSelector
                     view={view}
-                    thisIsMyNote={note.breakerId === user && user.sub}
+                    thisIsMyNote={note.breakerId === user.sub}
                     commenterId={user.sub}
                     weAreLive={weAreLive}
                     screenSize={'MOBILE'}

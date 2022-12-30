@@ -5,11 +5,9 @@ import NoteComments from "./NoteComments";
 
 let socket
 
-const Comments = ({ conversation, setConversation, user, comment, weAreLive, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
+const Comments = ({ conversation, setConversation, user, comment, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
 
   const [instantMessage, setInstantMessage] = useState({})
-  const [typing, setTyping] = useState({})
-
   const router = useRouter()
 
 
@@ -81,36 +79,9 @@ const Comments = ({ conversation, setConversation, user, comment, weAreLive, set
         setInstantMessage(msgObj)
         scrollToBottom()
       })
-
-      // socket.on('typing', msg => {
-      //   if (!msg) return
-      //   const msgArr = msg.split('#')
-      //   const msgObj = {
-      //     typing: (msgArr[0] === 'true' ? true : false),
-      //     user: msgArr[1],
-      //     userName: msgArr[2],
-      //     picture: msgArr[3]
-      //   }
-      //   setTyping(msgObj)
-      //   scrollToBottom()
-      // })
     }
     socketInitializer()
   }, [])
-
-
-  /**
-   * If comment string is not empty, show b client that a is typing
-   */
-  // useEffect(() => {
-  //   if (comment.length > 0) {
-  //     socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`, router.asPath)
-  //   } else {
-  //     setTimeout(() => {
-  //       socket.emit('typing', `false`, router.asPath)
-  //     }, 2000)
-  //   }
-  // }, [comment])
 
 
   return (
@@ -127,8 +98,7 @@ const Comments = ({ conversation, setConversation, user, comment, weAreLive, set
           <NoteComments
             conversation={conversation}
             user={user}
-            typing={typing}
-
+            screenSize={screenSize}
           />
         </div>
 

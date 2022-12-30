@@ -24,10 +24,10 @@ const Part2 = (props) => {
 
             <div style={{ height: "24px" }} />
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", backgroundColor: "#e5e1e5", padding: "16px", borderRadius: "8px" }}>
                 <div
                     onClick={() => props.handleContractTerminates(props.form.contractTerminates ? false : true)}
-                    style={{ height: "24px", minWidth: "40px", border: "1px solid grey", borderRadius: "40px", backgroundColor: `${!props.form.contractTerminates ? "pink" : "grey"}` }}
+                    style={{ height: "24px", minWidth: "40px", border: "1px solid grey", borderRadius: "40px", backgroundColor: `${!props.form.contractTerminates ? "pink" : "grey"}`, transform: "translateY(8px)" }}
                 >
                     <div style={{ height: "20px", width: "20px", margin: "1px", backgroundColor: "white", border: "1px solid grey", borderRadius: "50%", transform: `translateX(${!props.form.contractTerminates ? "15px" : "0px"})`, transition: "300ms", cursor: "pointer" }} />
                 </div>
@@ -37,7 +37,7 @@ const Part2 = (props) => {
                 <div>{'Contract extension after this date is possible.'}</div>
             </div>
 
-            <div>{'(Further negotiations will be up to the new tennant).'}</div>
+            <div style={{fontSize: "12px"}}>{'Further negotiations will be up to the new tennant.'}</div>
 
             <div style={{ height: "24px" }} />
 

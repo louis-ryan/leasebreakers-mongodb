@@ -15,10 +15,6 @@ const SocketHandler = (req, res) => {
       socket.on('input-change', (msg, room) => {
         socket.to(room).emit('update-input', msg)
       })
-
-      // socket.on('typing', (msg, room) => {
-      //   socket.to(room).emit('typing', msg)
-      // })
     })
 
   }

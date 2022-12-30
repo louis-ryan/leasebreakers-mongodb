@@ -54,6 +54,18 @@ const Index = () => {
   })
 
 
+  /**
+   * Check for expired posts and delete them
+   */
+  useEffect(() => {
+    async function deleteExpired() {
+      const res = await fetch(`api/notes/deletion`);
+      const {data} = await res.json()
+    }
+    deleteExpired()
+  }, [])
+
+
   if (windowWidth > 1200) {
     return (
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>

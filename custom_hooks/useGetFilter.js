@@ -24,5 +24,4 @@ function useGetFilter(user) {
 }
 
 
-
 export default useGetFilter
