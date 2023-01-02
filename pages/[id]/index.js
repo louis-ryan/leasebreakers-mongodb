@@ -1,5 +1,4 @@
-import fetch from 'isomorphic-unfetch';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
 import Logo from '../../components/Logo'
@@ -10,331 +9,50 @@ import PhotosDesk from '../../components/Note/PhotosDesk';
 import MyInbox from '../../components/Note/MyInbox';
 import Comments from '../../components/Note/Comments';
 import useWindowWidth from '../../custom_hooks/useWindowWidth';
+import useGetNote from '../../custom_hooks/useGetNote';
+import useFormatConversation from '../../custom_hooks/useFormatConversation';
+import useGetConversation from '../../custom_hooks/useGetConversation';
+import useGetListOfConversations from '../../custom_hooks/useGetListOfConversations';
+import useCreateConversation from '../../custom_hooks/useCreateConversation';
+import useUpdateConversation from '../../custom_hooks/useUpdateConversation';
+import useCommentEventHandlers from '../../custom_hooks/useCommentEventHandlers';
+import useSetView from '../../custom_hooks/useSetView';
+import useRedirect from '../../custom_hooks/useRedirect';
 
 const Note = () => {
 
     const windowWidth = useWindowWidth()
-    const { user } = useUser();
-    const [view, setView] = useState("Details")
-    const [searchPath, setSearchPath] = useState("")
-    const [note, setNote] = useState(null)
+    const { user } = useUser()
     const [comment, setComment] = useState('')
-    const [myConversations, setMyConversations] = useState([])
-    const [conversation, setConversation] = useState(null)
     const [weAreLive, setWeAreLive] = useState(false)
-    const [timeOfLastEmail, setTimeOfLastEmail] = useState(null)
+    const router = useRouter()
+    const { view } = useSetView(router)
+    const { note } = useGetNote(router)
+    const { searchPath } = useFormatConversation(router, view, setWeAreLive)
+    const { conversation, setConversation } = useGetConversation(user, note, router, view, searchPath)
+    const { myConversations } = useGetListOfConversations(user, note, router)
+    const { createConversation } = useCreateConversation(note, comment, user, setConversation, setComment, weAreLive)
+    const { updateConversation } = useUpdateConversation(conversation, router, note, comment, user, setConversation, setComment, weAreLive)
+    const [handleSubmit, handleChange] = useCommentEventHandlers(conversation, createConversation, updateConversation)
 
-    const router = useRouter();
-
-
-    /**
-    * If no user, redirect to Auth0
-    */
-    useEffect(() => {
-        if (note === null) return
-        if (user) return
-        router.push('/api/auth/login')
-        localStorage.setItem("redirect_to", window.location.href)
-    }, [note])
-
-
-    /**
-    * Send email informing that new message sent
-    * Include an interval of 30 mins where emails are blocked after each
-    */
-    async function sendEmail(email) {
-
-        const currTimeinSeconds = Math.floor(Date.now() / 1000) 
-        const newEmailThreshold = timeOfLastEmail + 1800
-
-        if (currTimeinSeconds < newEmailThreshold) return
-
-        try {
-            await fetch("/api/contact", {
-                method: "POST",
-                body: JSON.stringify({
-                    type: email.type,
-                    name: email.name,
-                    email: email.email,
-                    subject: email.subject,
-                    picture: email.picture,
-                    header: email.header,
-                    message: email.message,
-                    link: email.link,
-                }),
-                headers: { "Content-Type": "application/json", Accept: "application/json" },
-            }).then((res) => {
-                if (!res.ok) throw new Error("Failed to send message");
-                return res.json();
-            })
-        } catch (error) {
-            console.log("send email err: ", error)
-        }
-        setTimeOfLastEmail(Math.floor(Date.now() / 1000))
-    };
-
-
-    /**
-     * Set view from router
-     */
-    useEffect(() => {
-        const pathArr = router.asPath.split('#')
-        const viewFromPath = pathArr[1]
-        setView(viewFromPath)
-    })
-
-
-    /**
-    * Set commenterId from router
-    */
-    useEffect(() => {
-        if (!router.asPath) return
-        if (!router.asPath.includes('#Conversation')) return
-
-        var routerArr = router.asPath.split('#')
-        var pathNameArr = routerArr[1].split('=')
-        var searchPath = pathNameArr[1]
-        setSearchPath(searchPath)
-    })
-
-
-    /**
-     * Set live to false when not in comments
-     */
-    useEffect(() => {
-        if (router.asPath.includes('#Conversation')) return
-
-        setWeAreLive(false)
-    })
-
-
-    /**
-     * Inititalise conversation at bottom of scroll
-     */
-    useEffect(() => {
-        if (view === "Conversation" && document.getElementById('scroll-page')) {
-            document.getElementById('scroll-window').scrollTo(0, document.getElementById('scroll-page').offsetHeight);
-        }
-    }, [view])
-
-
-    /**
-    * Get note
-    */
-    useEffect(() => {
-        async function getInitialNote() {
-
-            if (!router.query.id) return
-
-            const res = await fetch(`api/notes/${router.query.id}`);
-            const { data } = await res.json();
-
-            setNote(data)
-        }
-        getInitialNote()
-    }, [router.query.id])
-
-
-    /**
-     * If at #Conversation=[id], use id to get conversation
-     */
-    useEffect(() => {
-        async function getConversation() {
-            if (!note) return
-            if (!searchPath) return
-
-            const res = await fetch(`api/conversations/${router.query.id}/commenter/${searchPath}`);
-            const { data } = await res.json();
-
-            setConversation(data)
-        }
-
-        getConversation()
-
-    }, [user, note, router, view])
-
-
-    /**
-     * If at #Inbox
-     */
-    useEffect(() => {
-        async function getListOfConversations() {
-
-            if (!note) return
-
-            const noteBelongsToCurrentUser = user && note.breakerId === user.sub;
-
-            if (noteBelongsToCurrentUser) {
-                const res = await fetch(`api/conversations/${router.query.id}`);
-                const { data } = await res.json();
-                if (!user) return
-                var gatherMyConversations = []
-                data.map((conversation) => {
-                    gatherMyConversations.push(conversation)
-                })
-                setMyConversations(gatherMyConversations)
-            }
-        }
-        getListOfConversations()
-    }, [user, note])
-
-
-    const createConversation = async () => {
-        try {
-            const res = await fetch(`api/conversations`, {
-                method: 'POST',
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    breakerId: note.breakerId,
-                    breakerName: note.breakerName,
-                    breakerEmail: note.breakerEmail,
-                    breakerPicture: note.breakerPicture,
-                    commenterId: user.sub,
-                    commenterName: user.name,
-                    commenterEmail: user.email,
-                    commenterPicture: user.picture,
-                    noteId: note._id,
-                    conversationId: note.breakerId + "+" + user.sub,
-                    comments: [
-                        {
-                            comment: comment,
-                            timeOfComment: Date.now(),
-                            posterId: user.sub,
-                            posterName: user.nickname,
-                            commentIsNew: true,
-                        }
-                    ]
-                })
-            })
-
-            const { data } = await res.json();
-            setConversation(data)
-            setComment('');
-
-            if (!weAreLive) {
-
-                /**
-                 * New Conversation must always be initialised by the commenter not the breaker
-                 */
-                const email = {
-                    type: 'NEW_MESSAGE',
-                    name: note.breakerName,
-                    email: note.breakerEmail,
-                    subject: `Message from ${user.name}`,
-                    picture: user.picture,
-                    header: `
-                        You recieved a new message of interest from 
-                            ${user.name} 
-                        about your property in 
-                            ${note.address}
-                    `,
-                    message: `${comment}`,
-                    link: `http://localhost:3000/${note._id}#Conversation=${user.sub}`,
-                }
-                sendEmail(email)
-            }
-
-        } catch (error) {
-            console.log("create conversation err: ", error);
-        }
-    }
-
-
-    const updateConversation = async () => {
-        const newComments = [
-            ...conversation.comments, {
-                comment: comment,
-                timeOfComment: Date.now(),
-                posterId: user.sub,
-                posterName: user.nickname,
-                commentIsNew: true,
-            }
-        ]
-        try {
-            const res = await fetch(`api/conversations/${router.query.id}/${conversation._id}`, {
-                method: 'PUT',
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    comments: newComments
-                })
-            })
-
-            const resJSON = await res.json()
-            setConversation(resJSON.data)
-            setComment('');
-
-            if (!weAreLive) {
-
-                const isMyProperty = (conversation.breakerId === user.sub)
-
-                const email = {
-                    type: 'NEW_MESSAGE',
-                    name: isMyProperty ? conversation.commenterName : conversation.breakerName,
-                    email: isMyProperty ? conversation.commenterEmail : conversation.breakerEmail,
-                    subject: `Message from ${user.name}`,
-                    picture: user.picture,
-                    header: `
-                        You recieved a message from 
-                            ${user.name} 
-                        about 
-                            ${isMyProperty ? "a" : "your"}
-                        property in 
-                            ${note.address}
-                    `,
-                    message: `${comment}`,
-                    link: `http://localhost:3000/${note._id}#Conversation=${conversation.commenterId}`,
-                }
-                sendEmail(email)
-            }
-
-        } catch (error) {
-            console.log("update conversation err: ", error);
-        }
-    }
-
-
-    const handleSubmit = () => {
-        if (!conversation) {
-            createConversation();
-        } else {
-            updateConversation();
-        }
-    }
-
-
-    const handleChange = (value) => {
-        setComment(value)
-    }
-
+    useRedirect(note, user, router)
 
     if (!note) return
-
     if (!user) return
-
     if (windowWidth > 1200) {
         return (
-
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-
                 <div style={{ width: "920px", zoom: "0.8" }}>
-
                     <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.25)", opacity: "0.8" }}>
                         <img
                             src={note.pics[0].url}
                             style={{ width: "100%" }}
                         />
                     </div>
-
                     <div onClick={() => { router.push('/') }} style={{ position: "absolute", top: "16px", left: "24px" }} >
                         <Logo />
                     </div>
-
                     <div style={{ height: "140px" }} />
-
-
 
                     {note.breakerId === user.sub ? (
                         <>

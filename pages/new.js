@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
-
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import PropertyInfo from '../components/Creation/PropertyInfo';
 import Logo from '../components/Logo'
 import useWindowWidth from '../custom_hooks/useWindowWidth';

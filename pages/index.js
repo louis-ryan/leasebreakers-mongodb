@@ -10,8 +10,8 @@ import Logo from '../components/Logo'
 import useWindowWidth from '../custom_hooks/useWindowWidth';
 import useGetFilteredNotes from '../custom_hooks/useGetFilteredNotes';
 import useGetFilter from '../custom_hooks/useGetFilter';
-import useFormatFilterBody from '../custom_hooks/useFormatFilterBody';
 import ListingEditToggle from '../components/Listing/ListingEditToggle';
+import useUpdateFilter from '../custom_hooks/useUpdateFilter';
 
 const Index = () => {
 
@@ -23,24 +23,7 @@ const Index = () => {
   const { filter, setFilter } = useGetFilter(user)
   const unlimitedNotes = useGetUnlimitedNotes(filter)
   const { notes, rendering, filterUpdating, setFilterUpdating, skipping, setSkipping } = useGetFilteredNotes(filter)
-
-
-  async function updateFilter() {
-    if (!user) { router.push("/api/auth/login"); return }
-    setFilterUpdating("UPDATING")
-    const body = useFormatFilterBody(filter, user)
-    var req = {}
-    if (filter._id) { req = { url: `api/filters/filter/${filter._id}`, method: 'PUT' } }
-    else { req = { url: 'api/filters', method: 'POST' } }
-    const res = await fetch(req.url, {
-      method: req.method,
-      headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    })
-    const { data } = await res.json();
-    setFilter(data)
-    setFilterUpdating("DONE")
-  }
+  const { updateFilter } = useUpdateFilter(user, router, setFilterUpdating, filter, setFilter)
 
 
   /**
@@ -58,10 +41,7 @@ const Index = () => {
    * Check for expired posts and delete them
    */
   useEffect(() => {
-    async function deleteExpired() {
-      const res = await fetch(`api/notes/deletion`);
-      const {data} = await res.json()
-    }
+    async function deleteExpired() { await fetch(`api/notes/deletion`) }
     deleteExpired()
   }, [])
 
