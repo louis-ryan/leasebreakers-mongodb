@@ -178,7 +178,7 @@ export default async (req, res) => {
                         async function sendEmail() {
 
                             try {
-                                await fetch("http://localhost:3000/api/contact", {
+                                await fetch('/api/contact', {
                                     method: "POST",
                                     body: JSON.stringify({
                                         type: "NEW_MESSAGE",
@@ -188,7 +188,7 @@ export default async (req, res) => {
                                         picture: req.body.pics[0].url,
                                         header: `Hi, ${filter.userName} This property matches a filter`,
                                         message: req.body.description,
-                                        link: `http://localhost:3000/${req.body._id}#Details`,
+                                        link: `/${req.body._id}#Details`,
                                     }),
                                     headers: { "Content-Type": "application/json", Accept: "application/json" },
                                 }).then((res) => {

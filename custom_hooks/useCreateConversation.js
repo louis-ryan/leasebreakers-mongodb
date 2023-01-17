@@ -54,7 +54,7 @@ function useCreateConversation(note, comment, user, setConversation, setComment,
                             ${note.address}
                     `,
                     message: `${comment}`,
-                    link: `http://localhost:3000/${note._id}#Conversation=${user.sub}`,
+                    link: `/${note._id}#Conversation=${user.sub}`,
                 }
                 sendEmail(email)
             }

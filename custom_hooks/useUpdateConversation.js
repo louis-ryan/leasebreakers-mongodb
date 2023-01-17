@@ -49,7 +49,7 @@ function useUpdateConversation(conversation, router, note, comment, user, setCon
                             ${note.address}
                     `,
                     message: `${comment}`,
-                    link: `http://localhost:3000/${note._id}#Conversation=${conversation.commenterId}`,
+                    link: `/${note._id}#Conversation=${conversation.commenterId}`,
                 }
                 sendEmail(email)
             }
