@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import io from 'Socket.IO-client'
+// import io from 'Socket.IO-client'
 import NoteComments from "./NoteComments";
 
-let socket
+// let socket
 
-const Comments = ({ conversation, setConversation, user, comment, weAreLive, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
+const Comments = ({ conversation, setConversation, user, comment, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
 
-  const [instantMessage, setInstantMessage] = useState({})
-  const [typing, setTyping] = useState({})
-
+  // const [instantMessage, setInstantMessage] = useState({})
   const router = useRouter()
 
 
@@ -34,86 +32,56 @@ const Comments = ({ conversation, setConversation, user, comment, weAreLive, set
   /**
    * Message from sender through sockets
    */
-  useEffect(() => {
-    if (!instantMessage.comment) return
-    if (!conversation) return
+  // useEffect(() => {
+  //   if (!instantMessage.comment) return
+  //   if (!conversation) return
 
-    const newComments = [
-      ...conversation.comments, {
-        comment: instantMessage.comment,
-        timeOfComment: Date.now(),
-        posterId: instantMessage.user,
-        posterName: instantMessage.userName,
-        commentIsNew: false,
-      }
-    ]
+  //   const newComments = [
+  //     ...conversation.comments, {
+  //       comment: instantMessage.comment,
+  //       timeOfComment: Date.now(),
+  //       posterId: instantMessage.user,
+  //       posterName: instantMessage.userName,
+  //       commentIsNew: false,
+  //     }
+  //   ]
 
-    setConversation({
-      ...conversation,
-      comments: newComments
-    })
+  //   setConversation({
+  //     ...conversation,
+  //     comments: newComments
+  //   })
 
-    console.log(instantMessage)
+  //   setWeAreLive(true)
 
-    setWeAreLive(true)
-
-  }, [instantMessage])
+  // }, [instantMessage])
 
 
   /**
    * Get websocket info
    */
-  useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch('/api/socket')
-      socket = io()
-
-      socket.on('connect', () => {
-        socket.emit('join-room', router.asPath)
-        console.log("joined")
-      })
-
-      socket.on('update-input', msg => {
-        if (!msg) return
-        const msgArr = msg.split('#')
-        const msgObj = {
-          comment: msgArr[0],
-          user: msgArr[1],
-          userName: msgArr[2]
-        }
-        setInstantMessage(msgObj)
-        scrollToBottom()
-      })
-
-      // socket.on('typing', msg => {
-      //   if (!msg) return
-      //   const msgArr = msg.split('#')
-      //   const msgObj = {
-      //     typing: (msgArr[0] === 'true' ? true : false),
-      //     user: msgArr[1],
-      //     userName: msgArr[2],
-      //     picture: msgArr[3]
-      //   }
-      //   setTyping(msgObj)
-      //   scrollToBottom()
-      // })
-    }
-    socketInitializer()
-  }, [])
-
-
-  /**
-   * If comment string is not empty, show b client that a is typing
-   */
   // useEffect(() => {
-  //   if (comment.length > 0) {
-  //     socket.emit('typing', `true#${user.sub}#${user.given_name}#${user.picture}`, router.asPath)
-  //   } else {
-  //     setTimeout(() => {
-  //       socket.emit('typing', `false`, router.asPath)
-  //     }, 2000)
+  //   const socketInitializer = async () => {
+  //     await fetch('/api/socket')
+  //     socket = io()
+
+  //     socket.on('connect', () => {
+  //       socket.emit('join-room', router.asPath)
+  //     })
+
+  //     socket.on('update-input', msg => {
+  //       if (!msg) return
+  //       const msgArr = msg.split('#')
+  //       const msgObj = {
+  //         comment: msgArr[0],
+  //         user: msgArr[1],
+  //         userName: msgArr[2]
+  //       }
+  //       setInstantMessage(msgObj)
+  //       scrollToBottom()
+  //     })
   //   }
-  // }, [comment])
+  //   socketInitializer()
+  // }, [])
 
 
   return (
@@ -130,8 +98,7 @@ const Comments = ({ conversation, setConversation, user, comment, weAreLive, set
           <NoteComments
             conversation={conversation}
             user={user}
-            typing={typing}
-
+            screenSize={screenSize}
           />
         </div>
 

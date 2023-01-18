@@ -21,10 +21,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     const handleSetGraphicArr = (sortedRentArr) => {
-        console.log("sorted rent: ", sortedRentArr)
-        
         var newGraphicArr = [{}]
-        console.log("new graph arr: ", newGraphicArr)
 
         var newHighestFreq = 0
 
@@ -113,11 +110,12 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
         <>
             <div
                 style={{
-                    border: activeCondition ? "rgba(173, 55, 112, 0.378) 4px solid" : "1px solid grey",
+                    border: activeCondition ? "#50554A 4px solid" : "2px solid #50554A",
                     backgroundColor: "white",
                     borderRadius: "8px",
                     zIndex: "15",
-                    width: reveal === "RENT" && deviceSize === "MOBILE" && "100%"
+                    width: reveal === "RENT" && deviceSize === "MOBILE" && "100%",
+                    boxShadow: "4px -4px 0px 0px #DCDBAB"
                 }}
             >
 

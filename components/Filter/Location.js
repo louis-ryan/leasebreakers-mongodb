@@ -127,11 +127,12 @@ const Location = ({ reveal, setReveal, deviceSize, filter, setFilter }) => {
         <>
             <div
                 style={{
-                    border: filter.addresses.length && filter.addresses.length > 0 ? "rgba(173, 55, 112, 0.378) 4px solid" : "1px solid grey",
+                    border: filter.addresses.length && filter.addresses.length > 0 ? "#50554A 4px solid" : "2px solid #50554A",
                     backgroundColor: "white",
                     borderRadius: "8px",
                     zIndex: "15",
-                    width: reveal === "LOCATION" && deviceSize === "MOBILE" && "100%"
+                    width: reveal === "LOCATION" && deviceSize === "MOBILE" && "100%",
+                    boxShadow: "4px -4px 0px 0px #DCDBAB"
                 }}
             >
 

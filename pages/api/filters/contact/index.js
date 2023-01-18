@@ -135,25 +135,6 @@ export default async (req, res) => {
                         if (req.body.numBath >= filter.minBath) { higherThanMinBath = true }
                     } else { higherThanMinBath = true }
 
-                    console.log(
-                        filter.userId,
-                        filter.userName,
-                        filter.userEmail,
-                        "address: ", addressWithinArr,
-                        "rent: ", higherThanMinRent, "-", lowerThanMaxRent,
-                        "move-in: ", canMoveInAfterEarliest, "-", canMoveInBeforeLatest,
-                        "pets: ", petsMatch,
-                        "parking: ", parkingMatch,
-                        "terrace: ", outdoorMatch,
-                        "garden: ", gardenMatch,
-                        "wall: ", wallMatch,
-                        "floor: ", floorMatch,
-                        "supermarket: ", supermarketMatch,
-                        "train: ", trainMatch,
-                        "min bed: ", higherThanMinBed,
-                        "min bath: ", higherThanMinBath
-                    )
-
                     if (!filter.userName) return
 
                     if (filter.email === req.body.breakerEmail) return
@@ -175,34 +156,31 @@ export default async (req, res) => {
                         higherThanMinBed === true &&
                         higherThanMinBath === true
                     ) {
-                        console.log("getting through: ", filter.userEmail)
-                        async function sendEmail() {
+                        // async function sendEmail() {
 
-                            // console.log("SENDING EMAIL TO: ", filter.userEmail)
-
-                            try {
-                                await fetch("http://localhost:3000/api/contact", {
-                                    method: "POST",
-                                    body: JSON.stringify({
-                                        type: "NEW_MESSAGE",
-                                        name: filter.userName,
-                                        email: filter.userEmail,
-                                        subject: 'A new property matches your filter!',
-                                        picture: req.body.pics[0].url,
-                                        header: `Hi, ${filter.userName} This property matches a filter`,
-                                        message: req.body.description,
-                                        link: `http://localhost:3000/${req.body._id}#Details`,
-                                    }),
-                                    headers: { "Content-Type": "application/json", Accept: "application/json" },
-                                }).then((res) => {
-                                    if (!res.ok) throw new Error("Failed to send message");
-                                    return res.json();
-                                })
-                            } catch (error) {
-                                console.log("err: ", error)
-                            }
-                        };
-                        sendEmail()
+                        //     try {
+                        //         await fetch('/api/contact', {
+                        //             method: "POST",
+                        //             body: JSON.stringify({
+                        //                 type: "NEW_MESSAGE",
+                        //                 name: filter.userName,
+                        //                 email: filter.userEmail,
+                        //                 subject: 'A new property matches your filter!',
+                        //                 picture: req.body.pics[0].url,
+                        //                 header: `Hi, ${filter.userName} This property matches a filter`,
+                        //                 message: req.body.description,
+                        //                 link: `/${req.body._id}#Details`,
+                        //             }),
+                        //             headers: { "Content-Type": "application/json", Accept: "application/json" },
+                        //         }).then((res) => {
+                        //             if (!res.ok) throw new Error("Failed to send message");
+                        //             return res.json();
+                        //         })
+                        //     } catch (error) {
+                        //         console.log("send email err: ", error)
+                        //     }
+                        // };
+                        // sendEmail()
                     }
 
                 })

@@ -28,7 +28,7 @@ const ListingComp = ({ notes, getNotes, rendering, unlimitedNotes, skipping, set
                 )
             })}
 
-            <div style={{height: "16px"}} />
+            <div style={{ height: "16px" }} />
 
             <BrowseOptions
                 getNotes={getNotes}
