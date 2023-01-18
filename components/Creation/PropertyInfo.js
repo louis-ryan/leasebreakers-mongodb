@@ -34,7 +34,6 @@ const Parts = ((props) => {
                     handleChange={props.props.handleChange}
                     formBools={props.props.formBools}
                     setFormBools={props.props.setFormBools}
-                    handleMoveInDate={props.props.handleMoveInDate}
                 />
             )
         case 2:
@@ -46,6 +45,7 @@ const Parts = ((props) => {
                     setForm={props.props.setForm}
                     handleContractEnds={props.props.handleContractEnds}
                     handleContractTerminates={props.props.handleContractTerminates}
+                    handleMoveInDate={props.props.handleMoveInDate}
                     handleRent={props.props.handleRent}
                 />
             )
@@ -80,7 +80,7 @@ const PropertyInfo = (props) => {
         <div style={{ display: "flex", justifyContent: "center" }}>
             <div
                 style={{
-                    width: props.device === "DESKTOP" ? "480px" : "100%",
+                    width: props.device === "DESKTOP" ? "920px" : "100%",
                     display: "flex",
                     justifyContent: "center",
                     backgroundColor: "white",

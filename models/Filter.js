@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 
 const FilterSchema = new mongoose.Schema({
     userId: {
-        type: String,
+        type: String
+    },
+    userName: {
+        type: String
+    },
+    userEmail: {
+        type: String
     },
     addresses: [
         {

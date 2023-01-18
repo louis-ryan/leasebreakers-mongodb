@@ -1,418 +1,85 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
-import fetch from 'isomorphic-unfetch';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Compress from 'react-image-file-resizer';
 import PropertyInfo from '../components/Creation/PropertyInfo';
 import Logo from '../components/Logo'
-import InputHeader from '../components/Creation/InputHeader';
+import useWindowWidth from '../custom_hooks/useWindowWidth';
+import useNoteFormatForm from '../custom_hooks/useNoteFormatForm';
+import useNoteFormInit from '../custom_hooks/useNoteFormInit';
+import useNotePostcodeQuery from '../custom_hooks/useNotePostcodeQuery';
+import useNoteHandleEvents from '../custom_hooks/useNoteHandleEvents';
+import useNoteImageUpload from '../custom_hooks/useNoteImageUpload';
 
 
 const NewNote = () => {
 
-    const [windowWidth, setWindowWidth] = useState(null)
-
-    const latInit = -37.1989648128
-    const longInit = 144.340643773
-
-    const onePixLat = 0.00097731799
-    const onePixLong = 0.0012070086
-
     const { user } = useUser();
-
+    const windowWidth = useWindowWidth();
     const [part, setPart] = useState(0);
-    const [form, setForm] = useState({
-        numBath: '',
-        numRoom: '',
-        rent: '',
-        date: '',
-        moveInDate: '',
-        contractEnds: '',
-        contractTerminates: false
-    });
-    const [post, setPost] = useState({
-        postCode1: '',
-        postCode2: '',
-        postCode3: '',
-        postCode4: '',
-    });
-    const [validAddresses, setValidAddresses] = useState([]);
-    const [mapCoords, setMapCoords] = useState({})
-    const [formBools, setFormBools] = useState({
-        petsAllowed: false,
-        outdoorArea: false,
-        garden: false,
-        parkingSpace: false,
-        supermarket: false,
-        trainStation: false,
-        sharingWall: false,
-        sharingFloor: false
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
-
     const router = useRouter();
-
-    var latInPx = (latInit - mapCoords.lat) / onePixLat
-    var longInPx = (mapCoords.long - longInit) / onePixLong
-
-
-    /**
-     * If no user, send back to index
-     */
-    useEffect(() => {
-        if (user) return
-        router.push("/");
-    })
-
-
-    /**
-    * Init window width
-    */
-    useEffect(() => {
-        setWindowWidth(typeof window !== "undefined" && window.innerWidth)
-    }, [])
-
-
-    /**
-     * Listen for window width
-     */
-    useEffect(() => {
-        window.addEventListener('resize', function (event) {
-            setWindowWidth(event.currentTarget.innerWidth)
-        }, true);
-    })
-
-
-    /**
-     * Format form
-     */
-    useEffect(() => {
-        if (!user) return
-
-        setForm({
-            ...form,
-
-            title: `A new house ${new Date().getTime()}`,
-
-            breakerId: user.sub,
-            breakerName: user.name,
-            breakerEmail: user.email,
-            breakerPicture: user.picture,
-
-            date: Date.now(),
-
-            petsAllowed: formBools.petsAllowed,
-            parkingSpace: formBools.parkingSpace,
-            outdoorArea: formBools.outdoorArea,
-            garden: formBools.garden,
-            sharingWall: formBools.sharingWall,
-            sharingFloor: formBools.sharingFloor,
-            supermarket: formBools.supermarket,
-            trainStation: formBools.trainStation,
-
-            postCode: `${post.postCode1 + post.postCode2 + post.postCode3 + post.postCode4}`
-        })
-    }, [user, post, formBools])
-
-
-    /**
-     * Postcode outside of map...
-     */
-    useEffect(() => {
-        if (latInPx > 1600 || latInPx < 0 || longInPx > 1600 || longInPx < 0) {
-            setErrors({ ...errors, address: "it appears that the selected postcode is outside the Melbourne region. We cannot include this in our database." })
-            setValidAddresses([])
-        }
-    }, [latInPx, longInPx])
-
-
-    /**
-     * Search Json for Postcodes
-     */
-    useEffect(() => {
-        if (form.postCode > 2999) {
-
-            async function getLocationsByZip() {
-                const res = await fetch(`./postCodes.json?`);
-                const data = await res.json()
-
-                var validAddressesArr = []
-
-                if (validAddressesArr.length === 0) {
-                    setErrors({ ...errors, address: "the postcode provided does not seem to be a valid Melbourne address. Maybe try a neighbouring postcode." })
-                    setValidAddresses([])
-                }
-
-                data.map((entry) => {
-
-                    if (`${entry.postcode}` !== form.postCode) return
-
-                    setMapCoords({ lat: entry.latitude, long: entry.longitude })
-
-                    validAddressesArr.push(entry.place_name)
-
-                    setValidAddresses(validAddressesArr)
-                    setErrors({ ...errors, address: null })
-
-
-                })
-            }
-            getLocationsByZip()
-        } else { setForm({ ...form, address: null }) }
-    }, [form.postCode])
-
-
-    /**
-     * Send new note to server
-     */
-    const createNote = async () => {
-        try {
-            const res = await fetch('api/notes', {
-                method: 'POST',
-                headers: { "Accept": "application/json", "Content-Type": "application/json" },
-                body: JSON.stringify(form)
-            })
-            console.log("res: ", await res.json())
-            setIsSubmitting(true)
-            router.push("/");
-        } catch (error) {
-            console.log("THIS SHOULD BE A MODAL SAYING SORRY");
-        }
-    }
-
-    /**
-     * Submit event
-     */
-    const handleSubmit = () => { createNote() }
-
-    /**
-     * Change Event
-     * @param {*} e 
-     */
-    const handleChange = (e) => { setForm({ ...form, [e.target.name]: e.target.value }) }
-
-    /**
-    * Change Rent
-    * @param {*} e 
-    */
-    const handleRent = (e) => { setForm({ ...form, [e.target.name]: Number(e.target.value) }) }
-
-    /**
-     * Change Post Code
-     * @param {*} e 
-     */
-    const handlePost = (e) => { setPost({ ...post, [e.target.name]: e.target.value }) }
-
-    /**
-    * Change Move in Date
-    * @param {*} e 
-    */
-    const handleMoveInDate = (val) => { setForm({ ...form, moveInDate: val }) }
-
-    /**
-    * Change End of Contract
-     * @param {*} e 
-    */
-    const handleContractEnds = (val) => { setForm({ ...form, contractEnds: val }) }
-
-    /**
-    * Contract Terminating
-    * @param {*} e 
-    */
-    const handleContractTerminates = (val) => { setForm({ ...form, contractTerminates: val }) }
-
-    /**
-    * Address
-    * @param {*} e 
-    */
-    const handleAddress = (e) => { setForm({ ...form, address: e }) }
-
-    /**
-     * Clear Post Code
-     */
-    const handleClearPost = () => {
-        setPost({ postCode1: '', postCode2: '', postCode3: '', postCode4: '' });
-        [1, 2, 3, 4].map((id) => document.getElementsByName(`postCode${id}`)[0].value = null);
-        setValidAddresses([]);
-        setMapCoords({});
-        setErrors({ ...errors, address: null })
-    }
-
-    /**
-    * Clear End Date
-    */
-    const handleClearEndDate = () => {
-        setEndDate({ endDate1: null, endDate2: null, endDate3: null, endDate4: null, endDate5: null, endDate6: null, endDate7: null, endDate8: null });
-        [1, 2, 3, 4, 5, 6, 7, 8].map((id) => document.getElementsByName(`endDate${id}`)[0].value = null);
-        setErrors({ ...errors, contractEnds: null })
-    }
-
-
-    /**
-     * UPLOAD PHOTO TO AWS
-     * @param {*} newBlob 
-     * @param {*} fileName 
-     */
-    const uploadCompressedPhoto = async (newBlob, compFileName) => {
-        const file = newBlob;
-        const timeStamp = Math.round(new Date().getTime() / 1000)
-        const filename = encodeURIComponent(timeStamp + "" + compFileName);
-        const res = await fetch(`/api/upload?file=${filename}`);
-        const { url, fields } = await res.json();
-        const formData = new FormData();
-
-        Object.entries({ ...fields, file }).forEach(([key, value]) => { formData.append(key, value); });
-        const upload = await fetch(url, { method: 'POST', body: formData });
-
-        if (upload.ok) {
-            if (form.pics) {
-                var newPics = form.pics
-                newPics.push({ url: upload.url + "/" + filename })
-                setForm({ ...form, newPics });
-            } else {
-                setForm({ ...form, pics: [{ url: upload.url + "/" + filename }] });
-            }
-
-        } else {
-            setErrors({ ...errors, pics: "It looks like you need to try a different type of image." });
-        }
-
-    };
-
-
-    /**
-     * COMPRESS PHOTO BEFORE UPLOAD (FOR MOBILE)
-     * @param {*} e 
-     */
-    const compressFile = (e) => {
-        const file = e.target.files[0];
-
-        Compress.imageFileResizer(
-            file, // the file from input
-            480, // width
-            480, // height
-            "JPEG", // compress format WEBP, JPEG, PNG
-            70, // quality
-            0, // rotation
-            (image) => {
-                const byteString = atob(image.split(',')[1]);
-                const ab = new ArrayBuffer(byteString.length);
-                const ia = new Uint8Array(ab);
-                for (let i = 0; i < byteString.length; i += 1) { ia[i] = byteString.charCodeAt(i); }
-                const newBlob = new Blob([ab], { type: 'image/jpeg' });
-                uploadCompressedPhoto(newBlob, file.name)
-                return newBlob;
-            },
-            "base64" // blob or base64 default base64
-        );
-    }
+    const [form, setForm] = useState(useNoteFormInit());
+    const { formBools, setFormBools, post, setPost } = useNoteFormatForm(user, form, setForm);
+    const { setMapCoords, latInPx, longInPx, validAddresses, setValidAddresses } = useNotePostcodeQuery(form, setForm, errors, setErrors);
+    const [handleSubmit, handleChange, handleRent, handlePost, handleMoveInDate, handleContractEnds, handleContractTerminates, handleAddress, handleClearPost] = useNoteHandleEvents(form, setForm, post, setPost, setValidAddresses, setMapCoords, router, setErrors)
+    const { compressFile } = useNoteImageUpload(form, setForm, errors, setErrors)
 
 
     if (windowWidth > 1200) {
         return (
             <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-
-                <div style={{ marginTop: "120px", width: "1200px", zoom: "0.8" }}>
-
-                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)" }}>
+                <div style={{ marginTop: "120px", zoom: "0.8" }}>
+                    <div style={{ position: "absolute", width: "100%", top: "-420px", left: "0px", zIndex: "-1", height: "720px", overflow: "hidden", filter: "brightness(0.5)", opacity: "0.8" }}>
                         <img
                             src="https://cdn.openagent.com.au/img/blog/2016-12-clifftophouse1-wpt.jpg"
                             style={{ width: "100%" }}
                         />
                     </div>
-
-                    <div style={{ position: "absolute", top: "16px", left: "24px" }}>
-                       <Link href="/"><Logo /></Link> 
+                    <div onClick={() => router.push('/')} style={{ position: "absolute", top: "16px", left: "24px" }}>
+                        <Logo />
                     </div>
-
-                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-
-                        <div style={{ width: "320px", height: "400px" }}>
-
-                            <div style={{ height: "40px" }} />
-                            <div><h1>Create Post</h1></div>
-                            <div style={{ height: "16px" }} />
-
-                            {
-                                [
-                                    'Part 1: Location',
-                                    'Part 2: Property',
-                                    'Part 3: Contract',
-                                    'Part 4: Description',
-                                    'Part 5: Photos'
-                                ]
-                                    .map((title, idx) => (
-                                        <div style={{ height: "80px", display: "flex", justifyContent: "space-between" }}>
-                                            <h2>{title}</h2>
-                                            <div>
-                                                <svg
-                                                    width="60px"
-                                                    height="60px"
-                                                    viewBox="0 0 30 36"
-                                                    style={{ transform: "translateX(13px) translateY(8px)", opacity: part === idx ? "1" : "0" }}
-                                                >
-                                                    <g id="List-Arrow" stroke="none" strokeWidth="1" fill="white" fillRule="evenodd">
-                                                        <path d="M36.6863297,26.9872221 L27.8372965,29.1419772 L10.8131415,33.2873888 L19.8135331,10.1126459 L42.3118317,1.78776922 L36.6863297,26.9872221 Z" id="Rectangle" stroke="#979797" transform="translate(26.500000, 17.500000) rotate(45.000000) translate(-26.500000, -17.500000) "></path>
-                                                        <rect id="Rectangle" fill="#FFFFFF" x="26" y="-6" width="24" height="47"></rect>
-                                                    </g>
-                                                </svg>
-
-                                            </div>
-                                        </div>
-                                    ))
-                            }
-                        </div>
-
-                        <PropertyInfo
-                            handleChange={handleChange}
-                            handlePost={handlePost}
-                            handleMoveInDate={handleMoveInDate}
-                            handleContractEnds={handleContractEnds}
-                            handleAddress={handleAddress}
-                            handleContractTerminates={handleContractTerminates}
-                            errors={errors}
-                            form={form}
-                            setForm={setForm}
-                            formBools={formBools}
-                            setFormBools={setFormBools}
-                            compressFile={compressFile}
-                            handleSubmit={handleSubmit}
-                            part={part}
-                            setPart={setPart}
-                            postCode={form.postCode}
-                            validAddresses={validAddresses}
-                            latInPx={latInPx}
-                            longInPx={longInPx}
-                            handleClearPost={handleClearPost}
-                            handleClearEndDate={handleClearEndDate}
-                            post={post}
-                            handleRent={handleRent}
-                            device={"DESKTOP"}
-                        />
-
-                    </div>
+                    <div style={{ height: "40px" }} />
+                    <h1 style={{ color: "white" }}>Create Post</h1>
+                    <div style={{ height: "16px" }} />
+                    <PropertyInfo
+                        handleChange={handleChange}
+                        handlePost={handlePost}
+                        handleMoveInDate={handleMoveInDate}
+                        handleContractEnds={handleContractEnds}
+                        handleAddress={handleAddress}
+                        handleContractTerminates={handleContractTerminates}
+                        errors={errors}
+                        form={form}
+                        setForm={setForm}
+                        formBools={formBools}
+                        setFormBools={setFormBools}
+                        compressFile={compressFile}
+                        handleSubmit={handleSubmit}
+                        part={part}
+                        setPart={setPart}
+                        postCode={form.postCode}
+                        validAddresses={validAddresses}
+                        latInPx={latInPx}
+                        longInPx={longInPx}
+                        handleClearPost={handleClearPost}
+                        post={post}
+                        handleRent={handleRent}
+                        device={"DESKTOP"}
+                    />
                 </div>
-            </div >
-
+            </div>
         )
     } else {
         return (
             <div style={{ marginBottom: "40px" }}>
-
                 <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <div style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
                         <div><h1>Create Post</h1></div>
-
                         <Link href="/"><h4>{'< Back to listings'}</h4></Link>
-
-                        {/* <div style={{ width: part === 0 ? "0px" : part === 1 ? "100px" : part === 2 ? "200px" : part === 3 ? "300px" : "400px", transition: "width 1s linear", height: "2px", position: "absolute", backgroundColor: "black", marginTop: "-9px", zIndex: "-1" }} /> */}
-
                         <div style={{ height: "24px" }} />
                     </div>
                 </div>
-
                 <PropertyInfo
                     handleChange={handleChange}
                     handlePost={handlePost}
@@ -434,13 +101,11 @@ const NewNote = () => {
                     latInPx={latInPx}
                     longInPx={longInPx}
                     handleClearPost={handleClearPost}
-                    handleClearEndDate={handleClearEndDate}
                     post={post}
                     handleRent={handleRent}
                     device={"MOBILE"}
                 />
             </div>
-
         )
     }
 

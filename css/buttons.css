@@ -50,3 +50,12 @@
     background-color: white;
     color: black;
 }
+
+.browse-button {
+    color: unset;
+    cursor: pointer;
+}
+
+.browse-button:hover {
+    color: black;
+}

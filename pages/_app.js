@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
 
     return (
         <>
-            <div style={{ width: "100vw", height: "100vh", position: "fixed", zIndex: "-1", backgroundColor: "lightgray" }} />
+            <div style={{ width: "100vw", height: "100vh", position: "fixed", zIndex: "-1", backgroundColor: "white" }} />
 
             <UserProvider>
                 <Layout>

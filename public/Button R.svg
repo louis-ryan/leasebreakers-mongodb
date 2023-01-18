@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="80px" viewBox="0 0 30 80">
+    <g id="Button-R" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g id="Group-2" transform="translate(27.000000, 47.500000) scale(-1, 1) translate(-27.000000, -47.500000) translate(14.000000, 14.000000)">
+            <rect id="Rectangle-Copy-11" fill="#202020" x="8.06896552" y="0.901345291" width="16.7356322" height="13.8206278"></rect>
+            <rect id="Rectangle-Copy-10" fill="#202020" x="0" y="17.426009" width="16.7356322" height="13.8206278"></rect>
+            <rect id="Rectangle" fill="#6A6A6A" x="8.06896552" y="-5.46512511e-13" width="8.66666667" height="12.0179372"></rect>
+            <rect id="Rectangle-Copy-8" fill="#6A6A6A" x="8.06896552" y="24.3363229" width="13.7471264" height="14.7219731"></rect>
+            <rect id="Rectangle-Copy-9" fill="#6A6A6A" x="9.56321839" y="50.4753363" width="16.4367816" height="16.5246637"></rect>
+            <rect id="Rectangle" fill="#202020" x="5.97701149" y="45.9686099" width="16.7356322" height="13.8206278"></rect>
+        </g>
+        <g id="Group" transform="translate(21.500000, 39.000000) scale(-1, 1) translate(-21.500000, -39.000000) translate(11.000000, -2.000000)">
+            <rect id="Rectangle" fill="#61483E" x="2.07042254" y="2.38545455" width="18.9295775" height="19.0836364"></rect>
+            <rect id="Rectangle-Copy-4" fill="#371A0D" x="0" y="0" width="18.9295775" height="19.0836364"></rect>
+            <rect id="Rectangle-Copy" fill="#61483E" x="2.07042254" y="28.6254545" width="9.46478873" height="8.94545455"></rect>
+            <rect id="Rectangle-Copy-5" fill="#371A0D" x="0" y="26.24" width="9.46478873" height="8.94545455"></rect>
+            <rect id="Rectangle-Copy-2" fill="#61483E" x="2.07042254" y="50.0945455" width="16.8591549" height="13.12"></rect>
+            <rect id="Rectangle-Copy-6" fill="#371A0D" x="0" y="47.7090909" width="16.8591549" height="13.12"></rect>
+            <rect id="Rectangle-Copy-3" fill="#61483E" x="1.77464789" y="73.0545455" width="7.69014085" height="8.94545455"></rect>
+            <rect id="Rectangle-Copy-7" fill="#371A0D" x="0" y="70.6690909" width="7.69014085" height="8.94545455"></rect>
+        </g>
+    </g>
+</svg>

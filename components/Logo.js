@@ -1,172 +1,171 @@
 const Logo = () => (
     
-    <svg width="195px" height="82px" viewBox="0 0 195 82" style={{height: "80px", transform: "translateX(-30px)"}}>
-        <g id="LBM-Logo-Small" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-            <polygon id="Rectangle-Copy-3" fill="#6D556B" points="12 69 171.017241 69 173 71 13.9827586 71"></polygon>
-            <g id="Group-Copy-33" transform="translate(170.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-34" transform="translate(170.000000, 46.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-35" transform="translate(170.000000, 35.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="9"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.01446917 L1.5,10.8810532 L0.5,9.98553083 L0.5,1.11894678 L1.5,2.01446917 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-36" transform="translate(170.000000, 23.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-37" transform="translate(170.000000, 11.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-32" transform="translate(159.000000, 25.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="10"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#6D556B"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-31" transform="translate(148.000000, 31.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="10"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#6D556B"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-30" transform="translate(136.000000, 25.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="10"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-25" transform="translate(124.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-26" transform="translate(124.000000, 46.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-27" transform="translate(124.000000, 35.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="9"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.01446917 L1.5,10.8810532 L0.5,9.98553083 L0.5,1.11894678 L1.5,2.01446917 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-28" transform="translate(124.000000, 23.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-29" transform="translate(124.000000, 11.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-23" transform="translate(100.000000, 54.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-24" transform="translate(100.000000, 42.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#6D556B"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-21" transform="translate(100.000000, 26.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-22" transform="translate(100.000000, 15.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-20" transform="translate(89.000000, 34.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="10"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#6D556B"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#D8D8D8"></path>
-            </g>
-            <g id="Group-Copy-19" transform="translate(89.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="11"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#6D556B"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#D8D8D8"></path>
-            </g>
-            <g id="Group-Copy-13" transform="translate(78.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="11"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-18" transform="translate(89.000000, 12.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="11"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#D8D8D8"></path>
-            </g>
-            <g id="Group-Copy-14" transform="translate(78.000000, 46.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="10"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-15" transform="translate(78.000000, 35.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="9"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.01446917 L1.5,10.8810532 L0.5,9.98553083 L0.5,1.11894678 L1.5,2.01446917 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-16" transform="translate(78.000000, 23.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="10"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-17" transform="translate(78.000000, 11.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="9" height="11"></rect>
-                <path d="M10.8810532,1.5 L2.01446917,1.5 L1.11894678,0.5 L9.98553083,0.5 L10.8810532,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-6" transform="translate(54.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="10" height="11"></rect>
-                <path d="M11.8182925,1.5 L2.15185678,1.5 L1.18170752,0.5 L10.8481432,0.5 L11.8182925,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#D8D8D8"></path>
-            </g>
-            <g id="Group-Copy-5" transform="translate(42.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#D8D8D8"></path>
-            </g>
-            <g id="Group-Copy-4" transform="translate(30.000000, 57.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="11"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.29027502 L1.5,12.7545011 L0.5,11.709725 L0.5,1.2454989 L1.5,2.29027502 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-3" transform="translate(30.000000, 46.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy-2" transform="translate(30.000000, 35.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="9"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.01446917 L1.5,10.8810532 L0.5,9.98553083 L0.5,1.11894678 L1.5,2.01446917 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Group-Copy" transform="translate(30.000000, 23.000000)" stroke="#979797">
-                <rect id="Rectangle" fill="#EFE4EE" x="2.5" y="2.5" width="11" height="10"></rect>
-                <path d="M12.7545011,1.5 L2.29027502,1.5 L1.2454989,0.5 L11.709725,0.5 L12.7545011,1.5 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                <path d="M1.5,2.15185678 L1.5,11.8182925 L0.5,10.8481432 L0.5,1.18170752 L1.5,2.15185678 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-            </g>
-            <g id="Box" transform="translate(30.000000, 11.000000)" stroke="#979797">
-                <g id="Group">
-                    <rect id="Rectangle" fill="#EFE4EE" x="2.58955224" y="2.58955224" width="10.9104478" height="10.9104478"></rect>
-                    <path d="M12.7928932,1.58955224 L2.29665902,1.58955224 L1.20710678,0.5 L11.703341,0.5 L12.7928932,1.58955224 Z" id="Rectangle-Copy-2" fill="#FFFFFF"></path>
-                    <path d="M1.58955224,2.29665902 L1.58955224,12.7928932 L0.5,11.703341 L0.5,1.20710678 L1.58955224,2.29665902 Z" id="Rectangle-Copy" fill="#6D556B"></path>
-                </g>
+<svg width="195px" height="195px" viewBox="0 0 195 195">
+    <g id="LBM-Logo-Header" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+        <g id="Group-Copy-33" transform="translate(162.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-34" transform="translate(162.000000, 102.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-35" transform="translate(162.000000, 91.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="10"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.79104478 2 12 0 10.2089552"></polygon>
+        </g>
+        <g id="Group-Copy-36" transform="translate(162.000000, 79.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-37" transform="translate(162.000000, 66.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-32" transform="translate(150.000000, 81.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-31" transform="translate(139.000000, 87.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-30" transform="translate(127.000000, 81.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-25" transform="translate(114.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-26" transform="translate(114.000000, 102.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-27" transform="translate(114.000000, 91.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="10"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.79104478 2 12 0 10.2089552"></polygon>
+        </g>
+        <g id="Group-Copy-28" transform="translate(114.000000, 79.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-29" transform="translate(114.000000, 66.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-23" transform="translate(91.000000, 113.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-24" transform="translate(91.000000, 100.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-21" transform="translate(91.000000, 83.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-22" transform="translate(91.000000, 71.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-20" transform="translate(79.000000, 94.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-19" transform="translate(79.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-13" transform="translate(68.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-18" transform="translate(79.000000, 67.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-14" transform="translate(68.000000, 102.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-15" transform="translate(68.000000, 91.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="10"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.79104478 2 12 0 10.2089552"></polygon>
+        </g>
+        <g id="Group-Copy-16" transform="translate(68.000000, 79.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-17" transform="translate(68.000000, 66.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="10" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 10.2089552 0 12 2 1.79104478 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-6" transform="translate(46.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="11" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.0597015 0 13 2 1.94029851 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-5" transform="translate(33.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-4" transform="translate(20.000000, 114.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="12"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 2.08955224 2 14 0 11.9104478"></polygon>
+        </g>
+        <g id="Group-Copy-3" transform="translate(20.000000, 102.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Group-Copy-2" transform="translate(20.000000, 91.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="10"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.79104478 2 12 0 10.2089552"></polygon>
+        </g>
+        <g id="Group-Copy" transform="translate(20.000000, 79.000000)">
+            <rect id="Rectangle" fill="#FFFFFF" x="2" y="2" width="12" height="11"></rect>
+            <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2 2.08955224 2"></polygon>
+            <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2 1.94029851 2 13 0 11.0597015"></polygon>
+        </g>
+        <g id="Box" transform="translate(20.000000, 66.000000)">
+            <g id="Group">
+                <rect id="Rectangle" fill="#FFFFFF" x="2.08955224" y="2.08955224" width="11.9104478" height="11.9104478"></rect>
+                <polygon id="Rectangle-Copy-2" fill="#6D556B" points="0 0 11.9104478 0 14 2.08955224 2.08955224 2.08955224"></polygon>
+                <polygon id="Rectangle-Copy" fill="#6D556B" points="0 0 2.08955224 2.08955224 2.08955224 14 0 11.9104478"></polygon>
             </g>
         </g>
-    </svg>
+    </g>
+</svg>
 )
 
 export default Logo

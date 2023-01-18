@@ -9,8 +9,6 @@ const MyInbox = ({ myConversations, router }) => {
                     <h3>Your have recieved {myConversations.length} replies to this post:</h3>
                     {myConversations.map((conversation, idx) => {
 
-                        console.log("conversation: ", idx, conversation)
-
                         return (
                             <div key={idx} style={{ borderRadius: "8px", overflow: "hidden" }}>
                                 <Link

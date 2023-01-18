@@ -26,7 +26,9 @@ const Part1 = (props) => {
 
     return (
         <>
-            {/* <InputHeader header={'Part 1: Location'} /> */}
+            <div style={{ height: "16px" }} />
+
+            <InputHeader header={'Part 1: Location'} />
 
             <PostCode
                 handlePost={props.handlePost}
@@ -39,10 +41,10 @@ const Part1 = (props) => {
             <div
                 className="button secondary"
                 onClick={() => props.handleClearPost()}
+                style={{ display: !props.post.postCode1 && !props.post.postCode2 && !props.post.postCode3 && !props.post.postCode1 && "none" }}
             >
                 CLEAR
             </div>
-
 
             <div style={{ height: "24px" }} />
 
@@ -86,8 +88,6 @@ const Part1 = (props) => {
                     </div>
                 </>
             )}
-
-            {/* {props.form.address && (<div>{props.form.address}</div>)} */}
 
             <div style={{ height: "24px" }} />
 

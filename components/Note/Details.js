@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 
-const Details = ({ note}) => {
+const Details = ({ note }) => {
 
     return (
-        <div
-            className='effect-fullscreen'
-            style={{ padding: "8px", backgroundColor: "white" }}
-        >
+        <div style={{ padding: "8px", backgroundColor: "white", border: "1px solid grey", borderRadius: "8px", padding: "32px" }} >
             <div>
                 Property Location:
                 <h3>{note.address}, VIC</h3>

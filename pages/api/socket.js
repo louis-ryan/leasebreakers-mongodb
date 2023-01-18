@@ -1,24 +1,24 @@
-import { Server } from 'Socket.IO'
+// import { Server } from 'Socket.IO'
 
-const SocketHandler = (req, res) => {
-  if (res.socket.server.io) {
-    console.log('Socket is already running')
-  } else {
-    console.log('Socket is initializing')
-    const io = new Server(res.socket.server)
-    res.socket.server.io = io
+// const SocketHandler = (req, res) => {
+//   if (res.socket.server.io) {
+//   } else {
+//     const io = new Server(res.socket.server)
+//     res.socket.server.io = io
 
-    io.on('connection', socket => {
-      socket.on('input-change', msg => {
-        socket.broadcast.emit('update-input', msg)
-      })
+//     io.on('connection', socket => {
 
-      socket.on('typing', msg => {
-        socket.broadcast.emit('typing', msg)
-      })
-    })
-  }
-  res.end()
-}
+//       socket.on('join-room', room => {
+//         socket.join(room)
+//       })
 
-export default SocketHandler
+//       socket.on('input-change', (msg, room) => {
+//         socket.to(room).emit('update-input', msg)
+//       })
+//     })
+
+//   }
+//   res.end()
+// }
+
+// export default SocketHandler

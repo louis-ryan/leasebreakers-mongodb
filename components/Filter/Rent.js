@@ -7,12 +7,14 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
     const [minVal, setMinVal] = useState(null)
     const [maxVal, setMaxVal] = useState(null)
+    const [rentArr, setRentArr] = useState([])
+
     const [selectedVal, setSelectedVal] = useState([minVal, maxVal])
 
     const [graphicArr, setGraphicArr] = useState([{}])
     const [highestFreq, setHighestFreq] = useState(0)
 
-    const activeCondition = (filter.selectedRentVal[0] !== minVal || filter.selectedRentVal[1] !== maxVal)
+    const activeCondition = (minVal && maxVal && (filter.selectedRentVal[0] !== minVal || filter.selectedRentVal[1] !== maxVal))
     const setValCondition = (filter.selectedRentVal[0] !== selectedVal[0] || filter.selectedRentVal[1] !== selectedVal[1])
 
     const graphicStyle = { height: "72px", width: "100%", display: "flex", justifyContent: "space-between", alignItems: "baseline" }
@@ -20,7 +22,9 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
     const handleSetGraphicArr = (sortedRentArr) => {
         var newGraphicArr = [{}]
+
         var newHighestFreq = 0
+
         for (var i = minVal; i <= maxVal; i++) {
             var availableArr = []
             sortedRentArr.map((rent) => {
@@ -44,7 +48,6 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
 
     async function getCompleteNotes() {
-        console.log("getting")
         var rentArr = []
 
         const res = await fetch(`api/notes/`);
@@ -58,9 +61,13 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
 
         setMinVal(sortedRentArr[0])
         setMaxVal(sortedRentArr[sortedRentArr.length - 1])
-
-        handleSetGraphicArr(sortedRentArr)
+        setRentArr(sortedRentArr)
     }
+
+
+    useEffect(() => {
+        handleSetGraphicArr(rentArr)
+    }, [rentArr])
 
 
     /**
@@ -88,7 +95,6 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
      */
     useEffect(() => {
         if (filter.selectedRentVal[0] === null && filter.selectedRentVal[1] === null) {
-            console.log("true")
             setSelectedVal([minVal, maxVal])
             setFilter({
                 ...filter,
@@ -104,11 +110,12 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
         <>
             <div
                 style={{
-                    border: activeCondition ? "rgba(173, 55, 112, 0.378) 4px solid" : "1px solid grey",
+                    border: activeCondition ? "#50554A 4px solid" : "2px solid #50554A",
                     backgroundColor: "white",
                     borderRadius: "8px",
                     zIndex: "15",
-                    width: reveal === "RENT" && deviceSize === "MOBILE" && "100%"
+                    width: reveal === "RENT" && deviceSize === "MOBILE" && "100%",
+                    boxShadow: "4px -4px 0px 0px #DCDBAB"
                 }}
             >
 
@@ -148,7 +155,7 @@ const RentFilter = ({ reveal, setReveal, deviceSize, filter, setFilter, notes })
                                             style={{
                                                 width: `calc(100% / ${graphicArr.length})`,
                                                 height: `calc((100% / ${highestFreq}) * ${obj.numberWithVal})`,
-                                                background: "lightgrey"
+                                                background: "grey"
                                             }}
                                         />
                                     )
