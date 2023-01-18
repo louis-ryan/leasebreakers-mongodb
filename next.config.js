@@ -1,7 +1,6 @@
 module.exports = {
   env: {
-    MONGO_URI: process.env.MONGO_URI,
-    EMAIL_ROOT_URL: process.env.EMAIL_ROOT_URL
+    MONGO_URI: process.env.MONGO_URI
   }
 }
 
