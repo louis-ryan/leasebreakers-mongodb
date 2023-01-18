@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import io from 'Socket.IO-client'
+// import io from 'Socket.IO-client'
 import NoteComments from "./NoteComments";
 
-let socket
+// let socket
 
 const Comments = ({ conversation, setConversation, user, comment, setWeAreLive, handleChange, handleSubmit, screenSize }) => {
 
-  const [instantMessage, setInstantMessage] = useState({})
+  // const [instantMessage, setInstantMessage] = useState({})
   const router = useRouter()
 
 
@@ -32,56 +32,56 @@ const Comments = ({ conversation, setConversation, user, comment, setWeAreLive, 
   /**
    * Message from sender through sockets
    */
-  useEffect(() => {
-    if (!instantMessage.comment) return
-    if (!conversation) return
+  // useEffect(() => {
+  //   if (!instantMessage.comment) return
+  //   if (!conversation) return
 
-    const newComments = [
-      ...conversation.comments, {
-        comment: instantMessage.comment,
-        timeOfComment: Date.now(),
-        posterId: instantMessage.user,
-        posterName: instantMessage.userName,
-        commentIsNew: false,
-      }
-    ]
+  //   const newComments = [
+  //     ...conversation.comments, {
+  //       comment: instantMessage.comment,
+  //       timeOfComment: Date.now(),
+  //       posterId: instantMessage.user,
+  //       posterName: instantMessage.userName,
+  //       commentIsNew: false,
+  //     }
+  //   ]
 
-    setConversation({
-      ...conversation,
-      comments: newComments
-    })
+  //   setConversation({
+  //     ...conversation,
+  //     comments: newComments
+  //   })
 
-    setWeAreLive(true)
+  //   setWeAreLive(true)
 
-  }, [instantMessage])
+  // }, [instantMessage])
 
 
   /**
    * Get websocket info
    */
-  useEffect(() => {
-    const socketInitializer = async () => {
-      await fetch('/api/socket')
-      socket = io()
+  // useEffect(() => {
+  //   const socketInitializer = async () => {
+  //     await fetch('/api/socket')
+  //     socket = io()
 
-      socket.on('connect', () => {
-        socket.emit('join-room', router.asPath)
-      })
+  //     socket.on('connect', () => {
+  //       socket.emit('join-room', router.asPath)
+  //     })
 
-      socket.on('update-input', msg => {
-        if (!msg) return
-        const msgArr = msg.split('#')
-        const msgObj = {
-          comment: msgArr[0],
-          user: msgArr[1],
-          userName: msgArr[2]
-        }
-        setInstantMessage(msgObj)
-        scrollToBottom()
-      })
-    }
-    socketInitializer()
-  }, [])
+  //     socket.on('update-input', msg => {
+  //       if (!msg) return
+  //       const msgArr = msg.split('#')
+  //       const msgObj = {
+  //         comment: msgArr[0],
+  //         user: msgArr[1],
+  //         userName: msgArr[2]
+  //       }
+  //       setInstantMessage(msgObj)
+  //       scrollToBottom()
+  //     })
+  //   }
+  //   socketInitializer()
+  // }, [])
 
 
   return (

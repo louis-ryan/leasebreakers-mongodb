@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import useFilterString from './useFilterString';
 
-function useGetUnlimitedNotes(filter) {
+function useGetUnlimitedNotes(filter, rootURL) {
+
+    console.log("root: ", rootURL)
 
     const [unlimitedNotes, setUnlimitedNotes] = useState(0)
     // const [processed, setProcessed] = useState(false)
@@ -11,7 +13,7 @@ function useGetUnlimitedNotes(filter) {
     async function getNotes() {
         const filterString = useFilterString(filter, null, null)
       
-        const res = await fetch(`/api/notes/filter/${filterString}`);
+        const res = await fetch('http://localhost:3000' + `/api/notes/filter/${filterString}`);
         const { data } = await res.json();
         setUnlimitedNotes(data.length)
     }

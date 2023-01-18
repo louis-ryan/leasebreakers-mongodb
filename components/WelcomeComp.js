@@ -2,7 +2,7 @@ import Logo from './Logo'
 
 const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
 
-    const labelStyle = { padding: "8px 32px 4px 16px", borderRadius: "8px", margin: "8px 8px 0px 0px", cursor: "pointer", border: "rgba(173, 55, 112, 0.378) 4px solid", backgroundColor: "white", color: "black" }
+    const labelStyle = { padding: "8px 32px 4px 16px", borderRadius: "8px", margin: "8px 8px 0px 0px", cursor: "pointer", border: "black 4px solid", backgroundColor: "white", color: "black" }
 
     const labelsArr = [
         {
@@ -98,7 +98,7 @@ const WelcomeComp = ({ user, filter, setFilter, deviceSize }) => {
                                     <g id="Delete" stroke="none" strokeWidth="2" fillRule="evenodd">
                                         <line x1="14.1585366" y1="14.1463415" x2="26.8414634" y2="25.8536585" id="Line" stroke="#FFFFFF" strokeLinecap="square"></line>
                                         <line x1="25.8589744" y1="14.1463415" x2="15.1410256" y2="25.8536585" id="Line-20" stroke="#FFFFFF" strokeLinecap="square"></line>
-                                        <circle id="Oval" stroke="#FFFFFF" fill="#e2b5ca" cx="20.5" cy="19.5" r="15"></circle>
+                                        <circle id="Oval" stroke="#FFFFFF" fill="black" cx="20.5" cy="19.5" r="15"></circle>
                                     </g>
                                 </svg>
                             </div>
