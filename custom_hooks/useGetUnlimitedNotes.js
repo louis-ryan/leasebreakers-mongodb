@@ -13,7 +13,7 @@ function useGetUnlimitedNotes(filter, rootURL) {
     async function getNotes() {
         const filterString = useFilterString(filter, null, null)
       
-        const res = await fetch('http://localhost:3000' + `/api/notes/filter/${filterString}`);
+        const res = await fetch(`/api/notes/filter/${filterString}`);
         const { data } = await res.json();
         setUnlimitedNotes(data.length)
     }
