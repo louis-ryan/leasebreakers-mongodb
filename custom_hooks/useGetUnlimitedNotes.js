@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import useFilterString from './useFilterString';
 
-function useGetUnlimitedNotes(filter, rootURL) {
-
-    console.log("root: ", rootURL)
+function useGetUnlimitedNotes(filter) {
 
     const [unlimitedNotes, setUnlimitedNotes] = useState(0)
     // const [processed, setProcessed] = useState(false)

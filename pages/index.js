@@ -15,14 +15,13 @@ import useUpdateFilter from '../custom_hooks/useUpdateFilter';
 
 const Index = () => {
 
-  const rootURL = process.env.EMAIL_ROOT_URL
   const windowWidth = useWindowWidth()
   const [mobileView, setMobileView] = useState("NOTES")
   const { user } = useUser()
   const router = useRouter()
   const desktopComp = useRef()
   const { filter, setFilter } = useGetFilter(user)
-  const unlimitedNotes = useGetUnlimitedNotes(filter, rootURL)
+  const unlimitedNotes = useGetUnlimitedNotes(filter)
   const { notes, rendering, filterUpdating, setFilterUpdating, skipping, setSkipping } = useGetFilteredNotes(filter)
   const { updateFilter } = useUpdateFilter(user, router, setFilterUpdating, filter, setFilter)
 
