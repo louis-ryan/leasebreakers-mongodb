@@ -54,7 +54,7 @@ const Index = () => {
             <iframe
               width="1500"
               height="1500"
-              src="https://www.youtube.com/embed/rSEtLebW-Bc?autoplay=1&mute=1&&loop=1"
+              src="https://www.youtube.com/embed/rSEtLebW-Bc?autoplay=1&mute=1&&loop=5"
               title="YouTube video player"
               allow="autoplay"
               style={{ width: "100%", marginTop: "120px" }}
