@@ -42,10 +42,11 @@ const Parts = ((props) => {
                     errors={props.props.errors}
                     setPart={props.props.setPart}
                     form={props.props.form}
+                    setForm={props.props.setForm}
                     handleContractEnds={props.props.handleContractEnds}
-                    handleClearEndDate={props.props.handleClearEndDate}
+                    handleContractTerminates={props.props.handleContractTerminates}
+                    handleMoveInDate={props.props.handleMoveInDate}
                     handleRent={props.props.handleRent}
-                    endDate={props.props.endDate}
                 />
             )
         case 3:
@@ -53,6 +54,7 @@ const Parts = ((props) => {
                 <Part3
                     errors={props.props.errors}
                     setPart={props.props.setPart}
+                    form={props.props.form}
                     handleChange={props.props.handleChange}
                 />
             )
@@ -75,14 +77,27 @@ const PropertyInfo = (props) => {
 
 
     return (
-        <div className='effect-fullscreen' style={{ width: "100%", display: "flex", justifyContent: "center", paddingBottom: "40px" }}>
-            <form style={{ width: "calc(100% - 32px)", maxWidth: "400px" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+                style={{
+                    width: props.device === "DESKTOP" ? "920px" : "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    backgroundColor: "white",
+                    border: "1px solid grey",
+                    borderRadius: "16px"
+                }}
+            >
+                <form style={{
+                    width: "calc(100% - 32px)",
+                    maxWidth: "400px",
+                    padding: "40px 0px"
+                }}>
 
-                <div style={{ height: "40px" }} />
+                    <Parts props={props} />
 
-                <Parts props={props} />
-
-            </form>
+                </form>
+            </div>
         </div>
     )
 }

@@ -1,21 +1,14 @@
+import InputHeader from "./InputHeader";
 import PicUpload from "./PicUpload";
-
-
-const PicsWrapper = `display: flex; flex-wrap: wrap; justify-content: space-between;`;
 
 
 const Part4 = (props) => {
 
     return (
         <>
-
-            <h4 onClick={() => props.setPart(3)}>
-                {'< Back to Description'}
-            </h4>
-
             <div style={{ height: "16px" }} />
 
-            <h2>Photos</h2>
+            <InputHeader header={'Part 5: Photos'} />
 
             Upload some photos
 
@@ -35,12 +28,26 @@ const Part4 = (props) => {
                 })}
             </div>
 
-            <div
-                onClick={() => props.handleSubmit()}
-                style={{ bottom: "24px", height: "60px", backgroundColor: "#1E304E", color: "white", textAlign: "center", alignItems: "center", paddingTop: "18px", borderRadius: "4px", marginTop: "40px" }}
-            >
-                Create
+            <div style={{height: "24px"}} />
+
+            <div style={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                <div
+                    className="button secondary"
+                    onClick={() => props.setPart(2)}
+                    style={{ width: "48%" }}
+                >
+                    Back
+                </div>
+                <div
+                    className="button primary"
+                    onClick={() => props.handleSubmit()}
+                    style={{ width: "48%" }}
+                >
+                    Create post
+                </div>
             </div>
+
+            <div style={{height: "24px"}} />
 
         </>
     )

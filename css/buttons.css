@@ -6,7 +6,6 @@
     border-radius: 4px;
     cursor: pointer;
     letter-spacing: 4px;
-    
 }
 
 .primary {
@@ -39,5 +38,24 @@
 
 .secondary:active {
     background-color: white;
+    color: black;
+}
+
+.button-action {
+    background-color: black;
+    color: white;
+}
+
+.button-action:hover {
+    background-color: white;
+    color: black;
+}
+
+.browse-button {
+    color: unset;
+    cursor: pointer;
+}
+
+.browse-button:hover {
     color: black;
 }

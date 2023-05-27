@@ -2,10 +2,9 @@
     display: flex;
     margin: 8px;
     background-color: white;
-    padding: 4px 8px;
+    padding: 8px 12px 4px 12px;
     border-radius: 48px;
-    border: rgba(173, 55, 112, 0.378) 2px solid;
-    box-shadow: -8px 8px 0px 2px rgb(209, 194, 206);
+    border: black 4px solid;
 }
 
 .navbar {

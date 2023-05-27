@@ -30,7 +30,7 @@ textarea:hover {
     border: grey 2px solid;
 }
 
-textarea:focus{
+textarea:focus {
     border: grey 2px solid;
 }
 
@@ -46,4 +46,73 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.slider-track {
+    background: lightgrey;
+    height: 4px
+}
+
+.slider-track-1 {
+    background: pink;
+}
+
+.slider-thumb {
+    background: white;
+    border: 2px solid pink;
+    width: 24px;
+    height: 24px;
+    color: unset;
+    transform: translateY(-18px);
+    border-radius: 50%;
+    margin-top: 8px;
+    box-shadow: -2px 2px 0px 0px #D0C4CF;
+    cursor: grab;
+}
+
+.slider-thumb:active {
+    cursor: grabbing;
+}
+
+.rent-input {
+    width: 100%;
+    display: flex;
+    border-bottom: 2px solid grey;
+}
+
+.rent-field:hover {
+    border: none;
+}
+
+.rent-field:focus {
+    border: none;
+    box-shadow: none;
+}
+
+/* Image Input */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.file-upload {
+    background-color: black;
+    cursor: pointer;
+    color: white;
+}
+
+.file-upload:hover {
+    filter: brightness(1.2);
+}
+
+/* Date Input */
+
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+input[type="date"]::-webkit-input-placeholder{ 
+    visibility: hidden !important;
 }

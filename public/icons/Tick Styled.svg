@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="52px" height="62px" viewBox="0 0 52 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Tick Styled</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Tick-Styled" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M20,51 L40.3940137,51.7032419 C45.5376857,51.8806099 49.99548,55.3182667 51.4743818,60.2479392 L52,62 L52,62 L52,2.13162821e-13 L51.4116158,2.15740887 C49.9877789,7.37814405 45.2458626,11 39.8344499,11 L20,11 L20,11 C8.954305,11 0,19.954305 0,31 C0,42.045695 8.954305,51 20,51 Z" id="Oval" fill="#000000"></path>
+        <polyline id="Line-11" stroke="#FFFFFF" stroke-linecap="round" points="33 22 19.6829268 40 12 34"></polyline>
+    </g>
+</svg>
